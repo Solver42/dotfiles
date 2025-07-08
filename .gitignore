@@ -1,0 +1,26 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!.bashrc
+!.vimrc
+!.bash_profile
+!.config
+
+!.config/i3
+
+!.config/nvim
+!.config/nvim/init.lua
+!.config/nvim/.biome.json
+!.config/nvim/.ols.json
+!.config/nvim/.luarc.json
+
+!.config/nvim/after
+!.config/nvim/after/ftplugin
+!.config/nvim/after/ftplugin/*
+
+!.config/nvim/lua
+!.config/nvim/lua/*
+!.config/nvim/lua/plugins
+!.config/nvim/lua/plugins/*
