@@ -8,6 +8,9 @@
 !.bash_profile
 !.config
 
+!.config/ghostty
+!.config/ghostty/*
+
 !.config/i3
 !.config/i3/*
 
