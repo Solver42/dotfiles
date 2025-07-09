@@ -25,8 +25,6 @@ set shm+=c
 set formatoptions-=cro
 set noerrorbells visualbell t_vb=
 set clipboard=unnamedplus
-set ignorecase
-set smartcase
 set incsearch
 set hlsearch
 set laststatus=0
@@ -55,6 +53,7 @@ nnoremap sl <C-w>l
 nnoremap <A-n> <cmd>set invnumber<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap <leader>- <cmd>Lexplore<CR>
+nnoremap / /\c\v
 
 function! ToggleStatusLine()
         if &laststatus==0
