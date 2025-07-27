@@ -43,16 +43,18 @@ nnoremap <C-t> <cmd>tabnew<CR>
 nnoremap L <cmd>tabnext<CR>
 nnoremap H <cmd>tabprev<CR>
 nnoremap sq ZQ
+nnoremap <leader>q <cmd>bd<cr>
 nnoremap ss <cmd>split<cr>
 nnoremap sv <cmd>vsplit<cr>
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
+nnoremap sl <C-w>l
 nnoremap sh <C-w>h
-nnoremap sl <C-w>l
-nnoremap sl <C-w>l
+nnoremap sa <cmd>silent! vert ball<cr>
+nnoremap so <cmd>only<cr>
 nnoremap <A-n> <cmd>set invnumber<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
-nnoremap <leader>- <cmd>Lexplore<CR>
+nnoremap - <cmd>Explore<CR>
 nnoremap / /\c\v
 
 function! ToggleStatusLine()
@@ -64,12 +66,12 @@ function! ToggleStatusLine()
 endfunction
 nnoremap <A-m> <cmd>call ToggleStatusLine()<cr>
 
+hi Normal ctermfg=46
 hi LineNr ctermfg=46
-hi LineNrSel ctermbg=46 ctermfg=16 gui=NONE cterm=NONE
-hi TabLine ctermbg=16 ctermfg=46 guifg=#00ff00 guibg=#000000 gui=NONE cterm=NONE
-hi TabLineFill ctermfg=16 guifg=#b0c0e0 guibg=#000000 gui=NONE cterm=NONE
-hi TabLineSel ctermfg=16 ctermbg=46 guibg=#00ff00 guifg=#000000
-hi EndOfBuffer guifg=#00ff00 guibg=#000000 gui=NONE cterm=NONE
+hi TabLine ctermbg=16 ctermfg=46 cterm=NONE
+hi TabLineFill ctermfg=16 cterm=NONE
+hi TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
+hi EndOfBuffer ctermbg=16 ctermfg=16
 hi IncSearch ctermbg=16 ctermfg=46
 hi Search ctermbg=226 ctermfg=16
 hi CurSearch ctermbg=46 ctermfg=16
@@ -78,6 +80,7 @@ hi Visual ctermfg=16 ctermbg=46
 hi StatusLine ctermfg=16 ctermbg=46
 hi StatusLineNC ctermfg=46 ctermbg=16
 hi VertSplit ctermbg=46 ctermfg=16
+hi CursorLine ctermbg=46 ctermfg=16 cterm=NONE
 
 set statusline=
 set statusline+=%#WildMenu#\ %{mode()}\  " Mode with custom highlight
@@ -111,3 +114,29 @@ function! MyTabLine()
   s .= fnamemodify(name, ':t')
   return 
 endfunction
+
+au BufEnter *.txt  only
+
+" netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_keepdir = 0
+
+" Close after opening a file (which gets opened in another window):
+let g:netrw_fastbrowse = 0
+autocmd FileType netrw setl bufhidden=wipe
+function! CloseNetrw() abort
+  for bufn in range(1, bufnr('$'))
+    if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
+      silent! execute 'bwipeout ' . bufn
+      if getline(2) =~# '^" Netrw '
+        silent! bwipeout
+      endif
+      return
+    endif
+  endfor
+endfunction
+augroup closeOnOpen
+  autocmd!
+  autocmd BufWinEnter * if getbufvar(winbufnr(winnr()), "&filetype") != "netrw"|call CloseNetrw()|endif
+aug END

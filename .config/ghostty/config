@@ -3,6 +3,7 @@ theme = GruvboxDark
 background = 000000
 foreground = 00ff00
 font-family = Fira Code Nerd Font
+font-style = Bold
 font-size = 16
 #fullscreen = true
 window-decoration = none
