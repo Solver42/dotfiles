@@ -35,6 +35,7 @@ let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
 
 inoremap jkj <esc>
+inoremap jkf <esc><cmd>write<cr>
 
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>l <cmd>bnext<cr>
@@ -56,6 +57,77 @@ nnoremap <A-n> <cmd>set invnumber<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap - <cmd>Explore<CR>
 nnoremap / /\c\v
+
+function! SurroundWordWithChar() abort
+  let c = nr2char(getchar())
+  return 'viwc' . c . "\<Esc>pa" . c . "\<Esc>"
+endfunction
+
+nnoremap <expr> mw SurroundWordWithChar()
+
+function! SurroundWORDWithChar() abort
+  let c = nr2char(getchar())
+  return 'viWc' . c . "\<Esc>pa" . c . "\<Esc>"
+endfunction
+
+nnoremap <expr> mW SurroundWORDWithChar()
+
+function! DeleteCharAroundCursor(char)
+  let lnum = line('.')
+  let col = col('.')
+  let line = getline(lnum)
+  " Search backward for char
+  let left = col - 2
+  while left >= 0 && line[left] != a:char
+    let left -= 1
+  endwhile
+  " Search forward for char
+  let right = col - 1
+  while right < len(line) && line[right] != a:char
+    let right += 1
+  endwhile
+  " If both sides found, delete them
+  if left >= 0 && right < len(line)
+    let newline = strpart(line, 0, left) . strpart(line, left + 1, right - left - 1) . strpart(line, right + 1)
+    call setline(lnum, newline)
+    call cursor(lnum, col - (col > right ? 1 : 0))
+  else
+    echo "Character not found on both sides"
+  endif
+endfunction
+
+nnoremap <expr> mx ":call DeleteCharAroundCursor(nr2char(getchar()))<CR>"
+
+function! ChangeCharAroundCursor(find_char, replace_char)
+  let lnum = line('.')
+  let col = col('.')
+  let line = getline(lnum)
+
+  " Search backward for find_char
+  let left = col - 2
+  while left >= 0 && line[left] != a:find_char
+    let left -= 1
+  endwhile
+
+  " Search forward for find_char
+  let right = col - 1
+  while right < len(line) && line[right] != a:find_char
+    let right += 1
+  endwhile
+
+  " Only proceed if both found
+  if left >= 0 && right < len(line)
+    let newline = line[:left - 1] . a:replace_char . line[left + 1:right - 1] . a:replace_char . line[right + 1:]
+    call setline(lnum, newline)
+
+    " Optional: put cursor back near where it was
+    call cursor(lnum, min([col, len(newline)]))
+  else
+    echo "Could not find both surrounding characters"
+  endif
+endfunction
+
+nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
 
 function! ToggleStatusLine()
         if &laststatus==0
