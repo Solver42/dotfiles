@@ -57,6 +57,8 @@ nnoremap <A-n> <cmd>set invnumber<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap - <cmd>Explore<CR>
 nnoremap / /\c\v
+vnoremap <leader>r "hy :%s/\<<C-r>h\>//gI<left><left><left>
+
 
 function! SurroundWordWithChar() abort
   let c = nr2char(getchar())
