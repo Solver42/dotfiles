@@ -29,6 +29,8 @@ map("n", "sk", "<C-w>k")
 map("n", "s<up>", "<C-w>k")
 map("n", "sl", "<C-w>l")
 map("n", "s<right>", "<C-w>l")
+map('n', 'sa', '<cmd>silent vert ball<CR>')
+map('n', 'so', '<cmd>only<CR>')
 
 map('n', '<leader>w', '<cmd>w<CR>')
 map('n', '<leader>q', '<cmd>bd<CR>')
@@ -139,3 +141,219 @@ map("n", "<leader>dq", "<cmd>DapTerminate<cr>")
 map("v", "<leader>r", "\"hy:%s/\\<<C-r>h\\>//gI<left><left><left>")
 
 -- map("v", "<C-j>", ":m '>+1<CR>gv=gv")
+
+-- vim.keymap.set("n", "mw", function()
+--   local surround_char = vim.fn.nr2char(vim.fn.getchar())
+--
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local line = vim.api.nvim_get_current_line()
+--
+--   local s = vim.fn.expand("<cword>")
+--   local start_col = string.find(line, s, 1, true)
+--   if not start_col then
+--     vim.notify("No word found under cursor", vim.log.levels.WARN)
+--     return
+--   end
+--
+--   local end_col = start_col + #s
+--   local new_line =
+--     line:sub(1, start_col - 1)
+--     .. surround_char .. s .. surround_char
+--     .. line:sub(end_col)
+--
+--   vim.api.nvim_set_current_line(new_line)
+--   vim.api.nvim_win_set_cursor(0, { row, col + 1 })
+-- end, { desc = "Add surrounding characters" })
+--
+-- vim.keymap.set("n", "mW", function()
+--   local surround_char = vim.fn.nr2char(vim.fn.getchar())
+--
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local line = vim.api.nvim_get_current_line()
+--
+--   local s = vim.fn.expand("<cWORD>")
+--   local start_col = string.find(line, s, 1, true)
+--   if not start_col then
+--     vim.notify("No word found under cursor", vim.log.levels.WARN)
+--     return
+--   end
+--
+--   local end_col = start_col + #s
+--   local new_line =
+--     line:sub(1, start_col - 1)
+--     .. surround_char .. s .. surround_char
+--     .. line:sub(end_col)
+--
+--   vim.api.nvim_set_current_line(new_line)
+--   vim.api.nvim_win_set_cursor(0, { row, col + 1 })
+-- end, { desc = "Add surrounding characters" })
+--
+-- vim.keymap.set("n", "mc", function()
+--   local find_char = vim.fn.nr2char(vim.fn.getchar())
+--   local replace_char = vim.fn.nr2char(vim.fn.getchar())
+--
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local line = vim.api.nvim_get_current_line()
+--
+--   -- Lua string indexing is 1-based
+--   local left = col
+--   while left > 0 and line:sub(left, left) ~= find_char do
+--     left = left - 1
+--   end
+--
+--   local right = col + 1
+--   while right <= #line and line:sub(right, right) ~= find_char do
+--     right = right + 1
+--   end
+--
+--   if left > 0 and right <= #line then
+--     local new_line =
+--       line:sub(1, left - 1)
+--       .. replace_char
+--       .. line:sub(left + 1, right - 1)
+--       .. replace_char
+--       .. line:sub(right + 1)
+--
+--     vim.api.nvim_set_current_line(new_line)
+--     vim.api.nvim_win_set_cursor(0, { row, math.min(col + 1, #new_line) })
+--   else
+--     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
+--   end
+-- end, { desc = "Change surrounding characters" })
+--
+-- vim.keymap.set("n", "mx", function()
+--   local target = vim.fn.nr2char(vim.fn.getchar())
+--
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local line = vim.api.nvim_get_current_line()
+--
+--   local left = col
+--   while left > 0 and line:sub(left, left) ~= target do
+--     left = left - 1
+--   end
+--
+--   local right = col + 1
+--   while right <= #line and line:sub(right, right) ~= target do
+--     right = right + 1
+--   end
+--
+--   if left > 0 and right <= #line then
+--     local new_line =
+--       line:sub(1, left - 1)
+--       .. line:sub(left + 1, right - 1)
+--       .. line:sub(right + 1)
+--
+--     vim.api.nvim_set_current_line(new_line)
+--     vim.api.nvim_win_set_cursor(0, { row, math.min(col, #new_line) })
+--   else
+--     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
+--   end
+-- end, { desc = "Delete surrounding characters" })
+
+
+
+local pairs = {
+  ["("] = ")",
+  ["{"] = "}",
+  ["["] = "]",
+  ["<"] = ">",
+  [")"] = "(",
+  ["}"] = "{",
+  ["]"] = "[",
+  [">"] = "<",
+}
+
+local function get_pair(c)
+  return pairs[c]
+end
+
+vim.keymap.set("n", "mw", function()
+  local left = vim.fn.nr2char(vim.fn.getchar())
+  local right = get_pair(left) or left
+
+  local word = vim.fn.expand("<cword>")
+  local line = vim.api.nvim_get_current_line()
+  local col = string.find(line, word, 1, true)
+
+  if not col then return end
+
+  local prefix = line:sub(1, col - 1)
+  local suffix = line:sub(col + #word)
+  local new_line = prefix .. left .. word .. right .. suffix
+
+  vim.api.nvim_set_current_line(new_line)
+end, { desc = "Add surrounding character pair" })
+
+vim.keymap.set("n", "mW", function()
+  local left = vim.fn.nr2char(vim.fn.getchar())
+  local right = get_pair(left) or left
+
+  local word = vim.fn.expand("<cWORD>")
+  local line = vim.api.nvim_get_current_line()
+  local col = string.find(line, word, 1, true)
+
+  if not col then return end
+
+  local prefix = line:sub(1, col - 1)
+  local suffix = line:sub(col + #word)
+  local new_line = prefix .. left .. word .. right .. suffix
+
+  vim.api.nvim_set_current_line(new_line)
+end, { desc = "Add surrounding character pair" })
+
+vim.keymap.set("n", "mx", function()
+  local c = vim.fn.nr2char(vim.fn.getchar())
+  local left = c
+  local right = get_pair(c) or c
+
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+
+  local l = col
+  while l > 0 and line:sub(l, l) ~= left do l = l - 1 end
+
+  local r = col + 1
+  while r <= #line and line:sub(r, r) ~= right do r = r + 1 end
+
+  if l > 0 and r <= #line then
+    local new_line = line:sub(1, l - 1) .. line:sub(l + 1, r - 1) .. line:sub(r + 1)
+    vim.api.nvim_set_current_line(new_line)
+    vim.api.nvim_win_set_cursor(0, { row, math.min(col, #new_line) })
+  else
+    vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
+  end
+end, { desc = "Delete smart surrounding characters" })
+
+vim.keymap.set("n", "mc", function()
+  local find_char = vim.fn.nr2char(vim.fn.getchar())
+  local replace_char = vim.fn.nr2char(vim.fn.getchar())
+
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+
+  -- Lua string indexing is 1-based
+  local left = col
+  while left > 0 and line:sub(left, left) ~= find_char do
+    left = left - 1
+  end
+
+  local right = col + 1
+  while right <= #line and line:sub(right, right) ~= find_char do
+    right = right + 1
+  end
+
+  if left > 0 and right <= #line then
+    local new_line =
+      line:sub(1, left - 1)
+      .. replace_char
+      .. line:sub(left + 1, right - 1)
+      .. replace_char
+      .. line:sub(right + 1)
+
+    vim.api.nvim_set_current_line(new_line)
+    vim.api.nvim_win_set_cursor(0, { row, math.min(col + 1, #new_line) })
+  else
+    vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
+  end
+end, { desc = "Change surrounding characters" })
+
