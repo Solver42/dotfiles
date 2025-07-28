@@ -117,7 +117,7 @@ function! ChangeCharAroundCursor(find_char, replace_char)
 
   " Only proceed if both found
   if left >= 0 && right < len(line)
-    let newline = line[:left - 1] . a:replace_char . line[left + 1:right - 1] . a:replace_char . line[right + 1:]
+    let newline = strpart(line, 0, left) . a:replace_char . strpart(line, left + 1, right - left - 1) . a:replace_char . line[right + 1:]
     call setline(lnum, newline)
 
     " Optional: put cursor back near where it was
