@@ -29,14 +29,6 @@ font pango: FiraCode Nerd Font 10
 # set the mod key to the winkey:
 set $mod Mod4
 
-# solver:
-
-exec --no-startup-id picom
-exec --no-startup-id xset r rate 200 100
-exec --no-startup-id xset b off
-exec --no-startup-id xinput list
-exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
-
 #####################
 # workspace layout: #
 #####################

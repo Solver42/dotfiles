@@ -1,4 +1,4 @@
-# exec --no-startup-id ~/set_once.sh
+exec --no-startup-id ~/config/i3/set_once.sh
 # This file is a modified version based on default i3-config-wizard config
 # source is available here:
 # https://raw.githubusercontent.com/endeavouros-team/endeavouros-i3wm-setup/main/etc/skel/.config/i3/config
@@ -28,14 +28,6 @@ font pango: FiraCode Nerd Font 10
 
 # set the mod key to the winkey:
 set $mod Mod4
-
-# solver:
-exec --no-startup-id picom
-exec --no-startup-id xset r rate 200 50
-exec --no-startup-id xset b off
-exec --no-startup-id xinput list
-exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
-exec --no-startup-id udiskie &
 
 bindsym $mod+o bar mode toggle
 
@@ -158,6 +150,7 @@ bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
 
 # restart i3 inplace (preserves your layout/session, can be used to update i3)
 bindsym $mod+Shift+r restart
+bindsym $mod+Shift+s exec --no-startup-id ~/.config/i3/set_once.sh
 
 # keybinding in fancy rofi (automated):
 bindsym F1 exec --no-startup-id ~/.config/i3/scripts/keyhint-2
