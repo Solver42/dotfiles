@@ -35,14 +35,14 @@ let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
 
 inoremap jkj <esc>
-inoremap jkf <esc><cmd>write<cr>
+inoremap jkf <esc><cmd>w<cr>
 
 nnoremap <leader>w <cmd>w<cr>
-nnoremap <leader>l <cmd>bnext<cr>
-nnoremap <leader>h <cmd>bprev<cr>
+nnoremap <leader>l <cmd>bn<cr>
+nnoremap <leader>h <cmd>bp<cr>
 nnoremap <C-t> <cmd>tabnew<CR>
-nnoremap L <cmd>tabnext<CR>
-nnoremap H <cmd>tabprev<CR>
+nnoremap L <cmd>tabn<CR>
+nnoremap H <cmd>tabp<CR>
 nnoremap sq ZQ
 nnoremap <leader>q <cmd>bd<cr>
 nnoremap ss <cmd>split<cr>
@@ -53,12 +53,28 @@ nnoremap sl <C-w>l
 nnoremap sh <C-w>h
 nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
-nnoremap <A-n> <cmd>set invnumber<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
-nnoremap - <cmd>Explore<CR>
 nnoremap / /\c\v
 vnoremap <leader>r "hy :%s/\<<C-r>h\>//gI<left><left><left>
 
+"   TOGGLE
+
+nnoremap - <cmd>Ex<CR>
+autocmd FileType netrw nnoremap <buffer> - <cmd>bd<cr>
+autocmd FileType netrw nmap <buffer> l <CR>
+
+nnoremap <A-n> <cmd>set invnumber<cr>
+
+function! ToggleStatusLine()
+        if &laststatus==0
+                set laststatus=2
+        else
+                set laststatus=0
+        endif
+endfunction
+nnoremap <A-m> <cmd>call ToggleStatusLine()<cr>
+
+"   SURROUND
 
 function! SurroundWordWithChar() abort
   let c = nr2char(getchar())
@@ -131,14 +147,6 @@ endfunction
 
 nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
 
-function! ToggleStatusLine()
-        if &laststatus==0
-                set laststatus=2
-        else
-                set laststatus=0
-        endif
-endfunction
-nnoremap <A-m> <cmd>call ToggleStatusLine()<cr>
 
 hi Normal ctermfg=46
 hi LineNr ctermfg=46
