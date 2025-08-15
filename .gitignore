@@ -25,6 +25,9 @@
 !.config/nvim/after/ftplugin
 !.config/nvim/after/ftplugin/*
 
+!.config/nvim/colors
+!.config/nvim/colors/*
+
 !.config/nvim/lua
 !.config/nvim/lua/*
 !.config/nvim/lua/plugins

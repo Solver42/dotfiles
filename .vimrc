@@ -1,5 +1,6 @@
 syntax off
 
+set fillchars+=vert:\┃
 set guitablabel=%t
 set tabstop=4
 set mouse=a
@@ -60,7 +61,7 @@ vnoremap <leader>r "hy :%s/\<<C-r>h\>//gI<left><left><left>
 "   TOGGLE
 
 nnoremap - <cmd>Ex<CR>
-autocmd FileType netrw nnoremap <buffer> - <cmd>bd<cr>
+autocmd FileType netrw nnoremap <buffer> - <cmd>b#<cr>
 autocmd FileType netrw nmap <buffer> l <CR>
 
 nnoremap <A-n> <cmd>set invnumber<cr>
