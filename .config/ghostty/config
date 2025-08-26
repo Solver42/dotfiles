@@ -1,14 +1,14 @@
 theme = GruvboxDark
 #keybind = alt+enter=toggle_fullscreen
 background = 000000
-foreground = 00ff00
+# foreground = 00ff00
 font-family = Fira Code Nerd Font
 font-style = Bold
-font-size = 16
+font-size = 14
 #fullscreen = true
 window-decoration = none
 #background-opacity = 0.8
 #command = fish
-cursor-color = 00ff00
+# cursor-color = 00ff00
 #cursor-style-blink = false
 mouse-hide-while-typing = true

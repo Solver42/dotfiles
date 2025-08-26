@@ -8,7 +8,8 @@ require('lazy').setup('plugins', { --looking for returns in /lua/plugins/
 })
 require('options')
 
-vim.cmd('colorscheme solverbox')
+-- vim.cmd('colorscheme solverbox')
+vim.cmd('colorscheme box')
 require('solvertelescope')
 require('solvermason')
 require('solverlsp')
