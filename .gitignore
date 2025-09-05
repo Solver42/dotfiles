@@ -21,6 +21,9 @@
 !.config/nvim/.ols.json
 !.config/nvim/.luarc.json
 
+!.config/nvim/lsp
+!.config/nvim/lsp/*
+
 !.config/nvim/after
 !.config/nvim/after/ftplugin
 !.config/nvim/after/ftplugin/*

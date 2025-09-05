@@ -20,3 +20,4 @@ eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
 eval "$(zoxide init bash)"
 export "EDITOR=nvim"
+

@@ -35,7 +35,7 @@ hi FoldColumn guifg=#928374 guibg=NONE gui=NONE cterm=NONE
 hi SignColumn guifg=#928374 guibg=NONE gui=NONE cterm=NONE
 hi VertSplit guifg=#303030 guibg=NONE gui=NONE cterm=NONE
 hi ColorColumn guifg=NONE guibg=NONE gui=NONE cterm=NONE
-hi Comment guifg=#928374 guibg=NONE gui=NONE cterm=NONE
+hi Comment guifg=#fa99fa guibg=NONE gui=NONE cterm=NONE
 hi CursorLine guifg=NONE guibg=#303030 gui=NONE cterm=NONE
 hi Error guifg=#fb4934 guibg=NONE gui=bold,reverse cterm=bold,reverse
 hi ErrorMsg guifg=NONE guibg=#fb4934 gui=bold cterm=bold
@@ -75,7 +75,7 @@ hi IncSearch guifg=#fe8019 guibg=NONE gui=reverse cterm=reverse
 hi ModeMsg guifg=#fabd2f guibg=NONE gui=bold cterm=bold
 hi MoreMsg guifg=#fabd2f guibg=NONE gui=bold cterm=bold
 hi Question guifg=#fe8019 guibg=NONE gui=bold cterm=bold
-hi Search guifg=#98971a guibg=NONE gui=reverse cterm=reverse
+hi Search guifg=#709090 guibg=NONE gui=reverse cterm=reverse
 hi QuickFixLine guifg=#8ec07c guibg=NONE gui=reverse cterm=reverse
 hi SpellBad guifg=#fb4934 guibg=NONE guisp=#fb4934 gui=undercurl cterm=underline
 hi SpellCap guifg=#83a598 guibg=NONE guisp=#83a598 gui=undercurl cterm=underline

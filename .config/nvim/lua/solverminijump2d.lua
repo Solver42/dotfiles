@@ -1,4 +1,3 @@
--- vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { reverse = true})
 require('mini.jump2d').setup(
   {
     spotter = function(line, opts)

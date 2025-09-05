@@ -92,10 +92,12 @@ end
 map('n', '<A-f>', ":lua toggle_explorer()<CR>")
 
 --  terminal
-vim.cmd([[
-  tnoremap <Esc> <C-\><C-n>
-  tnoremap <A-t> <C-\><C-n>:ToggleTerm<cr>
-]])
+-- vim.cmd([[
+--   tnoremap <Esc> <C-\><C-n>
+--   tnoremap <A-t> <C-\><C-n>:ToggleTerm<cr>
+-- ]])
+--
+map('n', '<M-t>', '<cmd>ToggleTerm<cr>')
 
 map('n', '<leader>j', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 map('n', '<leader>k', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
