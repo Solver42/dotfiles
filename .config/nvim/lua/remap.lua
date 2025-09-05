@@ -66,7 +66,7 @@ map("n", "<A-d>", "<cmd>Gitsigns preview_hunk<cr>")
 map("n", "<A-w>", "<cmd>set wrap!<cr>")
 map("n", "<A-a>", "<cmd>lua require(\"dapui\").toggle()<cr>")
 map("n", "<A-r>", "<cmd>TroubleToggle<cr>")
-map("n", "<A-s>", "<cmd>Outline<cr>")
+map("n", "<A-o>", "<cmd>Telescope lsp_document_symbols<cr>")
 map("n", "<A-c>", "<cmd>set cursorline!<cr>")
 map("n", "<A-i>", "<cmd>Gitsigns toggle_signs<cr>")
 
