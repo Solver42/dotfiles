@@ -66,7 +66,7 @@ map("n", "<A-d>", "<cmd>Gitsigns preview_hunk<cr>")
 map("n", "<A-w>", "<cmd>set wrap!<cr>")
 map("n", "<A-a>", "<cmd>lua require(\"dapui\").toggle()<cr>")
 map("n", "<A-r>", "<cmd>TroubleToggle<cr>")
-map("n", "<A-s>", "<cmd>Telescope lsp_document_symbols<cr>")
+map("n", "<A-s>", "<cmd>Telescope lsp_document_symbols ignore_symbols=false fname_width=0 sorter=false<cr>")
 map("n", "<A-c>", "<cmd>set cursorline!<cr>")
 map("n", "<A-i>", "<cmd>Gitsigns toggle_signs<cr>")
 
@@ -346,11 +346,11 @@ vim.keymap.set("n", "mc", function()
 
   if left > 0 and right <= #line then
     local new_line =
-      line:sub(1, left - 1)
-      .. replace_char
-      .. line:sub(left + 1, right - 1)
-      .. replace_char
-      .. line:sub(right + 1)
+        line:sub(1, left - 1)
+        .. replace_char
+        .. line:sub(left + 1, right - 1)
+        .. replace_char
+        .. line:sub(right + 1)
 
     vim.api.nvim_set_current_line(new_line)
     vim.api.nvim_win_set_cursor(0, { row, math.min(col + 1, #new_line) })
@@ -358,4 +358,3 @@ vim.keymap.set("n", "mc", function()
     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
   end
 end, { desc = "Change surrounding characters" })
-
