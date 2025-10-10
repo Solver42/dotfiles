@@ -56,7 +56,7 @@ nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
-vnoremap <leader>r "hy :%s/\<<C-r>h\>//gI<left><left><left>
+xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
 
 "   TOGGLE
 
