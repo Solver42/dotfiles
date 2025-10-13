@@ -227,10 +227,10 @@ nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(get
 
 hi Normal ctermfg=46
 hi LineNr ctermfg=46
-hi TabLine ctermbg=16 ctermfg=46 cterm=NONE
+hi TabLine ctermbg=NONE ctermfg=46 cterm=NONE
 hi TabLineFill ctermfg=16 cterm=NONE
 hi TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
-hi EndOfBuffer ctermbg=16 ctermfg=16
+hi EndOfBuffer ctermbg=NONE ctermfg=NONE
 hi IncSearch ctermbg=16 ctermfg=46
 hi Search ctermbg=226 ctermfg=16
 hi CurSearch ctermbg=46 ctermfg=16
