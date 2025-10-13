@@ -1,4 +1,4 @@
-theme = GruvboxDark
+theme = Gruvbox Dark
 #keybind = alt+enter=toggle_fullscreen
 background = 000000
 # foreground = 00ff00
@@ -7,7 +7,7 @@ font-style = Bold
 font-size = 14
 #fullscreen = true
 window-decoration = none
-#background-opacity = 0.8
+background-opacity = 0.6
 #command = fish
 # cursor-color = 00ff00
 #cursor-style-blink = false
