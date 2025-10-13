@@ -5,6 +5,7 @@ background = 000000
 font-family = Fira Code Nerd Font
 font-style = Bold
 font-size = 14
+font-feature = -calt
 #fullscreen = true
 window-decoration = none
 background-opacity = 0.6
