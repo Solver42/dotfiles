@@ -1,4 +1,82 @@
 syntax off
+let mapleader = " "
+
+if !isdirectory(expand('~/.vim/undodir'))
+  call mkdir(expand('~/.vim/undodir'), 'p')
+endif
+set undodir=~/.vim/undodir
+set undofile
+
+" === Simple Undotree ===
+function! SimpleUndotreeToggle() abort
+  " Close existing Undotree window if open
+  if exists('t:su_buf') && bufexists(t:su_buf)
+    execute 'bwipeout' t:su_buf
+    unlet t:su_buf
+    return
+  endif
+
+  " Remember source buffer and file
+  let l:srcbuf = bufnr('%')
+  let l:filename = bufname(l:srcbuf)
+  if empty(l:filename)
+    let l:filename = '[No Name]'
+  endif
+
+  " Open a clean scratch split
+  vnew
+  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
+  setlocal nowrap nonumber norelativenumber cursorline
+  let t:su_buf = bufnr('%')
+  file [SimpleUndotree]
+
+  " Clear inherited buffer text
+  silent %delete _
+
+  " Build undo list
+  let l:tree = undotree(l:srcbuf)
+  if empty(l:tree.entries)
+    call setline(1, ['No undo history for: ' . l:filename])
+    return
+  endif
+
+  let l:lines = ['Undo tree for: ' . l:filename, '']
+  for e in l:tree.entries
+    let mark = e.seq == l:tree.seq_cur ? ' <== CURRENT' : ''
+    call add(l:lines, printf('%4d  %s%s', e.seq, strftime('%Y-%m-%d %H:%M:%S', e.time), mark))
+  endfor
+
+  call setline(1, l:lines)
+  normal! gg
+endfunction
+
+function! s:SimpleUndotreeGo() abort
+  if &filetype !=# 'undotree'
+    return
+  endif
+
+  let l:seq = matchstr(getline('.'), '^\s*\d\+')
+  if empty(l:seq)
+    echo "No valid undo entry"
+    return
+  endif
+
+  " Go to selected undo state
+  execute 'undo ' . l:seq
+
+  " Close buffer safely to avoid E1312
+  call timer_start(0, { -> execute('silent! noautocmd bwipeout!') })
+endfunction
+
+augroup SimpleUndotree
+  autocmd!
+  autocmd BufNewFile,BufRead [SimpleUndotree] setlocal filetype=undotree
+  autocmd FileType undotree nnoremap <buffer> <CR> :call <SID>SimpleUndotreeGo()<CR>
+  autocmd FileType undotree nnoremap <buffer> q :bwipeout!<CR>
+augroup END
+
+command! UndotreeToggle call SimpleUndotreeToggle()
+nnoremap <silent> <leader>u :UndotreeToggle<CR>
 
 set fillchars+=vert:\┃
 set guitablabel=%t
@@ -6,8 +84,6 @@ set tabstop=4
 set mouse=a
 set nobackup
 set noswapfile
-set undodir=~/.vim/undodir
-set undofile
 set autoread
 set fileformat=unix
 set encoding=UTF-8
@@ -56,7 +132,7 @@ nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
-vnoremap <leader>r "hy :%s/\<<C-r>h\>//gI<left><left><left>
+xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
 
 "   TOGGLE
 
@@ -197,8 +273,6 @@ function! MyTabLine()
   s .= fnamemodify(name, ':t')
   return 
 endfunction
-
-au BufEnter *.txt  only
 
 " netrw
 let g:netrw_banner = 0
