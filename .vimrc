@@ -106,7 +106,6 @@ set incsearch
 set hlsearch
 set laststatus=0
 
-let mapleader = " "
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
@@ -135,12 +134,11 @@ nnoremap / /\c\v
 xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
 
 "   TOGGLE
-
 nnoremap - <cmd>Ex<CR>
 autocmd FileType netrw nnoremap <buffer> - <cmd>b#<cr>
 autocmd FileType netrw nmap <buffer> l <CR>
 
-nnoremap <A-n> <cmd>set invnumber<cr>
+nnoremap <leader>n <cmd>set invnumber<cr>
 
 function! ToggleStatusLine()
         if &laststatus==0
@@ -149,10 +147,9 @@ function! ToggleStatusLine()
                 set laststatus=0
         endif
 endfunction
-nnoremap <A-m> <cmd>call ToggleStatusLine()<cr>
+nnoremap <leader>m <cmd>call ToggleStatusLine()<cr>
 
 "   SURROUND
-
 function! SurroundWordWithChar() abort
   let c = nr2char(getchar())
   return 'viwc' . c . "\<Esc>pa" . c . "\<Esc>"
