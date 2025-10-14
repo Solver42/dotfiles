@@ -113,7 +113,7 @@ let &t_EI = "\<esc>[2 q"
 inoremap jkj <esc>
 inoremap jkf <esc><cmd>w<cr>
 
-nnoremap <leader>w <cmd>w<cr>
+nnoremap <c-s> <cmd>up<cr>
 nnoremap <leader>l <cmd>bn<cr>
 nnoremap <leader>h <cmd>bp<cr>
 nnoremap <C-t> <cmd>tabnew<CR>
@@ -139,6 +139,7 @@ autocmd FileType netrw nnoremap <buffer> - <cmd>b#<cr>
 autocmd FileType netrw nmap <buffer> l <CR>
 
 nnoremap <leader>n <cmd>set invnumber<cr>
+nnoremap <leader>w <cmd>set invwrap<cr>
 
 function! ToggleStatusLine()
         if &laststatus==0

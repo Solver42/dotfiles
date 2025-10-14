@@ -32,7 +32,7 @@ map("n", "s<right>", "<C-w>l")
 map('n', 'sa', '<cmd>silent vert ball<CR>')
 map('n', 'so', '<cmd>only<CR>')
 
-map('n', '<leader>w', '<cmd>w<CR>')
+map('n', '<c-s>', '<cmd>up<CR>')
 map('n', '<leader>q', '<cmd>bd<CR>')
 -- map("n", "<leader>rr", "<cmd>Rest run<CR>")
 -- map("n", "<leader>rl", "<cmd>Rest last<CR>")
