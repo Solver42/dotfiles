@@ -1,5 +1,8 @@
 exec --no-startup-id ~/config/i3/set_once.sh
 exec --no-startup-id ~/screens.sh
+exec_always --no-startup-id setxkbmap -option caps:backspace
+exec_always --no-startup-id xset r 66
+
 # This file is a modified version based on default i3-config-wizard config
 # source is available here:
 # https://raw.githubusercontent.com/endeavouros-team/endeavouros-i3wm-setup/main/etc/skel/.config/i3/config
