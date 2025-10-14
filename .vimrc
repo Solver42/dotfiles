@@ -106,6 +106,7 @@ set incsearch
 set hlsearch
 set laststatus=0
 
+
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
@@ -295,3 +296,5 @@ augroup closeOnOpen
   autocmd!
   autocmd BufWinEnter * if getbufvar(winbufnr(winnr()), "&filetype") != "netrw"|call CloseNetrw()|endif
 aug END
+
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
