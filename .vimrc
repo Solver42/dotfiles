@@ -7,76 +7,77 @@ endif
 set undodir=~/.vim/undodir
 set undofile
 
-" === Simple Undotree ===
-function! SimpleUndotreeToggle() abort
-  " Close existing Undotree window if open
-  if exists('t:su_buf') && bufexists(t:su_buf)
-    execute 'bwipeout' t:su_buf
-    unlet t:su_buf
-    return
-  endif
-
-  " Remember source buffer and file
-  let l:srcbuf = bufnr('%')
-  let l:filename = bufname(l:srcbuf)
-  if empty(l:filename)
-    let l:filename = '[No Name]'
-  endif
-
-  " Open a clean scratch split
-  vnew
-  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
-  setlocal nowrap nonumber norelativenumber cursorline
-  let t:su_buf = bufnr('%')
-  file [SimpleUndotree]
-
-  " Clear inherited buffer text
-  silent %delete _
-
-  " Build undo list
-  let l:tree = undotree(l:srcbuf)
-  if empty(l:tree.entries)
-    call setline(1, ['No undo history for: ' . l:filename])
-    return
-  endif
-
-  let l:lines = ['Undo tree for: ' . l:filename, '']
-  for e in l:tree.entries
-    let mark = e.seq == l:tree.seq_cur ? ' <== CURRENT' : ''
-    call add(l:lines, printf('%4d  %s%s', e.seq, strftime('%Y-%m-%d %H:%M:%S', e.time), mark))
-  endfor
-
-  call setline(1, l:lines)
-  normal! gg
+" UNDOTREE
+let g:undotree_buf = -1
+let g:undotree_orig = -1
+let g:undotree_data = []
+function! s:Close()
+    if bufexists(g:undotree_buf) | execute 'bwipeout ' . g:undotree_buf | endif
+    let g:undotree_buf = -1
+    if bufexists(g:undotree_orig) | execute 'buffer ' . g:undotree_orig | endif
 endfunction
-
-function! s:SimpleUndotreeGo() abort
-  if &filetype !=# 'undotree'
-    return
-  endif
-
-  let l:seq = matchstr(getline('.'), '^\s*\d\+')
-  if empty(l:seq)
-    echo "No valid undo entry"
-    return
-  endif
-
-  " Go to selected undo state
-  execute 'undo ' . l:seq
-
-  " Close buffer safely to avoid E1312
-  call timer_start(0, { -> execute('silent! noautocmd bwipeout!') })
+function! s:Highlight()
+    if exists('w:ut_match') | call matchdelete(w:ut_match) | endif
+    let w:ut_match = matchaddpos('Visual', [line('.')])
 endfunction
-
-augroup SimpleUndotree
-  autocmd!
-  autocmd BufNewFile,BufRead [SimpleUndotree] setlocal filetype=undotree
-  autocmd FileType undotree nnoremap <buffer> <CR> :call <SID>SimpleUndotreeGo()<CR>
-  autocmd FileType undotree nnoremap <buffer> q :bwipeout!<CR>
-augroup END
-
-command! UndotreeToggle call SimpleUndotreeToggle()
-nnoremap <silent> <leader>u :UndotreeToggle<CR>
+function! s:Update()
+    let l = line('.')
+    if l < 1 || l > len(g:undotree_data) | return | endif
+    call s:Highlight()
+    let seq = g:undotree_data[l - 1].seq
+    let win = winnr()
+    execute bufwinnr(g:undotree_orig) . 'wincmd w'
+    silent! execute seq == 0 ? 'earlier 999999' : 'undo ' . seq
+    execute win . 'wincmd w'
+endfunction
+function! s:Select()
+    call s:Update()
+    call s:Close()
+endfunction
+function! s:Flatten(node, list, prefix)
+    call add(a:list, {'seq': a:node.seq, 'line': a:prefix . strftime('%H:%M:%S', a:node.time)})
+    if has_key(a:node, 'entries')
+        let n = len(a:node.entries)
+        for i in range(n)
+            call s:Flatten(a:node.entries[i], a:list, a:prefix . (i == n - 1 ? '└─ ' : '├─ '))
+        endfor
+    endif
+endfunction
+function! s:Open()
+    let g:undotree_orig = bufnr('%')
+    let tree = undotree()
+    if empty(tree) | echo "No undo history" | return | endif
+    botright vertical 40 new
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nowrap nonumber norelativenumber nocursorline nofoldenable winfixwidth
+    silent! file __UNDOTREE__
+    let g:undotree_buf = bufnr('%')
+    let g:undotree_data = [{'seq': 0, 'line': 'initial'}]
+    if has_key(tree, 'entries')
+        for node in tree.entries | call s:Flatten(node, g:undotree_data, '') | endfor
+    endif
+    call setline(1, map(copy(g:undotree_data), 'v:val.line'))
+    for i in range(len(g:undotree_data))
+        if g:undotree_data[i].seq == tree.seq_cur
+            execute 'normal! ' . (i + 1) . 'G'
+            break
+        endif
+    endfor
+    call s:Highlight()
+    nnoremap <buffer> <silent> j j:call <SID>Update()<CR>
+    nnoremap <buffer> <silent> k k:call <SID>Update()<CR>
+    nnoremap <buffer> <silent> <CR> :call <SID>Select()<CR>
+    nnoremap <buffer> <silent> q :call <SID>Close()<CR>
+    call s:Update()
+endfunction
+function! UndotreeToggle()
+    if bufexists(g:undotree_buf) && bufwinnr(g:undotree_buf) != -1
+        call s:Close()
+    else
+        call s:Open()
+    endif
+endfunction
+command! UndotreeToggle call UndotreeToggle()
+nnoremap <leader>u :UndotreeToggle<CR>
 
 set fillchars+=vert:\┃
 set guitablabel=%t
