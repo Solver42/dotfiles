@@ -82,6 +82,9 @@ nnoremap <leader>au :UndotreeToggle<CR>
 set fillchars+=vert:\┃
 set guitablabel=%t
 set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
 set mouse=a
 set nobackup
 set noswapfile
@@ -90,8 +93,6 @@ set fileformat=unix
 set encoding=UTF-8
 set autoindent
 set smartindent
-set smarttab
-set expandtab
 set nowrap
 set scrolloff=8
 set showcmd
