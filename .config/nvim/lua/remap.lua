@@ -67,7 +67,7 @@ map("n", "<leader>aw", "<cmd>set wrap!<cr>")
 map("n", "<A-a>", "<cmd>lua require(\"dapui\").toggle()<cr>")
 map("n", "<A-r>", "<cmd>TroubleToggle<cr>")
 -- map("n", "<A-s>", "<cmd>Telescope lsp_document_symbols ignore_symbols=false fname_width=0 sorter=false<cr>")
-map("n", "<A-c>", "<cmd>set cursorline!<cr>")
+map("n", "<leader>ac", "<cmd>set cursorline!<cr>")
 map("n", "<A-i>", "<cmd>Gitsigns toggle_signs<cr>")
 
 -- Custom toggle for :Ex

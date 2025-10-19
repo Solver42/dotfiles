@@ -134,7 +134,10 @@ nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
+
 xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
+xnoremap <silent> J :m '>+1<CR>gv=gv
+xnoremap <silent> K :m '<-2<CR>gv=gv
 
 "   TOGGLE
 nnoremap - <cmd>Ex<CR>
@@ -143,6 +146,7 @@ autocmd FileType netrw nmap <buffer> l <CR>
 
 nnoremap <leader>an <cmd>set invnumber<cr>
 nnoremap <leader>aw <cmd>set invwrap<cr>
+nnoremap <leader>ac <cmd>set invcursorline<cr>
 
 function! ToggleStatusLine()
         if &laststatus==0
@@ -225,9 +229,9 @@ endfunction
 
 nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
 
-
 hi Normal ctermfg=46
 hi LineNr ctermfg=46
+hi CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
 hi TabLine ctermbg=NONE ctermfg=46 cterm=NONE
 hi TabLineFill ctermfg=16 cterm=NONE
 hi TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
@@ -239,7 +243,7 @@ hi WildMenu ctermfg=16 ctermbg=46
 hi Visual ctermfg=16 ctermbg=46
 hi StatusLine ctermfg=16 ctermbg=46
 hi StatusLineNC ctermfg=46 ctermbg=16
-hi VertSplit ctermbg=46 ctermfg=16
+hi VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
 hi CursorLine ctermbg=46 ctermfg=16 cterm=NONE
 
 set statusline=
