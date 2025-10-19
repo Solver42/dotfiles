@@ -77,7 +77,7 @@ function! UndotreeToggle()
     endif
 endfunction
 command! UndotreeToggle call UndotreeToggle()
-nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <leader>au :UndotreeToggle<CR>
 
 set fillchars+=vert:\┃
 set guitablabel=%t
@@ -115,7 +115,7 @@ let &t_EI = "\<esc>[2 q"
 inoremap jkj <esc>
 inoremap jkf <esc><cmd>w<cr>
 
-nnoremap <c-s> <cmd>up<cr>
+nnoremap <leader>w <cmd>update<cr>
 nnoremap <leader>l <cmd>bn<cr>
 nnoremap <leader>h <cmd>bp<cr>
 nnoremap <C-t> <cmd>tabnew<CR>
@@ -140,8 +140,8 @@ nnoremap - <cmd>Ex<CR>
 autocmd FileType netrw nnoremap <buffer> - <cmd>b#<cr>
 autocmd FileType netrw nmap <buffer> l <CR>
 
-nnoremap <leader>n <cmd>set invnumber<cr>
-nnoremap <leader>w <cmd>set invwrap<cr>
+nnoremap <leader>an <cmd>set invnumber<cr>
+nnoremap <leader>aw <cmd>set invwrap<cr>
 
 function! ToggleStatusLine()
         if &laststatus==0
@@ -150,7 +150,7 @@ function! ToggleStatusLine()
                 set laststatus=0
         endif
 endfunction
-nnoremap <leader>m <cmd>call ToggleStatusLine()<cr>
+nnoremap <leader>am <cmd>call ToggleStatusLine()<cr>
 
 "   SURROUND
 function! SurroundWordWithChar() abort
