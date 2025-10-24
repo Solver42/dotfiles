@@ -16,6 +16,9 @@
 !.config/i3
 !.config/i3/*
 
+!.config/wezterm
+!.config/wezterm/wezterm.lua
+
 !.config/nvim
 !.config/nvim/init.lua
 !.config/nvim/.biome.json

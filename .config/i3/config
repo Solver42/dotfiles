@@ -138,7 +138,8 @@ bindcode $mod+Shift+19    move container to workspace  $ws10
 
 # start a terminal
 # bindsym $mod+Return exec --no-startup-id xfce4-terminal
-bindsym $mod+Return exec --no-startup-id ghostty
+# bindsym $mod+Return exec --no-startup-id ghostty
+bindsym $mod+Return exec --no-startup-id wezterm
 
 # kill focused window
 bindsym $mod+i kill
@@ -175,6 +176,9 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 # bindsym $mod+k focus down
 # bindsym $mod+b focus up
 # bindsym $mod+o focus right
+# change window focus
+#bindsym mod1+l focus right
+#bindsym mod1+h focus left
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -204,7 +208,8 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-# bindsym $mod+s layout stacking
+bindsym $mod+s layout stacking
+bindsym $mod+z layout tabbed
 # bindsym $mod+g layout tabbed
 bindsym $mod+e layout toggle split
 

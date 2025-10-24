@@ -15,18 +15,8 @@ alias g='grep --color=auto'
 alias gd='git diff'
 alias gs='git status'
 
-# Start tmux automatically if not already inside tmux
-if command -v tmux &> /dev/null; then
-  # only attach if not already in tmux
-  if [ -z "$TMUX" ]; then
-    # attach to existing session named "main", or create it
-    tmux attach-session -t main || tmux new-session -s main
-  fi
-fi
-
 eval "$(starship init bash)"
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
 eval "$(zoxide init bash)"
 export "EDITOR=nvim"
-

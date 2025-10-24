@@ -108,7 +108,6 @@ set incsearch
 set hlsearch
 set laststatus=0
 
-
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
