@@ -10,6 +10,24 @@
 !.config
 !.tmux.conf
 
+!.vim
+!.vim/pack
+!.vim/pack/plugins
+!.vim/pack/plugins/start
+!.vim/pack/plugins/start/fzf.vim
+!.vim/pack/plugins/start/fzf.vim/README.md
+!.vim/pack/plugins/start/fzf.vim/autoload
+!.vim/pack/plugins/start/fzf.vim/autoload/fzf/
+!.vim/pack/plugins/start/fzf.vim/autoload/fzf/*
+!.vim/pack/plugins/start/fzf.vim/autoload/fzf/vim
+!.vim/pack/plugins/start/fzf.vim/autoload/fzf/vim/*
+!.vim/pack/plugins/start/fzf.vim/plugin
+!.vim/pack/plugins/start/fzf.vim/plugin/*
+!.vim/pack/plugins/start/fzf.vim/doc
+!.vim/pack/plugins/start/fzf.vim/doc/*
+!.vim/pack/plugins/start/fzf.vim/bin
+!.vim/pack/plugins/start/fzf.vim/bin/*
+
 !.config/ghostty
 !.config/ghostty/*
 

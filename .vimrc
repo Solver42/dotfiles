@@ -303,3 +303,10 @@ augroup closeOnOpen
 aug END
 
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
+let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
+" Keybindings
+nnoremap <leader>j <cmd>Files<CR>
+nnoremap <leader>k <cmd>Rg<CR>
+nnoremap <leader>b <cmd>Buffers<CR>
