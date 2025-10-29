@@ -35,13 +35,7 @@ function! s:Select()
     call s:Close()
 endfunction
 function! s:Flatten(node, list, prefix)
-    call add(a:list, {'seq': a:node.seq, 'line': a:prefix . strftime('%H:%M:%S', a:node.time)})
-    if has_key(a:node, 'entries')
-        let n = len(a:node.entries)
-        for i in range(n)
-            call s:Flatten(a:node.entries[i], a:list, a:prefix . (i == n - 1 ? '└─ ' : '├─ '))
-        endfor
-    endif
+    call add(a:list, {'seq': a:node.seq, 'line': a:prefix . strftime('%Y-%m-%d %H:%M:%S', a:node.time)})
 endfunction
 function! s:Open()
     let g:undotree_orig = bufnr('%')
@@ -306,7 +300,19 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "norm
 
 let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
 let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
-" Keybindings
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {
+    \   'options': ['--preview', 'bat --style=plain --color=never {}']
+    \ }, <bang>0)
+
+
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+    \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+
 nnoremap <leader>j <cmd>Files<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 nnoremap <leader>b <cmd>Buffers<CR>
