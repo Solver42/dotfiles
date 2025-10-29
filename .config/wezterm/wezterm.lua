@@ -5,6 +5,8 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+config.warn_about_missing_glyphs = false
+
 -- Font
 config.font = wezterm.font('Fira Code Nerd Font', { weight = 'Bold', style = 'Normal' })
 config.font_size = 14.0
