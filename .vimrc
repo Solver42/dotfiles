@@ -300,18 +300,22 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "norm
 
 let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
 let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
-
 let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {
     \   'options': ['--preview', 'bat --style=plain --color=never {}']
     \ }, <bang>0)
 
-
 command! -bang -nargs=* Rg
     \ call fzf#vim#grep(
     \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
     \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+
+command! -bang Buffers
+    \ call fzf#vim#buffers({
+    \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs bat --style=plain --color=never']
+    \ }, <bang>0)
 
 nnoremap <leader>j <cmd>Files<CR>
 nnoremap <leader>k <cmd>Rg<CR>
