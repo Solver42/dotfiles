@@ -101,6 +101,7 @@ set clipboard=unnamedplus
 set incsearch
 set hlsearch
 set laststatus=0
+set complete-=t
 
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
