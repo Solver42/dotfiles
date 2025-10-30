@@ -325,7 +325,23 @@ command! -bang Buffers
     \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs bat --style=plain --color=never']
     \ }, <bang>0)
 
-nnoremap <leader>j <cmd>Files<CR>
-nnoremap <leader>k <cmd>Rg<CR>
-nnoremap <leader>b <cmd>Buffers<CR>
+" Command to search files with fzf, including --no-ignore and --hidden
+command! -bang -nargs=? -complete=dir FilesHidden
+    \ call fzf#vim#files(<q-args>, {
+    \ 'options': ['--preview', 'bat --style=plain --color=never {}'],
+    \ 'source': 'rg --files --no-ignore --hidden'
+    \ }, <bang>0)
 
+" Command to search with ripgrep, including --no-ignore and --hidden
+command! -bang -nargs=* RgHidden
+    \ call fzf#vim#grep(
+    \ 'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
+    \ {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+
+
+nnoremap <leader>b <cmd>Buffers<CR>
+nnoremap <leader>B <cmd>Buffers<CR>
+nnoremap <leader>j <cmd>Files<CR>
+nnoremap <leader>J <cmd>FilesHidden<CR>
+nnoremap <leader>k <cmd>Rg<CR>
+nnoremap <leader>K <cmd>RgHidden<CR>
