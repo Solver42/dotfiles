@@ -101,6 +101,7 @@ set clipboard=unnamedplus
 set incsearch
 set hlsearch
 set laststatus=0
+set complete-=t
 
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
@@ -108,7 +109,6 @@ let &t_EI = "\<esc>[2 q"
 
 inoremap jkj <esc>
 inoremap jkf <esc><cmd>w<cr>
-inoremap <C-space> <C-x><C-v>
 
 nnoremap <leader>w <cmd>update<cr>
 nnoremap <leader>l <cmd>bn<cr>
@@ -128,6 +128,7 @@ nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
+nnoremap Q !!sh<cr>
 
 xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
 xnoremap <silent> J :m '>+1<CR>gv=gv
