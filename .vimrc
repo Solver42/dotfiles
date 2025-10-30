@@ -108,6 +108,7 @@ let &t_EI = "\<esc>[2 q"
 
 inoremap jkj <esc>
 inoremap jkf <esc><cmd>w<cr>
+inoremap <C-space> <C-x><C-v>
 
 nnoremap <leader>w <cmd>update<cr>
 nnoremap <leader>l <cmd>bn<cr>
