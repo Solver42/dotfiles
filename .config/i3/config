@@ -2,6 +2,9 @@ exec --no-startup-id ~/config/i3/set_once.sh
 exec --no-startup-id ~/screens.sh
 exec_always --no-startup-id setxkbmap -option caps:backspace
 exec_always --no-startup-id xset r 66
+exec_always --no-startup-id xset s off
+exec_always --no-startup-id xset -dpms
+# xset s noblank
 
 # This file is a modified version based on default i3-config-wizard config
 # source is available here:
@@ -615,3 +618,4 @@ exec --no-startup-id xset r rate 200 50
 exec --no-startup-id xset b off
 exec --no-startup-id xinput list
 exec --no-startup-id udiskie &
+

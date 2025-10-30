@@ -14,6 +14,7 @@ alias n='nvim'
 alias g='grep --color=auto'
 alias gd='git diff'
 alias gs='git status'
+alias lg='lazygit'
 
 eval "$(starship init bash)"
 eval "$(mcfly init bash)"

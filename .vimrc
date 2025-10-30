@@ -102,6 +102,8 @@ set incsearch
 set hlsearch
 set laststatus=0
 set complete-=t
+set signcolumn=yes
+set updatetime=100
 
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
@@ -223,8 +225,8 @@ function! ChangeCharAroundCursor(find_char, replace_char)
 endfunction
 
 nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
-
 hi Normal ctermfg=46
+hi SignColumn ctermbg=NONE
 hi LineNr ctermfg=46
 hi CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
 hi TabLine ctermbg=NONE ctermfg=46 cterm=NONE
@@ -326,3 +328,4 @@ command! -bang Buffers
 nnoremap <leader>j <cmd>Files<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 nnoremap <leader>b <cmd>Buffers<CR>
+
