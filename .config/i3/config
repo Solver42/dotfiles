@@ -346,7 +346,7 @@ for_window [class=TelegramDesktop] focus
 #exec_always --no-startup-id picom -b
 #
 # for custom config:
-#exec_always --no-startup-id picom --config  ~/.config/picom.conf
+exec_always --no-startup-id picom --config  ~/.config/picom/picom.conf
 
 #############################################
 # autostart applications/services on login: #
@@ -613,6 +613,5 @@ exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput 
 exec --no-startup-id xset r rate 200 50
 # Disable bell
 exec --no-startup-id xset b off
-exec --no-startup-id picom
 exec --no-startup-id xinput list
 exec --no-startup-id udiskie &

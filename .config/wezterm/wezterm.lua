@@ -20,7 +20,6 @@ config.color_schemes = {
 config.color_scheme = 'solverbox'
 --config.color_scheme = 'GruvboxDark'
 
-
 -- Transparency
 config.window_background_opacity = 0.6
 
