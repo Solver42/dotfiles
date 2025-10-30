@@ -128,6 +128,7 @@ nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
+nnoremap Q !!sh<cr>
 
 xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
 xnoremap <silent> J :m '>+1<CR>gv=gv

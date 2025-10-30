@@ -46,7 +46,7 @@ config.colors = {
 
 config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
--- config.tab_bar_at_bottom = true
+config.tab_bar_at_bottom = true
 
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
   local process_name = tab.active_pane.foreground_process_name
