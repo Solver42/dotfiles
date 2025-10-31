@@ -27,6 +27,13 @@
 !.vim/pack/plugins/start/fzf.vim/doc/*
 !.vim/pack/plugins/start/fzf.vim/bin
 !.vim/pack/plugins/start/fzf.vim/bin/*
+!.vim/pack/plugins/start/vim-gitgutter
+!.vim/pack/plugins/start/vim-gitgutter/autoload
+!.vim/pack/plugins/start/vim-gitgutter/autoload/*
+!.vim/pack/plugins/start/vim-gitgutter/autoload/gitgutter
+!.vim/pack/plugins/start/vim-gitgutter/autoload/gitgutter/*
+!.vim/pack/plugins/start/vim-gitgutter/plugin
+!.vim/pack/plugins/start/vim-gitgutter/plugin/*
 
 !.config/ghostty
 !.config/ghostty/*
