@@ -338,10 +338,71 @@ command! -bang -nargs=* RgHidden
     \ 'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
     \ {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
 
-
 nnoremap <leader>b <cmd>Buffers<CR>
 nnoremap <leader>B <cmd>Buffers<CR>
 nnoremap <leader>j <cmd>Files<CR>
 nnoremap <leader>J <cmd>FilesHidden<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 nnoremap <leader>K <cmd>RgHidden<CR>
+
+if exists('g:hiword') && g:hiword == 0
+  finish
+endif
+function! HighlightWord()
+    let l:word = "FAIL"
+    let l:word = expand("<cword>")
+    if l:word == "FAIL" || l:word == ""
+        call UnHighlightWord()
+    return
+    endif
+    let l:word = substitute(l:word, '\0x0000$','','')
+    if l:word != ""
+        let l:pattern = substitute(l:word,'\([.^$*\\/]\|\[\|\]\|\\\|\"\|\~\)','\\\1','g')
+        if exists('g:hiword_partial') && g:hiword_partial != 0
+            let l:patter = l:pattern
+        else
+            let l:pattern = '\<' . l:pattern . '\>' " highlight only whole word matches
+        endif
+
+        execute "match HLCurrentWord /".pattern."/"
+    endif
+endfunction
+
+function! UnHighlightWord()
+    execute "match"
+endfunction
+
+function! HW_Cursor_Moved()
+    if exists('g:hiword') && g:hiword == 0
+        return
+    endif
+    if !&modifiable
+        return
+    endif
+
+    let l:word = expand("<cword>")
+
+    if l:word == ''
+        call UnHighlightWord()
+        let s:lastWord = ""
+        return
+    endif
+
+    if l:word != s:lastWord
+        call HighlightWord()
+        let s:lastWord = l:word
+    endif
+endfunction
+
+augroup HighlightWordUnderCursor
+    autocmd!
+    autocmd CursorHold * call HW_Cursor_Moved()
+augroup END
+
+set updatetime=1
+
+let s:lastWord = ""
+
+if !hlexists("HLCurrentWord")
+    highlight HLCurrentWord ctermfg=16 ctermbg=46
+endif
