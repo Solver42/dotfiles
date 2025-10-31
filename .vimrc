@@ -345,64 +345,63 @@ nnoremap <leader>J <cmd>FilesHidden<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 nnoremap <leader>K <cmd>RgHidden<CR>
 
-if exists('g:hiword') && g:hiword == 0
-  finish
+
+if !exists('g:hiword')
+    let g:hiword = 1
 endif
-function! HighlightWord()
-    let l:word = "FAIL"
-    let l:word = expand("<cword>")
-    if l:word == "FAIL" || l:word == ""
-        call UnHighlightWord()
-    return
-    endif
-    let l:word = substitute(l:word, '\0x0000$','','')
-    if l:word != ""
-        let l:pattern = substitute(l:word,'\([.^$*\\/]\|\[\|\]\|\\\|\"\|\~\)','\\\1','g')
-        if exists('g:hiword_partial') && g:hiword_partial != 0
-            let l:patter = l:pattern
-        else
-            let l:pattern = '\<' . l:pattern . '\>' " highlight only whole word matches
-        endif
 
-        execute "match HLCurrentWord /".pattern."/"
+if g:hiword == 0
+    finish
+endif
+
+let s:lastWord = ""
+
+function! s:HighlightWord(word) abort
+    let l:pattern = escape(a:word, '\.^$*\/[]\"~')
+    if !exists('g:hiword_partial') || g:hiword_partial == 0
+        let l:pattern = '\<' . l:pattern . '\>'
     endif
+    execute 'match HLCurrentWord /\V' . l:pattern . '/'
 endfunction
 
-function! UnHighlightWord()
-    execute "match"
-endfunction
-
-function! HW_Cursor_Moved()
-    if exists('g:hiword') && g:hiword == 0
+function! s:HW_Cursor_Moved() abort
+    if (exists('g:hiword') && g:hiword == 0) || !&modifiable
         return
     endif
-    if !&modifiable
+    
+    let l:word = expand('<cword>')
+    
+    if l:word == s:lastWord
         return
     endif
-
-    let l:word = expand("<cword>")
-
-    if l:word == ''
-        call UnHighlightWord()
-        let s:lastWord = ""
-        return
-    endif
-
-    if l:word != s:lastWord
-        call HighlightWord()
-        let s:lastWord = l:word
+    
+    let s:lastWord = l:word
+    
+    if l:word ==# ''
+        match none
+    else
+        call s:HighlightWord(l:word)
     endif
 endfunction
 
 augroup HighlightWordUnderCursor
     autocmd!
-    autocmd CursorHold * call HW_Cursor_Moved()
+    autocmd CursorMoved,CursorMovedI * call s:HW_Cursor_Moved()
 augroup END
 
-set updatetime=1
-
-let s:lastWord = ""
-
-if !hlexists("HLCurrentWord")
+if !hlexists('HLCurrentWord')
     highlight HLCurrentWord ctermfg=16 ctermbg=46
 endif
+
+function! s:ToggleHighlightWord() abort
+    let g:hiword = !g:hiword
+    if g:hiword
+        echo 'Word highlighting enabled'
+    else
+        echo 'Word highlighting disabled'
+        match none
+        let s:lastWord = ""
+    endif
+endfunction
+
+nnoremap <leader>ah :call <SID>ToggleHighlightWord()<CR>
