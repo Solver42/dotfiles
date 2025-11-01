@@ -105,6 +105,10 @@ set complete-=t
 set signcolumn=yes
 set updatetime=100
 
+filetype on
+filetype plugin on
+filetype indent on
+
 let &t_SI = "\<esc>[6 q"
 let &t_SR = "\<esc>[6 q"
 let &t_EI = "\<esc>[2 q"
@@ -405,3 +409,15 @@ function! s:ToggleHighlightWord() abort
 endfunction
 
 nnoremap <leader>ah :call <SID>ToggleHighlightWord()<CR>
+
+function! ToggleComment(comment_string) abort
+    let l:line = getline('.')
+    let l:indent = matchstr(l:line, '^\s*')
+    let l:content = substitute(l:line, '^\s*', '', '')
+    if l:content =~# '^' . escape(a:comment_string, '/*') . '\s\?'
+        let l:new_content = substitute(l:content, '^' . escape(a:comment_string, '/*') . '\s\?', '', '')
+    else
+        let l:new_content = a:comment_string . ' ' . l:content
+    endif
+    call setline('.', l:indent . l:new_content)
+endfunction

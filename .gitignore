@@ -11,6 +11,8 @@
 !.tmux.conf
 
 !.vim
+!.vim/ftplugin
+!.vim/ftplugin/*
 !.vim/pack
 !.vim/pack/plugins
 !.vim/pack/plugins/start
