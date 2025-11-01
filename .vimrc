@@ -373,15 +373,11 @@ function! s:HW_Cursor_Moved() abort
     if (exists('g:hiword') && g:hiword == 0) || !&modifiable
         return
     endif
-    
     let l:word = expand('<cword>')
-    
     if l:word == s:lastWord
         return
     endif
-    
     let s:lastWord = l:word
-    
     if l:word ==# ''
         match none
     else
@@ -408,8 +404,6 @@ function! s:ToggleHighlightWord() abort
         let s:lastWord = ""
     endif
 endfunction
-
-nnoremap <leader>ah :call <SID>ToggleHighlightWord()<CR>
 
 function! ToggleComment(comment_string) abort
     let l:line = getline('.')
