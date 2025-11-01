@@ -405,14 +405,29 @@ function! s:ToggleHighlightWord() abort
     endif
 endfunction
 
-function! ToggleComment(comment_string) abort
-    let l:line = getline('.')
-    let l:indent = matchstr(l:line, '^\s*')
-    let l:content = substitute(l:line, '^\s*', '', '')
-    if l:content =~# '^' . escape(a:comment_string, '/*') . '\s\?'
-        let l:new_content = substitute(l:content, '^' . escape(a:comment_string, '/*') . '\s\?', '', '')
-    else
-        let l:new_content = a:comment_string . ' ' . l:content
-    endif
-    call setline('.', l:indent . l:new_content)
+function! ToggleComment(comment_string) range abort
+    let l:comment_pattern = '^' . escape(a:comment_string, '/*') . '\s\?'
+    let l:all_commented = 1
+    for l:lnum in range(a:firstline, a:lastline)
+        let l:line = getline(l:lnum)
+        let l:content = substitute(l:line, '^\s*', '', '')
+        if l:content !=# '' && l:content !~# l:comment_pattern
+            let l:all_commented = 0
+            break
+        endif
+    endfor
+    for l:lnum in range(a:firstline, a:lastline)
+        let l:line = getline(l:lnum)
+        let l:indent = matchstr(l:line, '^\s*')
+        let l:content = substitute(l:line, '^\s*', '', '')
+        if l:content ==# ''
+            continue
+        endif
+        if l:all_commented
+            let l:new_content = substitute(l:content, l:comment_pattern, '', '')
+        else
+            let l:new_content = a:comment_string . ' ' . l:content
+        endif
+        call setline(l:lnum, l:indent . l:new_content)
+    endfor
 endfunction
