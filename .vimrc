@@ -148,6 +148,7 @@ autocmd FileType netrw nmap <buffer> l <CR>
 nnoremap <leader>an <cmd>set invnumber<cr>
 nnoremap <leader>aw <cmd>set invwrap<cr>
 nnoremap <leader>ac <cmd>set invcursorline<cr>
+nnoremap <leader>as :set signcolumn=<C-R>=&signcolumn == 'yes' ? 'no' : 'yes'<CR><CR>
 
 function! ToggleStatusLine()
         if &laststatus==0
