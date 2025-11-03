@@ -1,11 +1,75 @@
+" performance settings
 syntax off
+set ttyfast
+set lazyredraw
+
+" core settings
 let mapleader = " "
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_keepdir = 0
+let g:netrw_fastbrowse = 0
+
+" files settings
+set undofile
+set nobackup
+set noswapfile
+set autoread
+set hidden
+set fileformat=unix
+set encoding=UTF-8
+
+" UI settings
+set fillchars+=vert:\┃
+set guitablabel=%t
+set mouse=a
+set showcmd
+set noshowmode
+set conceallevel=1
+set shortmess=ac
+set formatoptions-=cro
+set noerrorbells visualbell t_vb=
+set nowrap
+set scrolloff=8
+set sidescrolloff=5
+set signcolumn=yes
+set laststatus=0
+set updatetime=100
+set timeoutlen=500
+set ttimeoutlen=10
+
+" default line number settings
+set nonumber
+set norelativenumber
+
+" search settings
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" indentation settings
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+set autoindent
+set smartindent
+
+set clipboard=unnamedplus
+set complete-=t
+
+" cursor settings
+let &t_SI = "\<esc>[6 q"
+let &t_SR = "\<esc>[6 q"
+let &t_EI = "\<esc>[2 q"
+
+filetype plugin indent on
 
 if !isdirectory(expand('~/.vim/undodir'))
   call mkdir(expand('~/.vim/undodir'), 'p')
 endif
 set undodir=~/.vim/undodir
-set undofile
 
 " UNDOTREE
 let g:undotree_buf = -1
@@ -72,46 +136,6 @@ function! UndotreeToggle()
 endfunction
 command! UndotreeToggle call UndotreeToggle()
 nnoremap <leader>au :UndotreeToggle<CR>
-
-set fillchars+=vert:\┃
-set guitablabel=%t
-set tabstop=4
-set shiftwidth=4
-set smarttab
-set expandtab
-set mouse=a
-set nobackup
-set noswapfile
-set autoread
-set fileformat=unix
-set encoding=UTF-8
-set autoindent
-set smartindent
-set nowrap
-set scrolloff=8
-set showcmd
-set noshowmode
-set conceallevel=1
-set shm=
-set shm+=a
-set shm+=c
-set formatoptions-=cro
-set noerrorbells visualbell t_vb=
-set clipboard=unnamedplus
-set incsearch
-set hlsearch
-set laststatus=0
-set complete-=t
-set signcolumn=yes
-set updatetime=100
-
-filetype on
-filetype plugin on
-filetype indent on
-
-let &t_SI = "\<esc>[6 q"
-let &t_SR = "\<esc>[6 q"
-let &t_EI = "\<esc>[2 q"
 
 inoremap jkj <esc>
 inoremap jkf <esc><cmd>w<cr>
@@ -230,6 +254,8 @@ function! ChangeCharAroundCursor(find_char, replace_char)
 endfunction
 
 nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
+
+" color scheme
 hi Normal ctermfg=46
 hi SignColumn ctermbg=NONE
 hi LineNr ctermfg=46
@@ -242,7 +268,7 @@ hi IncSearch ctermbg=16 ctermfg=46
 hi Search ctermbg=226 ctermfg=16
 hi CurSearch ctermbg=46 ctermfg=16
 hi WildMenu ctermfg=16 ctermbg=46
-hi Visual ctermfg=16 ctermbg=46
+hi Visual ctermfg=16 ctermbg=28
 hi StatusLine ctermfg=16 ctermbg=46
 hi StatusLineNC ctermfg=46 ctermbg=16
 hi VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
@@ -285,11 +311,6 @@ function! MyTabLine()
   return 
 endfunction
 
-" netrw
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_keepdir = 0
-
 " Close after opening a file (which gets opened in another window):
 let g:netrw_fastbrowse = 0
 autocmd FileType netrw setl bufhidden=wipe
@@ -317,12 +338,24 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {
-    \   'options': ['--preview', 'bat --style=plain --color=never {}']
+    \   'options': ['--preview', 'bat --style=plain --color=never {}'],
+    \   'source': 'rg --files --no-ignore'
+    \ }, <bang>0)
+
+command! -bang -nargs=? -complete=dir FilesHidden
+    \ call fzf#vim#files(<q-args>, {
+    \   'options': ['--preview', 'bat --style=plain --color=never {}'],
+    \   'source': 'rg --files --no-ignore --hidden'
     \ }, <bang>0)
 
 command! -bang -nargs=* Rg
     \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+    \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore -- '.shellescape(<q-args>), 1,
+    \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+
+command! -bang -nargs=* RgHidden
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
     \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
 
 command! -bang Buffers
@@ -330,25 +363,12 @@ command! -bang Buffers
     \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs bat --style=plain --color=never']
     \ }, <bang>0)
 
-" Command to search files with fzf, including --no-ignore and --hidden
-command! -bang -nargs=? -complete=dir FilesHidden
-    \ call fzf#vim#files(<q-args>, {
-    \ 'options': ['--preview', 'bat --style=plain --color=never {}'],
-    \ 'source': 'rg --files --no-ignore --hidden'
-    \ }, <bang>0)
-
-" Command to search with ripgrep, including --no-ignore and --hidden
-command! -bang -nargs=* RgHidden
-    \ call fzf#vim#grep(
-    \ 'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
-    \ {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
-
-nnoremap <leader>b <cmd>Buffers<CR>
-nnoremap <leader>B <cmd>Buffers<CR>
 nnoremap <leader>j <cmd>Files<CR>
 nnoremap <leader>J <cmd>FilesHidden<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 nnoremap <leader>K <cmd>RgHidden<CR>
+nnoremap <leader>b <cmd>Buffers<CR>
+nnoremap <leader>B <cmd>Buffers<CR>
 
 
 if !exists('g:hiword')
