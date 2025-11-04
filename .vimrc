@@ -92,7 +92,7 @@ hi StatusLine ctermfg=16 ctermbg=46
 hi StatusLineNC ctermfg=46 ctermbg=16
 hi VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
 hi CursorLine ctermbg=46 ctermfg=16 cterm=NONE
-hi Pmenu ctermfg=46 ctermbg=NONE
+hi Pmenu ctermfg=28 ctermbg=NONE
 hi PmenuSel ctermfg=16 ctermbg=46
 hi PmenuSbar ctermfg=46 ctermbg=NONE
 hi PmenuThumb ctermfg=16 ctermbg=46
