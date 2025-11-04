@@ -196,27 +196,49 @@ function! DeleteCharAroundCursor() abort
   return ''
 endfunction
 
-function! ChangeCharAroundCursor(find_char, replace_char) abort
-  let lnum = line('.')
-  let col = col('.')
-  let line = getline(lnum)
-  let left = col - 2
-  while left >= 0 && line[left] != a:find_char | let left -= 1 | endwhile
-  let right = col - 1
-  while right < len(line) && line[right] != a:find_char | let right += 1 | endwhile
-  if left >= 0 && right < len(line)
-    let newline = strpart(line, 0, left) . a:replace_char . strpart(line, left + 1, right - left - 1) . a:replace_char . line[right + 1:]
-    call setline(lnum, newline)
-    call cursor(lnum, min([col, len(newline)]))
+" function! ChangeCharAroundCursor(find_char, replace_char) abort
+  " let lnum = line('.')
+  " let col = col('.')
+  " let line = getline(lnum)
+  " let left = col - 2
+  " while left >= 0 && line[left] != a:find_char | let left -= 1 | endwhile
+  " let right = col - 1
+  " while right < len(line) && line[right] != a:find_char | let right += 1 | endwhile
+  " if left >= 0 && right < len(line)
+    " let newline = strpart(line, 0, left) . a:replace_char . strpart(line, left + 1, right - left - 1) . a:replace_char . line[right + 1:]
+    " call setline(lnum, newline)
+    " call cursor(lnum, min([col, len(newline)]))
+  " else
+    " echo "Could not find both surrounding characters"
+  " endif
+" endfunction
+
+function! ChangeCharAroundCursor() abort
+  let old_c = nr2char(getchar())
+  let new_c = nr2char(getchar())
+  let pairs = {'(': ')', '[': ']', '{': '}', '<': '>'}
+  let old_opening = index(values(pairs), old_c) >= 0 ? keys(pairs)[index(values(pairs), old_c)] : old_c
+  let old_closing = get(pairs, old_opening, old_c)
+  let new_opening = index(values(pairs), new_c) >= 0 ? keys(pairs)[index(values(pairs), new_c)] : new_c
+  let new_closing = get(pairs, new_opening, new_c)
+  if old_opening == old_closing
+    call search('\V' . escape(old_c, '\'), 'bW')
+    execute 'normal! r' . new_opening
+    call search('\V' . escape(old_c, '\'), 'W')
+    execute 'normal! r' . new_closing
   else
-    echo "Could not find both surrounding characters"
+    call searchpair('\V' . escape(old_opening, '\'), '', '\V' . escape(old_closing, '\'), 'bW')
+    execute 'normal! r' . new_opening
+    call searchpair('\V' . escape(old_opening, '\'), '', '\V' . escape(old_closing, '\'), 'W')
+    execute 'normal! r' . new_closing
   endif
+  return ''
 endfunction
 
 nnoremap <expr> mw SurroundWordWithChar()
 nnoremap <expr> mW SurroundBigWordWithChar()
 nnoremap <expr> mx ":call DeleteCharAroundCursor()<CR>"
-nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
+nnoremap <expr> mc ":call ChangeCharAroundCursor()<CR>"
 
 " UNDOTREE
 let g:undotree_buf = -1
