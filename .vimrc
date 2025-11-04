@@ -39,7 +39,7 @@ set sidescrolloff=5
 set signcolumn=yes
 set laststatus=0
 set updatetime=100
-set timeoutlen=500
+set timeoutlen=5000
 set ttimeoutlen=10
 
 " LINE NUMBERS (OFF BY DEFAULT)
@@ -161,29 +161,39 @@ xnoremap > >gv
 " SURROUND FUNCTIONS
 function! SurroundWordWithChar() abort
   let c = nr2char(getchar())
-  return 'viwc' . c . "\<Esc>pa" . c . "\<Esc>"
+  let pairs = {'(': ')', '[': ']', '{': '}', '<': '>'}
+  let opening = index(values(pairs), c) >= 0 ? keys(pairs)[index(values(pairs), c)] : c
+  let closing = get(pairs, opening, c)
+  return 'viwc' . opening . "\<Esc>pa" . closing . "\<Esc>"
 endfunction
 
-function! SurroundWORDWithChar() abort
+function! SurroundBigWordWithChar() abort
   let c = nr2char(getchar())
-  return 'viWc' . c . "\<Esc>pa" . c . "\<Esc>"
+  let pairs = {'(': ')', '[': ']', '{': '}', '<': '>'}
+  let opening = index(values(pairs), c) >= 0 ? keys(pairs)[index(values(pairs), c)] : c
+  let closing = get(pairs, opening, c)
+  return 'viWc' . opening . "\<Esc>pa" . closing . "\<Esc>"
 endfunction
 
-function! DeleteCharAroundCursor(char) abort
-  let lnum = line('.')
-  let col = col('.')
-  let line = getline(lnum)
-  let left = col - 2
-  while left >= 0 && line[left] != a:char | let left -= 1 | endwhile
-  let right = col - 1
-  while right < len(line) && line[right] != a:char | let right += 1 | endwhile
-  if left >= 0 && right < len(line)
-    let newline = strpart(line, 0, left) . strpart(line, left + 1, right - left - 1) . strpart(line, right + 1)
-    call setline(lnum, newline)
-    call cursor(lnum, col - (col > right ? 1 : 0))
+function! DeleteCharAroundCursor() abort
+  let c = nr2char(getchar())
+  let pairs = {'(': ')', '[': ']', '{': '}', '<': '>'}
+  let opening = index(values(pairs), c) >= 0 ? keys(pairs)[index(values(pairs), c)] : c
+  let closing = get(pairs, opening, c)
+  if opening == closing
+    " For symmetric characters like quotes
+    call search('\V' . escape(c, '\'), 'bW')
+    normal! x
+    call search('\V' . escape(c, '\'), 'W')
+    normal! x
   else
-    echo "Character not f und on both sides"
+    " For paired characters
+    call searchpair('\V' . escape(opening, '\'), '', '\V' . escape(closing, '\'), 'bW')
+    normal! x
+    call searchpair('\V' . escape(opening, '\'), '', '\V' . escape(closing, '\'), 'W')
+    normal! x
   endif
+  return ''
 endfunction
 
 function! ChangeCharAroundCursor(find_char, replace_char) abort
@@ -204,8 +214,8 @@ function! ChangeCharAroundCursor(find_char, replace_char) abort
 endfunction
 
 nnoremap <expr> mw SurroundWordWithChar()
-nnoremap <expr> mW SurroundWORDWithChar()
-nnoremap <expr> mx ":call DeleteCharAroundCursor(nr2char(getchar()))<CR>"
+nnoremap <expr> mW SurroundBigWordWithChar()
+nnoremap <expr> mx ":call DeleteCharAroundCursor()<CR>"
 nnoremap <expr> mc ":call ChangeCharAroundCursor(nr2char(getchar()), nr2char(getchar()))<CR>"
 
 " UNDOTREE
