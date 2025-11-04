@@ -196,23 +196,6 @@ function! DeleteCharAroundCursor() abort
   return ''
 endfunction
 
-" function! ChangeCharAroundCursor(find_char, replace_char) abort
-  " let lnum = line('.')
-  " let col = col('.')
-  " let line = getline(lnum)
-  " let left = col - 2
-  " while left >= 0 && line[left] != a:find_char | let left -= 1 | endwhile
-  " let right = col - 1
-  " while right < len(line) && line[right] != a:find_char | let right += 1 | endwhile
-  " if left >= 0 && right < len(line)
-    " let newline = strpart(line, 0, left) . a:replace_char . strpart(line, left + 1, right - left - 1) . a:replace_char . line[right + 1:]
-    " call setline(lnum, newline)
-    " call cursor(lnum, min([col, len(newline)]))
-  " else
-    " echo "Could not find both surrounding characters"
-  " endif
-" endfunction
-
 function! ChangeCharAroundCursor() abort
   let old_c = nr2char(getchar())
   let new_c = nr2char(getchar())
