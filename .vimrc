@@ -22,7 +22,7 @@ set undodir=~/.vim/undodir
 filetype plugin indent on
 
 " UI SETTINGS
-set fillchars+=vert:\┃
+set fillchars=vert:\┃,eob:\ 
 set guitablabel=%t
 set mouse=a
 set showcmd
@@ -82,7 +82,6 @@ hi CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
 hi TabLine ctermbg=NONE ctermfg=46 cterm=NONE
 hi TabLineFill ctermfg=16 cterm=NONE
 hi TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
-hi EndOfBuffer ctermbg=NONE ctermfg=NONE
 hi IncSearch ctermbg=16 ctermfg=46
 hi Search ctermbg=226 ctermfg=16
 hi CurSearch ctermbg=46 ctermfg=16
@@ -463,4 +462,4 @@ function! FixIndent()
     call setpos('.', l:save_cursor)
 endfunction
 
-nnoremap ,f <cmd>call FixIndent()<cr>
+nnoremap <leader>f <cmd>call FixIndent()<cr>
