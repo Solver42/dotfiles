@@ -1,12 +1,14 @@
 source $VIMRUNTIME/colors/vim.lua " Nvim: revert to Vim default color scheme
 let g:colors_name = 'box'
 
+hi default CursorWord cterm=underline gui=underline
 hi GitSignsAdd guifg=#00ff00 guibg=NONE
 hi GitSignsChange guifg=#00ff00 guibg=NONE
 hi GitSignsDelete guifg=#00ff00 guibg=NONE
 hi TelescopeSelection guibg=#004400
-hi MiniJump2dSpot guibg=NONE guifg=#00ff00
-hi MiniJump2dSpotAhead guibg=NONE guifg=#00ff00
+hi MiniJump2dSpot guifg=#ffffff guibg=#000000
+hi MiniJump2dSpotAhead guifg=#ffffff guibg=#000000
+hi MiniJump2dDim guifg=#009900
 hi MiniJump guibg=#aa5555 guifg=NONE
 hi BlinkCmpKind guibg=NONE guifg=#00ff00
 hi BlinkCmpLabelDetail guibg=NONE guifg=#00ff00
@@ -106,3 +108,4 @@ hi Typedef guifg=#00ff00 guibg=NONE gui=NONE cterm=NONE
 hi Underlined guifg=#00ff00 guibg=NONE gui=underline cterm=underline
 hi CursorIM guifg=NONE guibg=#00ff00 gui=NONE cterm=NONE
 hi DiagnosticUnderlineError guifg=#000000 guibg=#ff0000
+hi HLCurrentWord guibg=#00ff00 guifg=#000000

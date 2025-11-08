@@ -1,100 +1,57 @@
 -- HIGHLIGHT WORD UNDER CURSOR
-local M = {
-  enabled = true,
-  last_word = "",
-  match_id = nil,
-}
-
--- Create highlight group
-vim.api.nvim_set_hl(0, 'HLCurrentWord', { link = 'Search', default = true })
-
-local function is_excluded_filetype()
-  local ft = vim.bo.filetype
-  local excluded = {
-    'minifiles',
-    'TelescopePrompt',
-    'TelescopeResults',
-  }
-
-  for _, excluded_ft in ipairs(excluded) do
-    if ft == excluded_ft then
-      return true
-    end
-  end
-
-  return false
-end
+vim.g.hiword = 1
+local last_word = ""
+local timer = nil
 
 local function highlight_word(word)
   local escaped = vim.fn.escape(word, '\\/')
   local pattern = '\\<' .. escaped .. '\\>'
-
-  -- Clear only our previous match (safely)
-  if M.match_id then
-    pcall(vim.fn.matchdelete, M.match_id)
-    M.match_id = nil
-  end
-
-  -- Add new match and store its ID
-  M.match_id = vim.fn.matchadd('HLCurrentWord', '\\V' .. pattern, -1)
+  vim.fn.clearmatches()
+  vim.fn.matchadd('HLCurrentWord', '\\V' .. pattern, 10, -1)
 end
 
-local function clear_highlight()
-  if M.match_id then
-    pcall(vim.fn.matchdelete, M.match_id)
-    M.match_id = nil
-  end
-end
-
-local function on_cursor_moved()
-  -- Early returns for performance
-  if not M.enabled or not vim.bo.modifiable or is_excluded_filetype() then
+local function hw_cursor_moved()
+  if vim.g.hiword ~= 1 or not vim.bo.modifiable then
     return
   end
-
-  local word = vim.fn.expand('<cword>')
-
-  -- Skip if word hasn't changed
-  if word == M.last_word then
+  -- Skip in mini.files and other special buffers
+  if vim.bo.buftype ~= "" then
     return
   end
+  -- Debounce: cancel existing timer and create new one
+  if timer then
+    timer:stop()
+  end
+  timer = vim.defer_fn(function()
+    local word = vim.fn.expand('<cword>')
 
-  M.last_word = word
+    if word == last_word then
+      return
+    end
+    last_word = word
+    if word == "" then
+      vim.fn.clearmatches()
+    else
+      highlight_word(word)
+    end
+  end, 0) -- ms of delay
+end
 
-  if word == "" then
-    clear_highlight()
-  else
-    highlight_word(word)
+local function toggle_highlight_word()
+  vim.g.hiword = vim.g.hiword == 1 and 0 or 1
+  if vim.g.hiword ~= 1 then
+    vim.fn.clearmatches()
+    last_word = ""
   end
 end
 
-local function toggle_highlight()
-  M.enabled = not M.enabled
-  if not M.enabled then
-    clear_highlight()
-    M.last_word = ""
-  else
-    -- Trigger highlight on current word when re-enabled
-    M.last_word = ""
-    on_cursor_moved()
-  end
-end
-
--- Set up autocommands
+-- Create autocommand group
 local group = vim.api.nvim_create_augroup('HighlightWordUnderCursor', { clear = true })
+
 vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
   group = group,
-  callback = on_cursor_moved,
+  callback = hw_cursor_moved
 })
 
--- Clear highlight when leaving buffer to avoid stale match IDs
-vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, {
-  group = group,
-  callback = function()
-    M.last_word = ""
-    clear_highlight()
-  end,
-})
-
--- Set up keybinding
-vim.keymap.set('n', '<leader>ah', toggle_highlight, { desc = 'Toggle highlight word under cursor' })
+-- Optional: Create a command to toggle the feature
+vim.api.nvim_create_user_command('ToggleHighlightWord', toggle_highlight_word, {})

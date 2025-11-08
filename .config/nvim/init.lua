@@ -17,10 +17,10 @@ require('solverlsp')
 require('solverminifiles')
 require('solverminimove')
 require('solverminijump2d')
+require('highlightword')
 require('mini.ai').setup()
 require('mini.jump').setup()
 require 'colorizer'.setup()
-require('highlightword')
 require('gitsigns').setup {
   preview_config = {
     border = 'single'
@@ -40,3 +40,4 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
   },
 }
+
