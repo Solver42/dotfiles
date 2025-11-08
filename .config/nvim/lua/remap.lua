@@ -32,6 +32,8 @@ map("n", "s<right>", "<C-w>l")
 map('n', 'sa', '<cmd>silent vert ball<CR>')
 map('n', 'so', '<cmd>only<CR>')
 map('n', '*', '*N')
+map('n', '<C-k>', 'gcc', { noremap = false, desc = 'Toggle comment' })
+map('v', '<C-k>', 'gc', { noremap = false, desc = 'Toggle comment' })
 
 map('n', '<leader>w', '<cmd>update<CR>')
 map('n', '<leader>q', '<cmd>bd<CR>')
