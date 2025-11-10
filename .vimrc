@@ -41,6 +41,8 @@ set laststatus=0
 set updatetime=100
 set timeoutlen=5000
 set ttimeoutlen=10
+set listchars=tab:\ \ 
+set list
 
 " LINE NUMBERS (OFF BY DEFAULT)
 set nonumber
