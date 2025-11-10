@@ -467,9 +467,9 @@ endif
 
 " FORMAT WHOLE BUFFER
 function! FixIndent()
-    let l:save_cursor = getpos('.')
+    let l:save_view = winsaveview()
     silent execute 'normal! gg=G'
-    call setpos('.', l:save_cursor)
+    call winrestview(l:save_view)
 endfunction
 
 nnoremap <leader>f <cmd>call FixIndent()<cr>
