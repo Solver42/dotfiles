@@ -75,27 +75,27 @@ if exists('&t_SI')
 endif
 
 " COLOR SCHEME
-hi Normal ctermfg=46
-hi SignColumn ctermbg=NONE
-hi LineNr ctermfg=46
-hi CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
-hi TabLine ctermbg=NONE ctermfg=46 cterm=NONE
-hi TabLineFill ctermfg=16 cterm=NONE
-hi TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
-hi IncSearch ctermbg=16 ctermfg=46
-hi Search ctermbg=226 ctermfg=16
-hi CurSearch ctermbg=46 ctermfg=16
-hi WildMenu ctermfg=16 ctermbg=46
-hi Visual ctermfg=16 ctermbg=28
-hi StatusLine ctermfg=16 ctermbg=46
-hi StatusLineNC ctermfg=46 ctermbg=16
-hi VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
-hi CursorLine ctermbg=46 ctermfg=16 cterm=NONE
-hi Pmenu ctermfg=28 ctermbg=NONE
-hi PmenuSel ctermfg=16 ctermbg=46
-hi PmenuSbar ctermfg=46 ctermbg=NONE
-hi PmenuThumb ctermfg=16 ctermbg=46
-hi HLCurrentWord ctermfg=16 ctermbg=46
+highlight Normal ctermfg=46
+highlight SignColumn ctermbg=NONE
+highlight LineNr ctermfg=46
+highlight CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
+highlight TabLine ctermbg=NONE ctermfg=46 cterm=NONE
+highlight TabLineFill ctermfg=16 cterm=NONE
+highlight TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
+highlight IncSearch ctermbg=16 ctermfg=46
+highlight Search ctermbg=28 ctermfg=16
+highlight CurSearch ctermbg=28 ctermfg=16
+highlight WildMenu ctermfg=16 ctermbg=46
+highlight Visual ctermfg=16 ctermbg=28
+highlight StatusLine ctermfg=16 ctermbg=46
+highlight StatusLineNC ctermfg=46 ctermbg=16
+highlight VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
+highlight CursorLine ctermbg=46 ctermfg=16 cterm=NONE
+highlight Pmenu ctermfg=28 ctermbg=NONE
+highlight PmenuSel ctermfg=16 ctermbg=46
+highlight PmenuSbar ctermfg=46 ctermbg=NONE
+highlight PmenuThumb ctermfg=16 ctermbg=46
+highlight HLCurrentWord ctermfg=16 ctermbg=28
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>
@@ -324,15 +324,13 @@ endfunction
 " HIGHLIGHT WORD UNDER CURSOR
 let g:hiword = 1
 let s:lastWord = ""
-
 function! s:HighlightWord(word) abort
     let l:escaped = escape(a:word, '\/')
     let l:pattern = '\<' . l:escaped . '\>'
     execute 'match HLCurrentWord /\V' . l:pattern . '/'
 endfunction
-
 function! s:HW_Cursor_Moved() abort
-    if !g:hiword || !&modifiable | return | endif
+    if !g:hiword || !&modifiable || mode() =~# '^[vV\x16]' | return | endif
     let l:word = expand('<cword>')
     if l:word ==# s:lastWord | return | endif
     let s:lastWord = l:word
@@ -342,7 +340,6 @@ function! s:HW_Cursor_Moved() abort
         call s:HighlightWord(l:word)
     endif
 endfunction
-
 function! s:ToggleHighlightWord() abort
     let g:hiword = !g:hiword
     if !g:hiword
@@ -350,10 +347,20 @@ function! s:ToggleHighlightWord() abort
         let s:lastWord = ""
     endif
 endfunction
-
+function! s:DisableHighlight() abort
+    match none
+endfunction
+function! s:EnableHighlight() abort
+    if g:hiword
+        let s:lastWord = ""
+        call s:HW_Cursor_Moved()
+    endif
+endfunction
 augroup HighlightWordUnderCursor
     autocmd!
     autocmd CursorMoved,CursorMovedI * call s:HW_Cursor_Moved()
+    autocmd ModeChanged *:[vV\x16]* call s:DisableHighlight()
+    autocmd ModeChanged [vV\x16]*:* call s:EnableHighlight()
 augroup END
 
 " COMMENT TOGGLE
@@ -456,6 +463,7 @@ if executable('fzf')
     nnoremap <leader>B <cmd>Buffers<CR>
 endif
 
+" FORMAT WHOLE BUFFER
 function! FixIndent()
     let l:save_cursor = getpos('.')
     silent execute 'normal! gg=G'
