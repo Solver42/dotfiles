@@ -69,6 +69,8 @@ vim.api.nvim_create_autocmd('ModeChanged', {
     if mode == 'v' or mode == 'V' or mode == '\22' then
       vim.fn.clearmatches()
     elseif vim.g.hiword == 1 then
+      -- Reset last_word to force re-highlight
+      last_word = ""
       -- Restore highlight when leaving visual mode
       hw_cursor_moved()
     end
