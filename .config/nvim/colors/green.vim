@@ -108,4 +108,4 @@ hi Typedef guifg=#00ff00 guibg=NONE gui=NONE cterm=NONE
 hi Underlined guifg=#00ff00 guibg=NONE gui=underline cterm=underline
 hi CursorIM guifg=NONE guibg=#00ff00 gui=NONE cterm=NONE
 hi DiagnosticUnderlineError guifg=#000000 guibg=#ff0000
-hi HLCurrentWord guibg=#00ff00 guifg=#000000
+hi HLCurrentWord guibg=#00aa00 guifg=#000000

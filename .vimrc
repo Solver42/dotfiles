@@ -369,25 +369,20 @@ augroup END
 function! ToggleComment(comment_string) range abort
     let l:comment_pattern = '^' . escape(a:comment_string, '/*') . '\s\?'
     let l:all_commented = 1
-
     for l:lnum in range(a:firstline, a:lastline)
-        let l:content = substitute(getline(l:lnum), '^\s*', '', '')
-        if !empty(l:content) && l:content !~# l:comment_pattern
+        let l:line = getline(l:lnum)
+        if !empty(substitute(l:line, '^\s*', '', '')) && l:line !~# l:comment_pattern
             let l:all_commented = 0
             break
         endif
     endfor
-
     for l:lnum in range(a:firstline, a:lastline)
         let l:line = getline(l:lnum)
-        let l:indent = matchstr(l:line, '^\s*')
-        let l:content = substitute(l:line, '^\s*', '', '')
-        if empty(l:content) | continue | endif
-
-        let l:new_content = l:all_commented 
-                    \ ? substitute(l:content, l:comment_pattern, '', '')
-                    \ : a:comment_string . ' ' . l:content
-        call setline(l:lnum, l:indent . l:new_content)
+        if empty(substitute(l:line, '^\s*', '', '')) | continue | endif
+        let l:new_line = l:all_commented 
+                    \ ? substitute(l:line, l:comment_pattern, '', '')
+                    \ : a:comment_string . ' ' . l:line
+        call setline(l:lnum, l:new_line)
     endfor
 endfunction
 
@@ -473,3 +468,47 @@ function! FixIndent()
 endfunction
 
 nnoremap <leader>f <cmd>call FixIndent()<cr>
+
+function! ToggleGitGutterPreview()
+    for win in range(1, winnr('$'))
+        if getwinvar(win, '&previewwindow')
+            pclose
+            return
+        endif
+    endfor
+    " Try to open preview, catch if not in a hunk
+    try
+        silent! GitGutterPreviewHunk
+    catch
+        echo "No diff here"
+        return
+    endtry
+    " Only try to move window if preview opened successfully
+    let preview_exists = 0
+    for win in range(1, winnr('$'))
+        if getwinvar(win, '&previewwindow')
+            let preview_exists = 1
+            break
+        endif
+    endfor
+    if preview_exists
+        wincmd P
+        wincmd L
+        syntax clear
+        " Conceal the + and - characters
+        syntax match diffAdded "^+.*" contains=diffAddedSign
+        syntax match diffRemoved "^-.*" contains=diffRemovedSign
+        syntax match diffAddedSign "^+" conceal contained
+        syntax match diffRemovedSign "^-" conceal contained
+        setlocal conceallevel=2
+        setlocal concealcursor=nvic
+        highlight diffAdded ctermfg=46 ctermbg=NONE
+        highlight diffRemoved ctermfg=9 ctermbg=NONE
+        highlight! GitGutterAddIntraLine ctermfg=46 ctermbg=16
+        highlight! GitGutterDeleteIntraLine ctermfg=9 ctermbg=16
+        wincmd p
+    else
+        echo "No diff here"
+    endif
+endfunction
+noremap <leader>ag :call ToggleGitGutterPreview()<CR>
