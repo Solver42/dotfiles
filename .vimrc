@@ -511,4 +511,4 @@ function! ToggleGitGutterPreview()
         echo "No diff here"
     endif
 endfunction
-noremap <leader>ag :call ToggleGitGutterPreview()<CR>
+noremap <leader>ak :call ToggleGitGutterPreview()<CR>
