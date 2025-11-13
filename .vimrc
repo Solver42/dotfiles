@@ -143,13 +143,13 @@ nnoremap Q !!sh<cr>
 nnoremap - <cmd>Ex<CR>
 
 " TOGGLES
-nnoremap <leader>an <cmd>set invnumber<cr>
-nnoremap <leader>ar <cmd>set invrelativenumber<cr>
-nnoremap <leader>aw <cmd>set invwrap<cr>
-nnoremap <leader>ac <cmd>set invcursorline<cr>
-nnoremap <leader>as :set signcolumn=<C-R>=&signcolumn == 'yes' ? 'no' : 'yes'<CR><CR>
-nnoremap <leader>am <cmd>call ToggleStatusLine()<cr>
-nnoremap <leader>ah <cmd>call <SID>ToggleHighlightWord()<cr>
+nnoremap <leader>dn <cmd>set invnumber<cr>
+nnoremap <leader>dr <cmd>set invrelativenumber<cr>
+nnoremap <leader>dw <cmd>set invwrap<cr>
+nnoremap <leader>dc <cmd>set invcursorline<cr>
+nnoremap <leader>ds :set signcolumn=<C-R>=&signcolumn == 'yes' ? 'no' : 'yes'<CR><CR>
+nnoremap <leader>dm <cmd>call ToggleStatusLine()<cr>
+nnoremap <leader>dh <cmd>call <SID>ToggleHighlightWord()<cr>
 
 " VISUAL MODE MAPPINGS
 xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
@@ -308,7 +308,7 @@ function! UndotreeToggle() abort
 endfunction
 
 command! UndotreeToggle call UndotreeToggle()
-nnoremap <leader>au :UndotreeToggle<CR>
+nnoremap <leader>du :UndotreeToggle<CR>
 
 " STATUSLINE
 set statusline=
@@ -347,6 +347,10 @@ function! s:ToggleHighlightWord() abort
     if !g:hiword
         match none
         let s:lastWord = ""
+    else
+        " When enabling, force re-highlight by resetting lastWord and calling the function
+        let s:lastWord = ""
+        call s:HW_Cursor_Moved()
     endif
 endfunction
 function! s:DisableHighlight() abort
@@ -480,7 +484,7 @@ function! ToggleGitGutterPreview()
     try
         silent! GitGutterPreviewHunk
     catch
-        echo "No diff here"
+        echo " No diff here "
         return
     endtry
     " Only try to move window if preview opened successfully
@@ -511,4 +515,4 @@ function! ToggleGitGutterPreview()
         echo "No diff here"
     endif
 endfunction
-noremap <leader>ak :call ToggleGitGutterPreview()<CR>
+noremap <leader>dk :call ToggleGitGutterPreview()<CR>

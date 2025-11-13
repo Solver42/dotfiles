@@ -1,11 +1,6 @@
 nnoremap <buffer> <C-k> :call ToggleComment('//')<CR>
 vnoremap <buffer> <C-k> :call ToggleComment('//')<CR>
 
-let s:odinfmt = expand('~/dev/tools/ols/odinfmt')
-if executable(s:odinfmt)
-    let &l:equalprg = s:odinfmt . ' -stdin'
-endif
-
 setlocal tabstop=4
 setlocal shiftwidth=4
 setlocal noexpandtab
@@ -21,70 +16,128 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
-function! s:OdinBuild()
+" Check command - validate code without building
+function! s:OdinCheck()
   if &modified
     silent write
   endif
   
   let l:dir = expand('%:p:h')
-  let l:output = system('cd ' . shellescape(l:dir) . ' && odin build . 2>&1')
-  let l:lines = split(l:output, '\n')
-  let l:qflist = []
+  let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
   
-  for line in l:lines
-    let l:match = matchlist(line, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\(.*\)')
-    if !empty(l:match)
-      call add(l:qflist, {
-        \ 'filename': l:match[1],
-        \ 'lnum': str2nr(l:match[2]),
-        \ 'col': str2nr(l:match[3]),
-        \ 'text': l:match[4]
-        \ })
-    endif
-  endfor
-  call setqflist(l:qflist, 'r')
   redraw!
-  cclose
-  if len(l:qflist) > 0
-    let l:first_error = l:qflist[0]
-    execute 'edit' l:first_error.filename
-    call cursor(l:first_error.lnum, l:first_error.col)
+  
+  " Check for first error: filepath(line:column) message
+  let l:match = matchlist(l:output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
+  
+  if !empty(l:match)
+    " Found an error - jump to it
+    execute 'edit' l:match[1]
+    call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
     redraw!
+    
     execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
     echohl OdinBuildError
-    echo l:first_error.text
+    echon " " . l:match[4] . " "
     echohl None
   else
-    echohl None
+    " Check successful
     execute 'highlight OdinBuildSuccess ctermfg=16 ctermbg=46'
     echohl OdinBuildSuccess
-    echo "Build successful"
+    echon " odin check successful "
     echohl None
   endif
 endfunction
 
-function! s:OdinBuildRun()
-  call s:OdinBuild()
-  if len(getqflist()) == 0
-    let l:dir = expand('%:p:h')
-    let l:exec_name = fnamemodify(l:dir, ':t')
-    if filereadable(l:dir . '/' . l:exec_name)
-      execute '!./' . l:exec_name
-    elseif filereadable(l:dir . '/game')
-      execute '!./game'
-    else
-      echo "Executable not found. Build succeeded but couldn't find binary."
-    endif
+" Run command - compile and run without creating executable
+function! s:OdinRun()
+  if &modified
+    silent write
+  endif
+  
+  let l:dir = expand('%:p:h')
+  
+  " First check for errors
+  let l:check_output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
+  let l:match = matchlist(l:check_output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
+  
+  if !empty(l:match)
+    " Found an error - jump to it
+    redraw!
+    execute 'edit' l:match[1]
+    call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
+    redraw!
+    
+    execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+    echohl OdinBuildError
+    echon l:match[4]
+    echohl None
+  else
+    " No errors - run the program
+    execute '!cd ' . shellescape(l:dir) . ' && odin run .'
   endif
 endfunction
 
-setlocal makeprg=odin\ build\ .\ 2>&1
-setlocal errorformat=%f(%l:%c)\ %m,%f(%l:%c)%m
-nnoremap <buffer> <F5> :call <SID>OdinBuild()<CR>
-nnoremap <buffer> <F6> :call <SID>OdinBuildRun()<CR>
+" Format with odinfmt
+function! s:OdinFormat()
+  if &modified
+    silent write
+  endif
+  
+  let l:odinfmt = expand('~/dev/tools/ols/odinfmt')
+  if !executable(l:odinfmt)
+    echon "odinfmt not found"
+    return
+  endif
+  
+  let l:file = expand('%:p')
+  let l:output = system(l:odinfmt . ' -stdin < ' . shellescape(l:file) . ' 2>&1')
+  let l:exit_code = v:shell_error
+  
+  redraw!
+  
+  " Check for error: <stdin>(line:column): message
+  if l:output =~ '<stdin>(\d\+:\d\+):'
+    let l:match = matchlist(l:output, '<stdin>(\(\d\+\):\(\d\+\)):\s*\([^\n]*\)')
+    if !empty(l:match)
+      " Found an error - just show it, don't format
+      call cursor(str2nr(l:match[1]), str2nr(l:match[2]))
+      redraw!
+      
+      execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+      echohl OdinBuildError
+      echon " Cannot format: " . l:match[3] . " "
+      echohl None
+    endif
+  elseif l:exit_code == 0 && len(l:output) > 0
+    " Format successful - replace buffer content
+    let l:save_view = winsaveview()
+    silent %delete _
+    call setline(1, split(l:output, '\n'))
+    call winrestview(l:save_view)
+    silent write
+    
+    execute 'highlight OdinBuildSuccess ctermfg=16 ctermbg=46'
+    echohl OdinBuildSuccess
+    echon " odin file formatted "
+    echohl None
+  else
+    execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+    echohl OdinBuildError
+    echon " Format failed "
+    echohl None
+  endif
+endfunction
 
-command! -buffer OdinBuild call s:OdinBuild()
-command! -buffer OdinRun call s:OdinBuildRun()
+" Key mappings
+nnoremap <buffer> <leader>n :call <SID>OdinCheck()<CR>
+nnoremap <buffer> <leader>m :call <SID>OdinRun()<CR>
+nnoremap <buffer> <leader>f :call <SID>OdinFormat()<CR>
+
+" Commands
+command! -buffer OdinCheck call s:OdinCheck()
+command! -buffer OdinRun call s:OdinRun()
+command! -buffer OdinFormat call s:OdinFormat()
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
