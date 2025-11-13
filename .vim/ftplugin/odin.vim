@@ -36,15 +36,15 @@ function! s:OdinCheck()
     call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
     redraw!
     
-    execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+    execute 'highlight OdinBuildError ctermfg=9 ctermbg=NONE'
     echohl OdinBuildError
-    echon " " . l:match[4] . " "
+    echon l:match[4]
     echohl None
   else
     " Check successful
-    execute 'highlight OdinBuildSuccess ctermfg=16 ctermbg=46'
+    execute 'highlight OdinBuildSuccess ctermfg=46 ctermbg=NONE'
     echohl OdinBuildSuccess
-    echon " odin check successful "
+    echon "odin check successful"
     echohl None
   endif
 endfunction
@@ -68,7 +68,7 @@ function! s:OdinRun()
     call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
     redraw!
     
-    execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+    execute 'highlight OdinBuildError ctermfg=9 ctermbg=NONE'
     echohl OdinBuildError
     echon l:match[4]
     echohl None
@@ -104,9 +104,9 @@ function! s:OdinFormat()
       call cursor(str2nr(l:match[1]), str2nr(l:match[2]))
       redraw!
       
-      execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+      execute 'highlight OdinBuildError ctermfg=9 ctermbg=NONE'
       echohl OdinBuildError
-      echon " Cannot format: " . l:match[3] . " "
+      echon "Cannot format: " . l:match[3]
       echohl None
     endif
   elseif l:exit_code == 0 && len(l:output) > 0
@@ -117,14 +117,14 @@ function! s:OdinFormat()
     call winrestview(l:save_view)
     silent write
     
-    execute 'highlight OdinBuildSuccess ctermfg=16 ctermbg=46'
+    execute 'highlight OdinBuildSuccess ctermfg=46 ctermbg=NONE'
     echohl OdinBuildSuccess
-    echon " odin file formatted "
+    echon "odin file formatted"
     echohl None
   else
-    execute 'highlight OdinBuildError ctermfg=16 ctermbg=196'
+    execute 'highlight OdinBuildError ctermfg=9 ctermbg=NONE'
     echohl OdinBuildError
-    echon " Format failed "
+    echon "Format failed"
     echohl None
   endif
 endfunction
