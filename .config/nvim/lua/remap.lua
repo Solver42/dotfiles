@@ -59,21 +59,21 @@ function ToggleLs()
   end
 end
 
-map("n", "<leader>am", "<cmd>lua ToggleLs()<cr>")
+map("n", "<leader>dm", "<cmd>lua ToggleLs()<cr>")
 
 -- map("n", "<A-v>", "<cmd>Markview Toggle<cr>")
-map("n", "<leader>an", "<cmd>set nu!<cr>")
-map("n", "<leader>au", "<cmd>UndotreeToggle<cr>")
-map('n', '<leader>ah', '<cmd>ToggleHighlightWord<CR>', { desc = 'Toggle highlight word under cursor' })
+map("n", "<leader>dn", "<cmd>set nu!<cr>")
+map("n", "<leader>du", "<cmd>UndotreeToggle<cr>")
+map('n', '<leader>dh', '<cmd>ToggleHighlightWord<CR>', { desc = 'Toggle highlight word under cursor' })
 map("n", "<A-d>", "<cmd>Gitsigns preview_hunk<cr>")
 map("n", "<A-i>", "<cmd>Gitsigns toggle_signs<cr>")
 -- map("n", "<A-x>", "<cmd>HexToggle<cr>")
-map("n", "<leader>aw", "<cmd>set wrap!<cr>")
+map("n", "<leader>dw", "<cmd>set wrap!<cr>")
 map("n", "<A-a>", "<cmd>lua require(\"dapui\").toggle()<cr>")
 map("n", "<A-r>", "<cmd>TroubleToggle<cr>")
-map("n", "<leader>as", "<cmd>lua vim.o.signcolumn = vim.o.signcolumn==\"yes\"and\"no\"or\"yes\"<CR>")
+map("n", "<leader>ds", "<cmd>lua vim.o.signcolumn = vim.o.signcolumn==\"yes\"and\"no\"or\"yes\"<CR>")
 -- map("n", "<A-s>", "<cmd>Telescope lsp_document_symbols ignore_symbols=false fname_width=0 sorter=false<cr>")
-map("n", "<leader>ac", "<cmd>set cursorline!<cr>")
+map("n", "<leader>dc", "<cmd>set cursorline!<cr>")
 
 -- Custom toggle for :Ex
 _G.toggle_explorer = function()
@@ -141,7 +141,7 @@ map("n", "<leader>5", "<cmd>DapContinue<cr>")
 map("n", "<leader>7", "<cmd>DapStepOver<cr>")
 map("n", "<leader>9", "<cmd>DapStepInto<cr>")
 map("n", "<leader>0", "<cmd>DapStepOut<cr>")
-map("n", "<leader>dq", "<cmd>DapTerminate<cr>")
+-- map("n", "<leader>dq", "<cmd>DapTerminate<cr>")
 
 -- map('n', '<leader>r', 'viw"hy:%s/\\<<C-r>h\\>//gI<left><left><left>')
 -- visual
