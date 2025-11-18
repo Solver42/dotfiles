@@ -1,6 +1,8 @@
+" Key bindings for commenting
 nnoremap <buffer> <C-k> :call ToggleComment('//')<CR>
 vnoremap <buffer> <C-k> :call ToggleComment('//')<CR>
 
+" Tab settings
 setlocal tabstop=4
 setlocal shiftwidth=4
 setlocal noexpandtab
@@ -8,7 +10,7 @@ setlocal smarttab
 setlocal autoindent
 setlocal smartindent
 
-" Prevent the ftplugin to run multiple times
+" Prevent the ftplugin from running multiple times
 if exists("b:did_ftplugin")
   finish
 endif
@@ -51,8 +53,16 @@ function! s:OdinCheck()
     silent write
   endif
   
+  let l:current_file = expand('%:p')
   let l:dir = s:FindProjectRoot()
-  let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
+  
+  " If current file is not main.odin, check just this file
+  if expand('%:t') != 'main.odin'
+    let l:output = system('odin check ' . shellescape(l:current_file) . ' 2>&1')
+  else
+    " If in main.odin, check the whole project
+    let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
+  endif
   
   redraw!
   
