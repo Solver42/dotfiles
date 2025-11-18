@@ -8,6 +8,7 @@ setlocal smarttab
 setlocal autoindent
 setlocal smartindent
 
+" Prevent the ftplugin to run multiple times
 if exists("b:did_ftplugin")
   finish
 endif
@@ -16,13 +17,41 @@ let b:did_ftplugin = 1
 let s:cpo_save = &cpo
 set cpo&vim
 
+" Find project root by looking for main.odin
+function! s:FindProjectRoot()
+  let l:current_dir = expand('%:p:h')
+  let l:max_depth = 10
+  let l:depth = 0
+  
+  while l:depth < l:max_depth
+    " Check if main.odin exists in current directory
+    if filereadable(l:current_dir . '/main.odin')
+      return l:current_dir
+    endif
+    
+    " Go up one directory
+    let l:parent = fnamemodify(l:current_dir, ':h')
+    
+    " Stop if we've reached the root
+    if l:parent == l:current_dir
+      break
+    endif
+    
+    let l:current_dir = l:parent
+    let l:depth += 1
+  endwhile
+  
+  " If no main.odin found, use current file's directory
+  return expand('%:p:h')
+endfunction
+
 " Check command - validate code without building
 function! s:OdinCheck()
   if &modified
     silent write
   endif
   
-  let l:dir = expand('%:p:h')
+  let l:dir = s:FindProjectRoot()
   let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
   
   redraw!
@@ -55,7 +84,7 @@ function! s:OdinRun()
     silent write
   endif
   
-  let l:dir = expand('%:p:h')
+  let l:dir = s:FindProjectRoot()
   
   " First check for errors
   let l:check_output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
