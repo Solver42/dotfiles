@@ -113,7 +113,7 @@ nnoremap ,r <cmd>so %<cr><cmd>nohlsearch<cr>
 " BUFFER NAVIGATION
 nnoremap <leader>l <cmd>bn<cr>
 nnoremap <leader>h <cmd>bp<cr>
-nnoremap <leader>bd <cmd>%bd\|e#\|bd#<cr>
+nnoremap <leader>q <cmd>bd<cr>
 
 " TAB NAVIGATION
 nnoremap <C-t> <cmd>tabnew<CR>
@@ -140,7 +140,70 @@ nnoremap * *N
 nnoremap Q !!sh<cr>
 
 " FILE EXPLORER
-nnoremap - <cmd>Ex<CR>
+" nnoremap - <cmd>Ex<CR>
+
+" vim-dirvish
+nnoremap - :call <SID>ToggleDirvish()<CR>
+
+function! s:ToggleDirvish()
+    if &filetype == 'dirvish'
+        " Close Dirvish
+        bdelete
+    else
+        " Open Dirvish
+        Dirvish
+    endif
+endfunction
+
+let g:dirvish_mode = ':sort ,^.*[\/],'  " Sort directories first
+
+augroup DirvishMappings
+    autocmd!
+    " Use 'backspace' to go up a directory (like "up")
+    autocmd FileType dirvish silent! nnoremap <buffer> <backspace> <Plug>(dirvish_up)
+
+    " Create new file/directory (smart - handles both)
+    autocmd FileType dirvish silent! nnoremap <buffer> a :call <SID>CreatePath()<CR>
+
+    " Delete file/directory (with confirmation)
+    autocmd FileType dirvish silent! nnoremap <buffer> dd :call <SID>DeletePath()<CR>
+
+    " Refresh
+    autocmd FileType dirvish silent! nnoremap <buffer> R <Plug>(dirvish_refresh)
+augroup END
+
+" Smart create: file, directory, or nested directory + file
+function! s:CreatePath()
+    let path = input('Create: ', expand('%'), 'file')
+    if empty(path) | return | endif
+
+    " If path ends with /, create directory only
+    if path =~ '/$'
+        call system('mkdir -p ' . shellescape(path))
+        silent! execute 'Dirvish %'
+        redraw!
+    else
+        " Create parent directories if needed
+        let dir = fnamemodify(path, ':h')
+        if dir != '.' && !isdirectory(dir)
+            call system('mkdir -p ' . shellescape(dir))
+        endif
+        " Open the file for editing
+        execute 'edit' path
+    endif
+endfunction
+
+" Delete with confirmation and auto-refresh
+function! s:DeletePath()
+    let path = getline('.')
+    if empty(path) | return | endif
+    let confirm = input('Delete "' . path . '"? (y/n): ')
+    if confirm ==? 'y'
+        call system('rm -rf ' . shellescape(path))
+        silent! execute 'Dirvish %'
+        redraw!
+    endif
+endfunction
 
 " TOGGLES
 nnoremap <leader>dn <cmd>set invnumber<cr>
@@ -371,7 +434,7 @@ augroup END
 
 " COMMENT TOGGLE
 function! ToggleComment(comment_string) range abort
-    let l:comment_pattern = '^' . escape(a:comment_string, '/*') . '\s\?'
+    let l:comment_pattern = '^\s*' . escape(a:comment_string, '/*') . '\s\?'
     let l:all_commented = 1
     for l:lnum in range(a:firstline, a:lastline)
         let l:line = getline(l:lnum)
@@ -383,9 +446,13 @@ function! ToggleComment(comment_string) range abort
     for l:lnum in range(a:firstline, a:lastline)
         let l:line = getline(l:lnum)
         if empty(substitute(l:line, '^\s*', '', '')) | continue | endif
-        let l:new_line = l:all_commented 
-                    \ ? substitute(l:line, l:comment_pattern, '', '')
-                    \ : a:comment_string . ' ' . l:line
+        if l:all_commented
+            " Remove comment: preserve leading whitespace, remove comment marker
+            let l:new_line = substitute(l:line, '^\(\s*\)' . escape(a:comment_string, '/*') . '\s\?', '\1', '')
+        else
+            " Add comment: at column 1 (beginning of line)
+            let l:new_line = a:comment_string . ' ' . l:line
+        endif
         call setline(l:lnum, l:new_line)
     endfor
 endfunction

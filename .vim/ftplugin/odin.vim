@@ -172,6 +172,8 @@ endfunction
 nnoremap <buffer> <leader>n :call <SID>OdinCheck()<CR>
 nnoremap <buffer> <leader>m :call <SID>OdinRun()<CR>
 nnoremap <buffer> <leader>f :call <SID>OdinFormat()<CR>
+nnoremap <buffer> <leader>p A fmt.println("
+	
 
 " Commands
 command! -buffer OdinCheck call s:OdinCheck()
