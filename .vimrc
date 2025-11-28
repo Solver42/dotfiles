@@ -34,9 +34,9 @@ set noerrorbells
 set visualbell
 set t_vb=
 set nowrap
-set scrolloff=8
+set scrolloff=2
 set sidescrolloff=5
-set signcolumn=yes
+set signcolumn=no
 set laststatus=0
 set updatetime=100
 set timeoutlen=5000
@@ -135,6 +135,7 @@ nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
 nnoremap * *N
+nnoremap <leader>r viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
 
 " QUICK SHELL COMMAND
 nnoremap Q !!sh<cr>
@@ -215,7 +216,7 @@ nnoremap <leader>dm <cmd>call ToggleStatusLine()<cr>
 nnoremap <leader>dh <cmd>call <SID>ToggleHighlightWord()<cr>
 
 " VISUAL MODE MAPPINGS
-xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gI<Left><Left><Left>
+xnoremap <leader>r y:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
 xnoremap <silent> J :m '>+1<CR>gv=gv
 xnoremap <silent> K :m '<-2<CR>gv=gv
 
@@ -583,3 +584,4 @@ function! ToggleGitGutterPreview()
     endif
 endfunction
 noremap <leader>dk :call ToggleGitGutterPreview()<CR>
+let g:gitgutter_map_keys = 0

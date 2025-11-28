@@ -10,6 +10,9 @@ setlocal smarttab
 setlocal autoindent
 setlocal smartindent
 
+" INSERT MODE MAPPINGS
+inoremap jkp fmt.println("
+
 " Prevent the ftplugin from running multiple times
 if exists("b:did_ftplugin")
   finish
@@ -173,7 +176,6 @@ nnoremap <buffer> <leader>n :call <SID>OdinCheck()<CR>
 nnoremap <buffer> <leader>m :call <SID>OdinRun()<CR>
 nnoremap <buffer> <leader>f :call <SID>OdinFormat()<CR>
 nnoremap <buffer> <leader>p A fmt.println("
-	
 
 " Commands
 command! -buffer OdinCheck call s:OdinCheck()

@@ -9,7 +9,7 @@ config.warn_about_missing_glyphs = false
 
 -- Font
 config.font = wezterm.font('Fira Code Nerd Font', { weight = 'Bold', style = 'Normal' })
-config.font_size = 14.0
+config.font_size = 18.0
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 local gruvbox = wezterm.color.get_builtin_schemes()['GruvboxDarkHard']
