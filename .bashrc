@@ -1,6 +1,4 @@
-#
-# ~/.bashrc
-#
+#!/usr/bin/env bash
 
 alias ..='cd ..'
 alias cdn='cd ~/.config/nvim'
