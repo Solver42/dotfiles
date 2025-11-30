@@ -8,6 +8,7 @@
 !.vimrc
 !.bash_profile
 !.tmux.conf
+!cloneVimPlugins
 !.config
 
 !.config/ghostty
