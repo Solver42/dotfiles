@@ -135,7 +135,8 @@ nnoremap so <cmd>only<cr>
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
 nnoremap * *N
-nnoremap <leader>r viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
+nnoremap <leader>R viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
+nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
 
 " QUICK SHELL COMMAND
 nnoremap Q !!sh<cr>
