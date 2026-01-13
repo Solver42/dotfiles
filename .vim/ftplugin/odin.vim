@@ -10,9 +10,6 @@ setlocal smarttab
 setlocal autoindent
 setlocal smartindent
 
-" INSERT MODE MAPPINGS
-inoremap jkp fmt.println("
-
 highlight OdinBuildError ctermfg=9 ctermbg=NONE
 highlight OdinBuildSuccess ctermfg=46 ctermbg=NONE
 
@@ -154,6 +151,9 @@ nnoremap <buffer> <leader>n :call <SID>OdinCheck()<CR>
 nnoremap <buffer> <leader>m :call <SID>OdinRun()<CR>
 nnoremap <buffer> <leader>f :call <SID>OdinFormat()<CR>
 nnoremap <buffer> <leader>p A fmt.println("
+
+" INSERT MODE MAPPINGS
+inoremap jkp fmt.println("
 
 " Commands
 command! -buffer OdinCheck call s:OdinCheck()
