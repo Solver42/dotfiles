@@ -101,7 +101,7 @@ highlight HLCurrentWord ctermfg=16 ctermbg=28
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>
-inoremap jkf <esc><cmd>update<cr>
+inoremap jkw <esc><cmd>update<cr>
 
 " NORMAL MODE MAPPINGS
 
