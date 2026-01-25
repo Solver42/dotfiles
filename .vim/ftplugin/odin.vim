@@ -68,6 +68,9 @@ function! s:OdinCheck()
         call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
         " Center cursor in the window
         normal! zz
+        " Copy error to clipboard
+        let @+ = l:match[4]
+        let @* = l:match[4]
         " Keep error text visible even after zz
         echohl OdinBuildError
         echo l:match[4]
@@ -94,6 +97,9 @@ function! s:OdinRun()
         call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
         normal! zz
         redraw!
+        " Copy error to clipboard
+        let @+ = l:match[4]
+        let @* = l:match[4]
         echohl OdinBuildError
         echon l:match[4]
         echohl None

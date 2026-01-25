@@ -14,15 +14,16 @@ config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 local gruvbox = wezterm.color.get_builtin_schemes()['GruvboxDarkHard']
 gruvbox.background = "#000000"
--- gruvbox.foreground = "#00ff00"
+gruvbox.foreground = "#00ff00"
+-- Override the ugly green/yellow color
+gruvbox.ansi[3] = "#00ff00"
 config.color_schemes = {
     ['solverbox'] = gruvbox
 }
 config.color_scheme = 'solverbox'
---config.color_scheme = 'GruvboxDark'
 
 -- Transparency
-config.window_background_opacity = 0.6
+-- config.window_background_opacity = 0.6
 
 -- Tab bar
 config.use_fancy_tab_bar = false

@@ -1,5 +1,5 @@
 source $VIMRUNTIME/colors/vim.lua " Nvim: revert to Vim default color scheme
-let g:colors_name = 'box'
+let g:colors_name = 'green'
 
 hi default CursorWord cterm=underline gui=underline
 hi GitSignsAdd guifg=#00ff00 guibg=NONE
@@ -28,8 +28,8 @@ hi ColorColumn guifg=NONE guibg=NONE gui=NONE cterm=NONE
 hi Comment guifg=#00ff00 guibg=NONE gui=NONE cterm=NONE
 hi CursorLine guifg=NONE guibg=#00aa00 guifg=#000000 gui=NONE cterm=NONE
 hi CursorLineNr guifg=#00ff00 guibg=NONE gui=bold cterm=bold
-hi Error guifg=#00ff00 guibg=NONE
-hi ErrorMsg guifg=#000000 guibg=#00ff00
+hi Error guifg=#ff0000 guibg=NONE
+hi ErrorMsg guifg=#ff0000 guibg=NONE
 hi Folded guifg=#00ff00 guibg=#121212 gui=NONE cterm=NONE
 hi LineNr guifg=#00ff00 guibg=NONE gui=NONE cterm=NONE
 hi MatchParen guifg=NONE guibg=#504945 gui=bold,underline cterm=bold,underline
