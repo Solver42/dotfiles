@@ -145,7 +145,7 @@ nnoremap Q !!sh<cr>
 " nnoremap - <cmd>Ex<CR>
 
 " vim-dirvish
-nnoremap - :call <SID>ToggleDirvish()<CR>
+nnoremap <silent> - :call <SID>ToggleDirvish()<CR>
 
 function! s:ToggleDirvish()
     if &filetype == 'dirvish'
@@ -157,28 +157,24 @@ function! s:ToggleDirvish()
     endif
 endfunction
 
-let g:dirvish_mode = ':sort ,^.*[\/],'  " Sort directories first
-
 augroup DirvishMappings
     autocmd!
     " Use 'backspace' to go up a directory (like "up")
     autocmd FileType dirvish silent! nnoremap <buffer> <backspace> <Plug>(dirvish_up)
-
     " Create new file/directory (smart - handles both)
     autocmd FileType dirvish silent! nnoremap <buffer> a :call <SID>CreatePath()<CR>
-
     " Delete file/directory (with confirmation)
     autocmd FileType dirvish silent! nnoremap <buffer> dd :call <SID>DeletePath()<CR>
-
+    " Rename/move file/directory
+    autocmd FileType dirvish silent! nnoremap <buffer> r :call <SID>RenamePath()<CR>
     " Refresh
     autocmd FileType dirvish silent! nnoremap <buffer> R <Plug>(dirvish_refresh)
-augroup END
+augroup ENDet g:dirvish_mode = ':sort ,^.*[\/],'  " Sort directories first
 
 " Smart create: file, directory, or nested directory + file
 function! s:CreatePath()
     let path = input('Create: ', expand('%'), 'file')
     if empty(path) | return | endif
-
     " If path ends with /, create directory only
     if path =~ '/$'
         call system('mkdir -p ' . shellescape(path))
@@ -192,6 +188,30 @@ function! s:CreatePath()
         endif
         " Open the file for editing
         execute 'edit' path
+    endif
+endfunction
+
+" Rename file/directory
+function! s:RenamePath()
+    let old_path = getline('.')
+    if empty(old_path) | return | endif
+    " Pre-fill with current path for easy editing
+    let new_path = input('Rename to: ', old_path, 'file')
+    if empty(new_path) || new_path ==# old_path | return | endif
+    " Create parent directories if needed for the new path
+    let new_dir = fnamemodify(new_path, ':h')
+    if !isdirectory(new_dir)
+        call system('mkdir -p ' . shellescape(new_dir))
+    endif
+    " Rename/move the file or directory
+    call system('mv ' . shellescape(old_path) . ' ' . shellescape(new_path))
+    if v:shell_error
+        echohl ErrorMsg
+        echo 'Rename failed'
+        echohl None
+    else
+        silent! execute 'Dirvish %'
+        redraw!
     endif
 endfunction
 

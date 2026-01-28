@@ -90,8 +90,8 @@ bindsym $mod+m workspace $ws5
 bindsym $mod+comma workspace $ws6
 bindsym $mod+period workspace $ws7
 bindsym $mod+minus workspace $ws8
-bindcode $mod+18 workspace  $ws9
-bindcode $mod+19 workspace  $ws10
+#bindcode $mod+18 workspace  $ws9
+#bindcode $mod+19 workspace  $ws10
 
 # move focused window between monitors
 # bindsym $mod+Shift+greater move container to output right
@@ -106,8 +106,8 @@ bindcode $mod+Shift+14    move container to workspace  $ws5
 bindcode $mod+Shift+15    move container to workspace  $ws6
 bindcode $mod+Shift+16    move container to workspace  $ws7
 bindcode $mod+Shift+17    move container to workspace  $ws8
-bindcode $mod+Shift+18    move container to workspace  $ws9
-bindcode $mod+Shift+19    move container to workspace  $ws10
+#bindcode $mod+Shift+18    move container to workspace  $ws9
+#bindcode $mod+Shift+19    move container to workspace  $ws10
 
 # resize window (you can also use the mouse for that):
 #mode "resize" {
@@ -282,8 +282,8 @@ set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+#set $ws9 "9"
+#set $ws10 "10"
 
 set $screen eDP
 set $hdmi HDMI-A-0
@@ -300,8 +300,8 @@ workspace $ws5 output $screen
 workspace $ws6 output $screen
 workspace $ws7 output $screen
 workspace $ws8 output $screen
-workspace $ws9 output $hdmi
-workspace $ws10 output $hdmi
+#workspace $ws9 output $hdmi
+#workspace $ws10 output $hdmi
 
 exec --no-startup-id xrandr --output HDMI-A-0 --auto --right-of eDP
 
@@ -527,30 +527,30 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # }
 
 bar {
-  mode hide
-	# position         $bar_setting_position
-	# mode             $bar_setting_mode
-	# font             $bar_setting_font
-	# separator_symbol $bar_setting_separator
-	# status_command   $bar_setting_statusCommand
-	# tray_output      $bar_setting_trayoutput
+    mode hide
+# position         $bar_setting_position
+# mode             $bar_setting_mode
+# font             $bar_setting_font
+# separator_symbol $bar_setting_separator
+# status_command   $bar_setting_statusCommand
+# tray_output      $bar_setting_trayoutput
 
-		font pango: Fira Code Nerd Font 14
-		status_command i3blocks -c ~/.config/i3/i3blocks.conf
-	# colors {
-		# background   $bar_color_background
-		# statusline   $bar_color_statusline
-		# separator    $bar_color_separator
+        font pango: Fira Code Nerd Font 14
+        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+# colors {
+# background   $bar_color_background
+# statusline   $bar_color_statusline
+# separator    $bar_color_separator
 
-		# focused_workspace  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_fg
-		# active_workspace   $bar_color_workspace_active_bg   $bar_color_workspace_active_bg   $bar_color_workspace_active_fg
-		# inactive_workspace $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_fg
-		# urgent_workspace   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_fg
-	# }
-		# focused_workspace	$mediumgrey	   	$grey		$darkgrey	$purple
-		# active_workspace	$lightblue      	$mediumgrey	$darkgrey	$purple
-		# inactive_workspace	$darkgrey   		$darkgrey	$grey		$purple
-		# urgent_workspace	$urgentred	    	$urgentred	$white		$purple
+# focused_workspace  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_fg
+# active_workspace   $bar_color_workspace_active_bg   $bar_color_workspace_active_bg   $bar_color_workspace_active_fg
+# inactive_workspace $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_fg
+# urgent_workspace   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_fg
+# }
+# focused_workspace	$mediumgrey	   	$grey		$darkgrey	$purple
+# active_workspace	$lightblue      	$mediumgrey	$darkgrey	$purple
+# inactive_workspace	$darkgrey   		$darkgrey	$grey		$purple
+# urgent_workspace	$urgentred	    	$urgentred	$white		$purple
 }
 
 # you can add different bars for multidisplay setups on each display:
@@ -591,15 +591,15 @@ bar {
 ## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
 
 bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun \
-		-config ~/.config/rofi/rofidmenu.rasi
+            -config ~/.config/rofi/rofidmenu.rasi
 
 #bindsym F9 exec --no-startup-id rofi -modi drun -show drun \
 #		-config ~/.config/rofi/rofidmenu.rasi
 
 ## rofi bindings for window menu ($mod+t /F10 optional disabled)
 
-bindsym $mod+t exec --no-startup-id rofi -show window \
-		-config ~/.config/rofi/rofidmenu.rasi
+            bindsym $mod+t exec --no-startup-id rofi -show window \
+                -config ~/.config/rofi/rofidmenu.rasi
 
 #bindsym F10 exec --no-startup-id rofi -show window \
 #		-config ~/.config/rofi/rofidmenu.rasi
@@ -611,11 +611,11 @@ bindsym $mod+t exec --no-startup-id rofi -show window \
 #		-config ~/.config/rofi/rofidmenu.rasi
 
 # Enable natural scrolling
-exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
+                exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
 # Set key repeat rate
-exec --no-startup-id xset r rate 200 50
+                exec --no-startup-id xset r rate 200 50
 # Disable bell
-exec --no-startup-id xset b off
-exec --no-startup-id xinput list
-exec --no-startup-id udiskie &
+                exec --no-startup-id xset b off
+                exec --no-startup-id xinput list
+                exec --no-startup-id udiskie &
 

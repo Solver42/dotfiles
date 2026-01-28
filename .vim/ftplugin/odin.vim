@@ -54,29 +54,33 @@ function! s:OdinCheck()
     let l:dir = s:FindProjectRoot()
     " If current file is not main.odin, check just this file
     if expand('%:t') != 'main.odin'
-        let l:output = system('odin check ' . shellescape(l:current_file) . ' 2>&1')
+        let l:output = system('odin check ' . shellescape(l:current_file) . ' < /dev/null 2>&1')
     else
         " If in main.odin, check the whole project
-        let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
+        let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . < /dev/null 2>&1')
     endif
-    redraw!
     " Check for first error: filepath(line:column) message
     let l:match = matchlist(l:output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
     if !empty(l:match)
         " Found an error - jump to it
         execute 'edit' l:match[1]
         call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
-        " Center cursor in the window
         normal! zz
-        " Copy error to clipboard
+        " Copy full error to clipboard
         let @+ = l:match[4]
         let @* = l:match[4]
-        " Keep error text visible even after zz
+        " Truncate to fit in one line
+        redraw
+        let l:msg = @+
+        let l:max = &columns - 1
+        if len(l:msg) > l:max
+            let l:msg = l:msg[:l:max-4] . '...'
+        endif
         echohl OdinBuildError
-        echo l:match[4]
+        echon l:msg
         echohl None
     else
-        execute 'highlight OdinBuildSuccess ctermfg=46 ctermbg=NONE'
+        redraw
         echohl OdinBuildSuccess
         echon "odin check successful"
         echohl None
@@ -90,18 +94,24 @@ function! s:OdinRun()
     endif
     let l:dir = s:FindProjectRoot()
     " First check for errors
-    let l:check_output = system('cd ' . shellescape(l:dir) . ' && odin check . 2>&1')
+    let l:check_output = system('cd ' . shellescape(l:dir) . ' && odin check . < /dev/null 2>&1')
     let l:match = matchlist(l:check_output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
     if !empty(l:match)
         execute 'edit' l:match[1]
         call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
         normal! zz
-        redraw!
-        " Copy error to clipboard
+        " Copy full error to clipboard
         let @+ = l:match[4]
         let @* = l:match[4]
+        " Truncate to fit in one line
+        redraw
+        let l:msg = @+
+        let l:max = &columns - 1
+        if len(l:msg) > l:max
+            let l:msg = l:msg[:l:max-4] . '...'
+        endif
         echohl OdinBuildError
-        echon l:match[4]
+        echon l:msg
         echohl None
     else
         " No errors - run the program

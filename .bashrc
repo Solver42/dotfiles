@@ -15,6 +15,9 @@ alias gd='git diff'
 alias gs='git status'
 alias lg='lazygit'
 
+alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
+alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
+
 eval "$(starship init bash)"
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
