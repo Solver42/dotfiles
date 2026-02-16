@@ -520,31 +520,32 @@ if executable('fzf')
 
     command! -bang -nargs=? -complete=dir Files
                 \ call fzf#vim#files(<q-args>, {
-                \   'options': ['--preview', 'bat --style=plain --color=never {}'],
+                \   'options': ['--preview', 'cat {}'],
                 \   'source': 'rg --files --no-ignore'
                 \ }, <bang>0)
 
     command! -bang -nargs=? -complete=dir FilesHidden
                 \ call fzf#vim#files(<q-args>, {
-                \   'options': ['--preview', 'bat --style=plain --color=never {}'],
+                \   'options': ['--preview', 'cat {}'],
                 \   'source': 'rg --files --no-ignore --hidden'
                 \ }, <bang>0)
 
     command! -bang -nargs=* Rg
                 \ call fzf#vim#grep(
                 \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore -- '.shellescape(<q-args>), 1,
-                \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+                \   {'options': ['--delimiter', ':', '--preview', 'cat {1}', '--preview-window', '+{2}-/2']}, <bang>0)
 
     command! -bang -nargs=* RgHidden
                 \ call fzf#vim#grep(
                 \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
-                \   {'options': ['--delimiter', ':', '--preview', 'bat --style=plain --color=never --highlight-line {2} {1}', '--preview-window', '+{2}-/2']}, <bang>0)
+                \   {'options': ['--delimiter', ':', '--preview', 'cat {1}', '--preview-window', '+{2}-/2']}, <bang>0)
 
     command! -bang Buffers
                 \ call fzf#vim#buffers({
-                \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs bat --style=plain --color=never']
+                \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs cat']
                 \ }, <bang>0)
 
+    nnoremap <leader>g <cmd>GFiles<CR>
     nnoremap <leader>j <cmd>Files<CR>
     nnoremap <leader>J <cmd>FilesHidden<CR>
     nnoremap <leader>k <cmd>Rg<CR>
