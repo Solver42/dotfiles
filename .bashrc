@@ -34,6 +34,8 @@ __prompt_git() {
 }
 PROMPT_COMMAND='PS1="${PWD/#$HOME/\~}$(__prompt_git)\n\$ "'
 
+van() { man "$@" 2>/dev/null | col -b | vim -; }
+
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
 eval "$(zoxide init bash)"

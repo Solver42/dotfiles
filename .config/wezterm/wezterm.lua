@@ -7,10 +7,10 @@ end
 
 config.warn_about_missing_glyphs = false
 
--- Font
-config.font = wezterm.font('Fira Code Nerd Font', { weight = 'Bold', style = 'Normal' })
+config.font = wezterm.font('Consolas', { style = 'Normal' })
+config.line_height = 0.9
 config.font_size = 18.0
-config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
+-- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 local gruvbox = wezterm.color.get_builtin_schemes()['GruvboxDarkHard']
 gruvbox.background = "#000000"
