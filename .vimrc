@@ -139,7 +139,8 @@ nnoremap <leader>R viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><L
 nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
 
 " QUICK SHELL COMMAND
-nnoremap Q !!sh<cr>
+nnoremap Q :!<C-r><C-l><CR>
+xnoremap Q :!sh<CR>
 
 " FILE EXPLORER
 " nnoremap - <cmd>Ex<CR>
