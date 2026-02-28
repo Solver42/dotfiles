@@ -52,37 +52,39 @@ function! s:OdinCheck()
     endif
     let l:current_file = expand('%:p')
     let l:dir = s:FindProjectRoot()
-    " If current file is not main.odin, check just this file
+    " Run odin check and capture output
     if expand('%:t') != 'main.odin'
         let l:output = system('odin check ' . shellescape(l:current_file) . ' < /dev/null 2>&1')
     else
-        " If in main.odin, check the whole project
         let l:output = system('cd ' . shellescape(l:dir) . ' && odin check . < /dev/null 2>&1')
     endif
-    " Check for first error: filepath(line:column) message
-    let l:match = matchlist(l:output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
-    if !empty(l:match)
-        " Found an error - jump to it
-        execute 'edit' l:match[1]
-        call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
-        normal! zz
-        " Copy full error to clipboard
-        let @+ = l:match[4]
-        let @* = l:match[4]
-        " Truncate to fit in one line
-        redraw
-        let l:msg = @+
-        let l:max = &columns - 1
-        if len(l:msg) > l:max
-            let l:msg = l:msg[:l:max-4] . '...'
+    " Parse errors into quickfix format
+    let l:errors = []
+    for l:line in split(l:output, "\n")
+        let l:match = matchlist(l:line, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\(.*\)')
+        if !empty(l:match)
+            call add(l:errors, {
+                \ 'filename': l:match[1],
+                \ 'lnum': str2nr(l:match[2]),
+                \ 'col': str2nr(l:match[3]),
+                \ 'text': l:match[4]
+                \ })
         endif
+    endfor
+    " Set quickfix list
+    if !empty(l:errors)
+        call setqflist(l:errors, 'r')
+        cfirst
+        normal! zz
+        redraw
         echohl OdinBuildError
-        echon l:msg
+        echo l:errors[0].text
         echohl None
     else
+        call setqflist([], 'r')
         redraw
         echohl OdinBuildSuccess
-        echon "odin check successful"
+        echo "odin check successful"
         echohl None
     endif
 endfunction
@@ -95,26 +97,29 @@ function! s:OdinRun()
     let l:dir = s:FindProjectRoot()
     " First check for errors
     let l:check_output = system('cd ' . shellescape(l:dir) . ' && odin check . < /dev/null 2>&1')
-    let l:match = matchlist(l:check_output, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\([^\n]*\)')
-    if !empty(l:match)
-        execute 'edit' l:match[1]
-        call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
-        normal! zz
-        " Copy full error to clipboard
-        let @+ = l:match[4]
-        let @* = l:match[4]
-        " Truncate to fit in one line
-        redraw
-        let l:msg = @+
-        let l:max = &columns - 1
-        if len(l:msg) > l:max
-            let l:msg = l:msg[:l:max-4] . '...'
+    " Parse errors
+    let l:errors = []
+    for l:line in split(l:check_output, "\n")
+        let l:match = matchlist(l:line, '\([^(]\+\)(\(\d\+\):\(\d\+\))\s*\(.*\)')
+        if !empty(l:match)
+            call add(l:errors, {
+                \ 'filename': l:match[1],
+                \ 'lnum': str2nr(l:match[2]),
+                \ 'col': str2nr(l:match[3]),
+                \ 'text': l:match[4]
+                \ })
         endif
+    endfor
+    if !empty(l:errors)
+        call setqflist(l:errors, 'r')
+        cfirst
+        normal! zz
+        redraw
         echohl OdinBuildError
-        echon l:msg
+        echo l:errors[0].text
         echohl None
     else
-        " No errors - run the program
+        call setqflist([], 'r')
         execute '!cd ' . shellescape(l:dir) . ' && odin run .'
     endif
 endfunction

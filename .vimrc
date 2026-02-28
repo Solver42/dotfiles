@@ -44,10 +44,6 @@ set ttimeoutlen=10
 set listchars=tab:\ \ 
 set list
 
-" LINE NUMBERS (OFF BY DEFAULT)
-set nonumber
-set norelativenumber
-
 " SEARCH SETTINGS
 set incsearch
 set hlsearch
@@ -142,8 +138,15 @@ nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Lef
 nnoremap Q :!<C-r><C-l><CR>
 xnoremap Q :!sh<CR>
 
-" FILE EXPLORER
-" nnoremap - <cmd>Ex<CR>
+nnoremap ms :call <SID>CopyQfError()<CR>
+function! s:CopyQfError()
+    if empty(getqflist())
+        echo "Nothing to do"
+        return
+    endif
+    let @+ = getqflist()[0].text
+    echo "Quickfix copied to clipboard"
+endfunction
 
 " vim-dirvish
 nnoremap <silent> - :call <SID>ToggleDirvish()<CR>
