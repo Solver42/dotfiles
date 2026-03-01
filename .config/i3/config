@@ -1,10 +1,6 @@
-exec --no-startup-id ~/config/i3/set_once.sh
+exec --no-startup-id ~/.config/i3/set_once.sh
 exec --no-startup-id ~/screens.sh
 exec_always --no-startup-id setxkbmap -option caps:backspace
-exec_always --no-startup-id xset r 66
-exec_always --no-startup-id xset s off
-exec_always --no-startup-id xset -dpms
-# xset s noblank
 
 # This file is a modified version based on default i3-config-wizard config
 # source is available here:
@@ -611,11 +607,11 @@ bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun \
 #		-config ~/.config/rofi/rofidmenu.rasi
 
 # Enable natural scrolling
-                exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
+exec --no-startup-id xinput set-prop "MSFT0004:00 06CB:CD98 Touchpad" "libinput Natural Scrolling Enabled" 1
+exec --no-startup-id xinput set-prop "PIXA3848:01 093A:3848 Touchpad" "libinput Natural Scrolling Enabled" 1
 # Set key repeat rate
-                exec --no-startup-id xset r rate 200 50
+exec --no-startup-id xset r rate 200 50
 # Disable bell
-                exec --no-startup-id xset b off
-                exec --no-startup-id xinput list
-                exec --no-startup-id udiskie &
-
+exec --no-startup-id xset b off
+exec --no-startup-id xinput list
+exec --no-startup-id udiskie &
