@@ -1,14 +1,3 @@
--- vim.loader.enable()
--- vim.api.nvim_create_autocmd("ColorScheme", {
---   pattern = "*",
---   desc = "prevent colorscheme clears self-defined DAP icon colors.",
---   callback = function()
---     vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939' })
---     vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef' })
---     vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379' })
---   end
--- })
-
 vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     if vim.bo.filetype == "help" then
@@ -17,13 +6,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 
--- vim.cmd([[command! -nargs=1 TH tab help <args>]])
--- vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = 'DapBreakpoint' })
--- vim.fn.sign_define('DapBreakpointCondition', { text = ' ﳁ', texthl = 'DapBreakpoint' })
--- vim.fn.sign_define('DapBreakpointRejected', { text = ' ', texthl = 'DapBreakpoint' })
--- vim.fn.sign_define('DapLogPoint', { text = ' ', texthl = 'DapLogPoint' })
--- vim.fn.sign_define('DapStopped', { text = ' ', texthl = 'DapStopped' })
-vim.opt.fillchars      = {
+vim.opt.fillchars = {
   eob = ' ',
   lastline = ' ',
   fold = ' ',
@@ -165,7 +148,7 @@ M.colors               = {
   line_col_alt = '%#PmenuKind#',
 }
 
-M.trunc_width          = setmetatable({
+M.trunc_width = setmetatable({
   mode       = 80,
   git_status = 90,
   filename   = 140,

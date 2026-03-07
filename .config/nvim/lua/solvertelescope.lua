@@ -301,47 +301,6 @@ ts.setup {
       },
     },
   },
-  -- file_browser = {
-  --   theme = "ivy",
-  --   layout_config = {
-  --     width = 999,
-  --     height = 999,
-  --   },
-  --   borderchars = {
-  --     preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-  --   },
-  --   hidden = false,
-  --   -- disables netrw and use telescope-file-browser in its place
-  --   hijack_netrw = true,
-  --   mappings = {
-  --     ["i"] = {
-  --       -- your custom insert mode mappings
-  --     },
-  --     ["n"] = {
-  --       -- your custom normal mode mappings
-  --       -- ["h"] = ts.goto_parent_dir
-  --       ["P"] = ts.goto_parent_dir,
-  --       [","] = ts.goto_parent_dir,
-  --     },
-  --   },
-  -- },
-  -- media_files = {
-  --   -- filetypes whitelist
-  --   -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-  --   filetypes = { "png", "webp", "jpg", "jpeg" },
-  --   -- find command (defaults to `fd`)
-  --   find_cmd = "rg"
-  -- },
-  -- git_worktree = {
-  -- theme = "ivy",
-  -- layout_config = {
-  -- width = 999,
-  -- height = 999,
-  -- },
-  -- borderchars = {
-  -- preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
-  -- },
-  -- }
 }
 -- ts.load_extension "file_browser"
 ts.load_extension('fzy_native')

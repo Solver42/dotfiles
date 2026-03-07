@@ -6,7 +6,6 @@ local function map(mode, lhs, rhs, opts)
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-map('n', '<cr>', "<cmd>lua MiniJump2d.start(MiniJump2d.builtin_opts.single_character) <cr>")
 map('n', '<leader>f', "<cmd>lua vim.lsp.buf.format()<cr>")
 map('n', '-', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>')
 map('n', '/', '/\\v\\c')
@@ -37,9 +36,6 @@ map('v', '<C-k>', 'gc', { noremap = false, desc = 'Toggle comment' })
 
 map('n', '<leader>w', '<cmd>update<CR>')
 map('n', '<leader>q', '<cmd>bd<CR>')
--- map("n", "<leader>rr", "<cmd>Rest run<CR>")
--- map("n", "<leader>rl", "<cmd>Rest last<CR>")
--- map("n", "<leader>ro", "<cmd>Rest open<CR>")
 map('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<leader>e', '<cmd>Gitsigns blame<CR>')
 
@@ -96,14 +92,6 @@ end
 -- Map Alt + f to toggle explorer
 map('n', '<A-f>', ":lua toggle_explorer()<CR>")
 
---  terminal
--- vim.cmd([[
---   tnoremap <Esc> <C-\><C-n>
---   tnoremap <A-t> <C-\><C-n>:ToggleTerm<cr>
--- ]])
---
--- map('n', '<M-t>', '<cmd>ToggleTerm<cr>')
-
 map('n', '<leader>,', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 map('n', '<leader>;', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
 map("n", "<leader>gg", "<cmd>Neogit<cr>")
@@ -112,7 +100,6 @@ map('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 --  telescope
 map("n", "<leader>j", "<cmd>Telescope find_files find_command=rg,--no-ignore,--files<cr>")
 map("n", "<leader>J", "<cmd>Telescope find_files find_command=rg,--no-ignore,--hidden,--files<cr>")
--- map("n", "<leader>U", "<cmd>Telescope find_files hidden=true<cr>")
 map("n", "<leader>k", "<cmd>Telescope live_grep <cr>")
 map("n", "<leader>K", "<cmd>Telescope live_grep hidden=true <cr>")
 map("n", "<leader>o", "<cmd>Telescope grep_string <cr>")
@@ -141,123 +128,12 @@ map("n", "<leader>5", "<cmd>DapContinue<cr>")
 map("n", "<leader>7", "<cmd>DapStepOver<cr>")
 map("n", "<leader>9", "<cmd>DapStepInto<cr>")
 map("n", "<leader>0", "<cmd>DapStepOut<cr>")
--- map("n", "<leader>dq", "<cmd>DapTerminate<cr>")
 
 -- map('n', '<leader>r', 'viw"hy:%s/\\<<C-r>h\\>//gI<left><left><left>')
 -- visual
 map("v", "<leader>r", "\"hy:%s/\\<<C-r>h\\>//gI<left><left><left>")
 
 -- map("v", "<C-j>", ":m '>+1<CR>gv=gv")
-
--- vim.keymap.set("n", "mw", function()
---   local surround_char = vim.fn.nr2char(vim.fn.getchar())
---
---   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---   local line = vim.api.nvim_get_current_line()
---
---   local s = vim.fn.expand("<cword>")
---   local start_col = string.find(line, s, 1, true)
---   if not start_col then
---     vim.notify("No word found under cursor", vim.log.levels.WARN)
---     return
---   end
---
---   local end_col = start_col + #s
---   local new_line =
---     line:sub(1, start_col - 1)
---     .. surround_char .. s .. surround_char
---     .. line:sub(end_col)
---
---   vim.api.nvim_set_current_line(new_line)
---   vim.api.nvim_win_set_cursor(0, { row, col + 1 })
--- end, { desc = "Add surrounding characters" })
---
--- vim.keymap.set("n", "mW", function()
---   local surround_char = vim.fn.nr2char(vim.fn.getchar())
---
---   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---   local line = vim.api.nvim_get_current_line()
---
---   local s = vim.fn.expand("<cWORD>")
---   local start_col = string.find(line, s, 1, true)
---   if not start_col then
---     vim.notify("No word found under cursor", vim.log.levels.WARN)
---     return
---   end
---
---   local end_col = start_col + #s
---   local new_line =
---     line:sub(1, start_col - 1)
---     .. surround_char .. s .. surround_char
---     .. line:sub(end_col)
---
---   vim.api.nvim_set_current_line(new_line)
---   vim.api.nvim_win_set_cursor(0, { row, col + 1 })
--- end, { desc = "Add surrounding characters" })
---
--- vim.keymap.set("n", "mc", function()
---   local find_char = vim.fn.nr2char(vim.fn.getchar())
---   local replace_char = vim.fn.nr2char(vim.fn.getchar())
---
---   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---   local line = vim.api.nvim_get_current_line()
---
---   -- Lua string indexing is 1-based
---   local left = col
---   while left > 0 and line:sub(left, left) ~= find_char do
---     left = left - 1
---   end
---
---   local right = col + 1
---   while right <= #line and line:sub(right, right) ~= find_char do
---     right = right + 1
---   end
---
---   if left > 0 and right <= #line then
---     local new_line =
---       line:sub(1, left - 1)
---       .. replace_char
---       .. line:sub(left + 1, right - 1)
---       .. replace_char
---       .. line:sub(right + 1)
---
---     vim.api.nvim_set_current_line(new_line)
---     vim.api.nvim_win_set_cursor(0, { row, math.min(col + 1, #new_line) })
---   else
---     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
---   end
--- end, { desc = "Change surrounding characters" })
---
--- vim.keymap.set("n", "mx", function()
---   local target = vim.fn.nr2char(vim.fn.getchar())
---
---   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
---   local line = vim.api.nvim_get_current_line()
---
---   local left = col
---   while left > 0 and line:sub(left, left) ~= target do
---     left = left - 1
---   end
---
---   local right = col + 1
---   while right <= #line and line:sub(right, right) ~= target do
---     right = right + 1
---   end
---
---   if left > 0 and right <= #line then
---     local new_line =
---       line:sub(1, left - 1)
---       .. line:sub(left + 1, right - 1)
---       .. line:sub(right + 1)
---
---     vim.api.nvim_set_current_line(new_line)
---     vim.api.nvim_win_set_cursor(0, { row, math.min(col, #new_line) })
---   else
---     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
---   end
--- end, { desc = "Delete surrounding characters" })
-
-
 
 local pairs = {
   ["("] = ")",

@@ -14,9 +14,7 @@ require('solvermason')
 require('solverlsp')
 require('solverminifiles')
 require('solverminimove')
-require('solverminijump2d')
 require('highlightword')
-require('mini.jump').setup()
 require('gitsigns').setup {
   preview_config = { border = 'single' },
   signs = {
