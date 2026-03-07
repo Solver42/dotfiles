@@ -8,8 +8,6 @@ require('lazy').setup('plugins', { --looking for returns in /lua/plugins/
 })
 require('options')
 
--- vim.cmd('colorscheme solverbox')
--- vim.cmd('colorscheme box')
 vim.cmd('colorscheme green')
 require('solvertelescope')
 require('solvermason')
@@ -18,13 +16,9 @@ require('solverminifiles')
 require('solverminimove')
 require('solverminijump2d')
 require('highlightword')
-require('mini.ai').setup()
 require('mini.jump').setup()
-require 'colorizer'.setup()
 require('gitsigns').setup {
-  preview_config = {
-    border = 'single'
-  },
+  preview_config = { border = 'single' },
   signs = {
     add          = { text = '+' },
     change       = { text = '~' },
@@ -40,4 +34,3 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
   },
 }
-

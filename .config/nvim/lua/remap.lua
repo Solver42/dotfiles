@@ -102,7 +102,7 @@ map('n', '<A-f>', ":lua toggle_explorer()<CR>")
 --   tnoremap <A-t> <C-\><C-n>:ToggleTerm<cr>
 -- ]])
 --
-map('n', '<M-t>', '<cmd>ToggleTerm<cr>')
+-- map('n', '<M-t>', '<cmd>ToggleTerm<cr>')
 
 map('n', '<leader>,', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 map('n', '<leader>;', '<cmd>lua vim.diagnostic.goto_prev()<cr>')

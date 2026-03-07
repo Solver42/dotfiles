@@ -113,8 +113,12 @@ nnoremap <leader>q <cmd>bd<cr>
 
 " TAB NAVIGATION
 nnoremap <C-t> <cmd>tabnew<CR>
-nnoremap L <cmd>tabn<CR>
-nnoremap H <cmd>tabp<CR>
+" nnoremap L <cmd>tabn<CR>
+" nnoremap H <cmd>tabp<CR>
+
+" ^ and $ are awkward and g_ exclude newline
+map H ^
+map L g_
 
 " WINDOW MANAGEMENT
 nnoremap ss <cmd>split<cr>
@@ -137,6 +141,16 @@ nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Lef
 " QUICK SHELL COMMAND
 nnoremap Q :!<C-r><C-l><CR>
 xnoremap Q :!sh<CR>
+
+vmap a. :Tabularize /:/l1r1<cr>
+vmap a0 :Tabularize /=/l1r1<cr>
+vmap aö :Tabularize /:=/l1r1<cr>
+vmap a7 :Tabularize /{/l1r1<cr>
+vmap a8 :Tabularize /(8l1r1<cr>
+vmap ac :Tabularize /::/l1r1<cr>
+vmap a, :Tabularize /,/l0r1<cr>
+vmap a; :Tabularize /;/l0r1<cr>
+vmap aa :Tabularize /
 
 nnoremap ms :call <SID>CopyQfError()<CR>
 function! s:CopyQfError()
@@ -565,7 +579,7 @@ function! FixIndent()
     call winrestview(l:save_view)
 endfunction
 
-nnoremap <leader>f <cmd>call FixIndent()<cr>
+" nnoremap <leader>f <cmd>call FixIndent()<cr>
 
 function! ToggleGitGutterPreview()
     for win in range(1, winnr('$'))

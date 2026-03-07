@@ -8,7 +8,7 @@ end
 config.warn_about_missing_glyphs = false
 
 config.font = wezterm.font('Inconsolata', { style = 'Normal' })
-config.font_size = 20.0
+config.font_size = 18.0
 -- config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 local gruvbox = wezterm.color.get_builtin_schemes()['GruvboxDarkHard']
