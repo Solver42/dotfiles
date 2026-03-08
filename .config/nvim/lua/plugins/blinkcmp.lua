@@ -2,17 +2,17 @@ return {
   'saghen/blink.cmp',
   dependencies = { 'rafamadriz/friendly-snippets' },
   version = '1.*',
-
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
     keymap = { preset = 'default' },
+
     appearance = {
       nerd_font_variant = 'mono'
     },
-    completion = { 
-      menu = { border = 'single' },
-      documentation = { window = { border = 'single' } },
+    completion = {
+        menu = { border = 'single' },
+        documentation = { auto_show = false }
     },
     signature = { enabled = true, window = { border = 'single' } },
     sources = {

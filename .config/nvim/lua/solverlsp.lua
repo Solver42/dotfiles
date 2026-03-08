@@ -59,7 +59,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.lsp.enable('luals')
-vim.lsp.enable('jdtls')
 vim.lsp.enable('ols')
-vim.lsp.enable('rust-analyzer')
-vim.lsp.enable('biome')
