@@ -146,11 +146,57 @@ vmap a. :Tabularize /:/l1r1<cr>
 vmap a0 :Tabularize /=/l1r1<cr>
 vmap aö :Tabularize /:=/l1r1<cr>
 vmap a7 :Tabularize /{/l1r1<cr>
-vmap a8 :Tabularize /(8l1r1<cr>
+vmap a8 :Tabularize /(l1r1<cr>
 vmap ac :Tabularize /::/l1r1<cr>
 vmap a, :Tabularize /,/l0r1<cr>
 vmap a; :Tabularize /;/l0r1<cr>
 vmap aa :Tabularize /
+
+function! AlignBlock(pattern, tabcmd)
+	let lnum = line('.')
+	let start = lnum
+	while start > 1 && getline(start-1) =~ a:pattern
+		let start -= 1
+	endwhile
+	let end = lnum
+	while end < line('$') && getline(end+1) =~ a:pattern
+		let end += 1
+	endwhile
+	execute start . ',' . end . 'Tabularize ' . a:tabcmd
+endfunction
+
+function! AlignColon()
+	let lnum = line('.')
+
+	let start = lnum
+	while start > 1
+		let line = getline(start-1)
+		if line =~ ':' && line !~ '::'
+			let start -= 1
+		else
+			break
+		endif
+	endwhile
+
+	let end = lnum
+	while end < line('$')
+		let line = getline(end+1)
+		if line =~ ':' && line !~ '::'
+			let end += 1
+		else
+			break
+		endif
+	endwhile
+
+	execute start . ',' . end . 'Tabularize /:/l1r1'
+endfunction
+
+nnoremap <leader>ac :call AlignBlock('::', '/::/l1r1')<CR>
+nnoremap <leader>a. :call AlignColon()<CR>
+nnoremap <leader>a0 :call AlignBlock('[^:]=', '/=/l1r1')<CR>
+nnoremap <leader>aö :call AlignBlock(':=', '/:=/l1r1')<CR>
+nnoremap <leader>a, :call AlignBlock(',', '/,/l0r1')<CR>
+nnoremap <leader>a; :call AlignBlock(';', '/;/l0r1')<CR>
 
 nnoremap ms :call <SID>CopyQfError()<CR>
 function! s:CopyQfError()
