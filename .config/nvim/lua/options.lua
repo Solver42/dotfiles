@@ -220,14 +220,6 @@ M.get_filename         = function(self)
   return " %<%F "
 end
 
-M.get_filetype         = function()
-  local file_name, file_ext = fn.expand("%:t"), fn.expand("%:e")
-  local icon = require 'nvim-web-devicons'.get_icon(file_name, file_ext, { default = true })
-  local filetype = vim.bo.filetype
-  if filetype == '' then return '' end
-  return string.format(' %s %s ', icon, filetype):lower()
-end
-
 M.get_line_col         = function(self)
   if self:is_truncated(self.trunc_width.line_col) then return ' %l:%c ' end
   return ' %l:%c '
@@ -242,14 +234,13 @@ M.set_active           = function(self)
   local git_alt = colors.git_alt
   local filename = colors.inactive .. self:get_filename()
   local filetype_alt = colors.filetype_alt
-  local filetype = colors.filetype .. self:get_filetype()
   local line_col = colors.line_col .. self:get_line_col()
   local line_col_alt = colors.line_col_alt
 
   return table.concat({
     colors.active, mode, mode_alt, git, git_alt,
     "%=", filename, "%=",
-    filetype_alt, filetype, line_col_alt, line_col
+    filetype_alt, line_col_alt, line_col
   })
 end
 
