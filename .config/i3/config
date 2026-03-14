@@ -305,8 +305,8 @@ exec --no-startup-id xrandr --output HDMI-A-0 --auto --right-of eDP
 # assign [class="Xfce4-terminal"] $ws1
 # assign [class="ghostty"] $ws1
 # assign [class="(?i)firefox"] $ws5
-assign [class="(?i)brave"] $ws5
-# assign [class="Thunar"] $ws3
+assign [class="(?i)brave"] $ws2
+assign [class="Thunar"] $ws3
 # assign [class="thunderbird"] $ws4
 # assign [class="TelegramDesktop"] $ws5
 

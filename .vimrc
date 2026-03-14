@@ -291,6 +291,27 @@ function! s:DeletePath()
     endif
 endfunction
 
+function! s:JumpSkipDirvish(dir) abort
+    let [list, pos] = getjumplist()
+    let target = pos
+    for _ in range(len(list) + 1)
+        let target += a:dir
+        if target < 0 || target >= len(list) | return | endif
+        if getbufvar(list[target].bufnr, '&filetype') !=# 'dirvish'
+            let dist = abs(target - pos)
+            if a:dir < 0
+                execute 'normal! ' . dist . "\<C-o>"
+            else
+                call feedkeys(repeat("\<C-i>", dist), 'n')
+            endif
+            return
+        endif
+    endfor
+endfunction
+
+nnoremap <silent> <C-o> :<C-u>call <SID>JumpSkipDirvish(-1)<CR>
+nnoremap <silent> <C-i> :<C-u>call <SID>JumpSkipDirvish(1)<CR>
+
 " TOGGLES
 nnoremap <leader>dn <cmd>set invnumber<cr>
 nnoremap <leader>dr <cmd>set invrelativenumber<cr>
