@@ -1,9 +1,7 @@
 vim.g.mapleader = " "
 
 local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then options = vim.tbl_extend("force", options, opts) end
-  vim.keymap.set(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, vim.tbl_extend("force", { noremap = true }, opts or {}))
 end
 
 map('n', '<leader>f', "<cmd>lua vim.lsp.buf.format()<cr>")
@@ -20,76 +18,51 @@ map('n', '<leader>gd', '<cmd>lua print(vim.fn.getcwd())<CR>')
 map("n", "ss", "<cmd>split<Return>")
 map("n", "sv", "<cmd>vsplit<Return>")
 map("n", "sq", "ZQ")
-map("n", "sh", "<C-w>h")
-map("n", "s<left>", "<C-w>h")
-map("n", "sj", "<C-w>j")
-map("n", "s<down>", "<C-w>j")
-map("n", "sk", "<C-w>k")
-map("n", "s<up>", "<C-w>k")
-map("n", "sl", "<C-w>l")
-map("n", "s<right>", "<C-w>l")
+for _, d in ipairs({ {'h','left'}, {'j','down'}, {'k','up'}, {'l','right'} }) do
+  map("n", "s"..d[1], "<C-w>"..d[1])
+  map("n", "s<"..d[2]..">", "<C-w>"..d[1])
+end
 map('n', 'sa', '<cmd>silent vert ball<CR>')
 map('n', 'so', '<cmd>only<CR>')
 map('n', '*', '*N')
 map('n', '<C-k>', 'gcc', { noremap = false, desc = 'Toggle comment' })
-map('v', '<C-k>', 'gc', { noremap = false, desc = 'Toggle comment' })
+map('v', '<C-k>', 'gc',  { noremap = false, desc = 'Toggle comment' })
 
 map('n', '<leader>w', '<cmd>update<CR>')
 map('n', '<leader>q', '<cmd>bd<CR>')
 map('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>')
 map('n', '<leader>e', '<cmd>Gitsigns blame<CR>')
 
---  insert mode
 map('i', 'jkj', '<esc>')
 map('i', 'jkw', '<esc>ZZ')
 map('i', 'jkq', '<esc>ZQ')
 map('i', 'jkf', '<esc><cmd>w<cr>')
 map('i', '<c-h>', '<esc>cw')
 
--- TOGGLE
 function ToggleLs()
-  if vim.opt.laststatus:get() == 0 then
-    vim.opt.laststatus = 3
-  else
-    vim.opt.laststatus = 0
-  end
+  vim.opt.laststatus = vim.opt.laststatus:get() == 0 and 3 or 0
 end
 
 map("n", "<leader>dm", "<cmd>lua ToggleLs()<cr>")
-
--- map("n", "<A-v>", "<cmd>Markview Toggle<cr>")
 map("n", "<leader>dn", "<cmd>set nu!<cr>")
 map("n", "<leader>du", "<cmd>UndotreeToggle<cr>")
 map('n', '<leader>dh', '<cmd>ToggleHighlightWord<CR>', { desc = 'Toggle highlight word under cursor' })
 map("n", "<A-d>", "<cmd>Gitsigns preview_hunk<cr>")
 map("n", "<A-i>", "<cmd>Gitsigns toggle_signs<cr>")
--- map("n", "<A-x>", "<cmd>HexToggle<cr>")
 map("n", "<leader>dw", "<cmd>set wrap!<cr>")
 map("n", "<A-a>", "<cmd>lua require(\"dapui\").toggle()<cr>")
 map("n", "<A-r>", "<cmd>TroubleToggle<cr>")
 map("n", "<leader>ds", "<cmd>lua vim.o.signcolumn = vim.o.signcolumn==\"yes\"and\"no\"or\"yes\"<CR>")
--- map("n", "<A-s>", "<cmd>Telescope lsp_document_symbols ignore_symbols=false fname_width=0 sorter=false<cr>")
 map("n", "<leader>dc", "<cmd>set cursorline!<cr>")
 
--- Custom toggle for :Ex
 _G.toggle_explorer = function()
-  local is_explorer_open = false
   for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
-    if string.find(bufname, "NetrwTreeListing") then
-      is_explorer_open = true
-      break
+    if vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win)):find("NetrwTreeListing") then
+      return vim.cmd('bd')
     end
   end
-
-  if is_explorer_open then
-    vim.cmd('bd')
-  else
-    vim.cmd('Ex')
-  end
+  vim.cmd('Ex')
 end
-
--- Map Alt + f to toggle explorer
 map('n', '<A-f>', ":lua toggle_explorer()<CR>")
 
 map('n', '<leader>,', '<cmd>lua vim.diagnostic.goto_next()<cr>')
@@ -97,7 +70,6 @@ map('n', '<leader>;', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
 map("n", "<leader>gg", "<cmd>Neogit<cr>")
 map('n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>')
 
---  telescope
 map("n", "<leader>j", "<cmd>Telescope find_files find_command=rg,--no-ignore,--files<cr>")
 map("n", "<leader>J", "<cmd>Telescope find_files find_command=rg,--no-ignore,--hidden,--files<cr>")
 map("n", "<leader>k", "<cmd>Telescope live_grep <cr>")
@@ -109,97 +81,52 @@ map("n", "<leader>gf", "<cmd>Telescope git_files<cr>")
 map("n", "<leader>gb", "<cmd>Telescope git_branches<cr>")
 map("n", "<leader>gc", "<cmd>Telescope git_commits<cr>")
 map("n", "<leader>tm", "<cmd>Telescope jumplist<cr>")
--- map("n", "<leader>s", "<cmd>Telescope lsp_document_symbols<cr>")
 map("n", "<leader><leader>s", "<cmd>Telescope lsp_workspace_symbols<cr>")
 map("n", "gr", "<cmd>Telescope lsp_references<cr>")
--- map("n", "<leader>gi", "<cmd>Telescope lsp_incoming_calls<cr>")
--- map("n", "<leader>go", "<cmd>Telescope lsp_outgoing_calls<cr>")
 map("n", "<leader>b", "<cmd>Telescope buffers<cr>")
---  telescope extenstions
---map("n", "<leader>,", "<cmd>Telescope file_browser<cr>")
 map("n", "<leader>th", "<cmd>Telescope highlights<cr>")
 map("n", "<leader>td", "<cmd>Telescope diff diff_current<cr>")
--- map("n", "<leader>td", "<cmd>Telescope diff diff_files<cr>")
 map("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
 
---  DAP
 map("n", "<leader>8", "<cmd>DapToggleBreakpoint<cr>")
 map("n", "<leader>5", "<cmd>DapContinue<cr>")
 map("n", "<leader>7", "<cmd>DapStepOver<cr>")
 map("n", "<leader>9", "<cmd>DapStepInto<cr>")
 map("n", "<leader>0", "<cmd>DapStepOut<cr>")
 
--- map('n', '<leader>r', 'viw"hy:%s/\\<<C-r>h\\>//gI<left><left><left>')
--- visual
 map("v", "<leader>r", "\"hy:%s/\\<<C-r>h\\>//gI<left><left><left>")
 
--- map("v", "<C-j>", ":m '>+1<CR>gv=gv")
-
 local pairs = {
-  ["("] = ")",
-  ["{"] = "}",
-  ["["] = "]",
-  ["<"] = ">",
-  [")"] = "(",
-  ["}"] = "{",
-  ["]"] = "[",
-  [">"] = "<",
+  ["("]=")", ["{"]="}", ["["]="]", ["<"]=">",
+  [")"]="(", ["}"]= "{", ["]"]="[", [">"]="<",
 }
+local function get_pair(c) return pairs[c] end
 
-local function get_pair(c)
-  return pairs[c]
+local function surround(expansion)
+  return function()
+    local left = vim.fn.nr2char(vim.fn.getchar())
+    local right = get_pair(left) or left
+    local word = vim.fn.expand(expansion)
+    local line = vim.api.nvim_get_current_line()
+    local col  = string.find(line, word, 1, true)
+    if not col then return end
+    vim.api.nvim_set_current_line(line:sub(1, col-1) .. left .. word .. right .. line:sub(col + #word))
+  end
 end
-
-vim.keymap.set("n", "mw", function()
-  local left = vim.fn.nr2char(vim.fn.getchar())
-  local right = get_pair(left) or left
-
-  local word = vim.fn.expand("<cword>")
-  local line = vim.api.nvim_get_current_line()
-  local col = string.find(line, word, 1, true)
-
-  if not col then return end
-
-  local prefix = line:sub(1, col - 1)
-  local suffix = line:sub(col + #word)
-  local new_line = prefix .. left .. word .. right .. suffix
-
-  vim.api.nvim_set_current_line(new_line)
-end, { desc = "Add surrounding character pair" })
-
-vim.keymap.set("n", "mW", function()
-  local left = vim.fn.nr2char(vim.fn.getchar())
-  local right = get_pair(left) or left
-
-  local word = vim.fn.expand("<cWORD>")
-  local line = vim.api.nvim_get_current_line()
-  local col = string.find(line, word, 1, true)
-
-  if not col then return end
-
-  local prefix = line:sub(1, col - 1)
-  local suffix = line:sub(col + #word)
-  local new_line = prefix .. left .. word .. right .. suffix
-
-  vim.api.nvim_set_current_line(new_line)
-end, { desc = "Add surrounding character pair" })
+vim.keymap.set("n", "mw", surround("<cword>"), { desc = "Add surrounding character pair" })
+vim.keymap.set("n", "mW", surround("<cWORD>"), { desc = "Add surrounding character pair" })
 
 vim.keymap.set("n", "mx", function()
   local c = vim.fn.nr2char(vim.fn.getchar())
-  local left = c
-  local right = get_pair(c) or c
-
+  local left, right = c, get_pair(c) or c
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
-
   local l = col
   while l > 0 and line:sub(l, l) ~= left do l = l - 1 end
-
   local r = col + 1
   while r <= #line and line:sub(r, r) ~= right do r = r + 1 end
-
   if l > 0 and r <= #line then
-    local new_line = line:sub(1, l - 1) .. line:sub(l + 1, r - 1) .. line:sub(r + 1)
+    local new_line = line:sub(1, l-1) .. line:sub(l+1, r-1) .. line:sub(r+1)
     vim.api.nvim_set_current_line(new_line)
     vim.api.nvim_win_set_cursor(0, { row, math.min(col, #new_line) })
   else
@@ -208,33 +135,18 @@ vim.keymap.set("n", "mx", function()
 end, { desc = "Delete smart surrounding characters" })
 
 vim.keymap.set("n", "mc", function()
-  local find_char = vim.fn.nr2char(vim.fn.getchar())
+  local find_char    = vim.fn.nr2char(vim.fn.getchar())
   local replace_char = vim.fn.nr2char(vim.fn.getchar())
-
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
-
-  -- Lua string indexing is 1-based
   local left = col
-  while left > 0 and line:sub(left, left) ~= find_char do
-    left = left - 1
-  end
-
+  while left > 0 and line:sub(left, left) ~= find_char do left = left - 1 end
   local right = col + 1
-  while right <= #line and line:sub(right, right) ~= find_char do
-    right = right + 1
-  end
-
+  while right <= #line and line:sub(right, right) ~= find_char do right = right + 1 end
   if left > 0 and right <= #line then
-    local new_line =
-        line:sub(1, left - 1)
-        .. replace_char
-        .. line:sub(left + 1, right - 1)
-        .. replace_char
-        .. line:sub(right + 1)
-
+    local new_line = line:sub(1, left-1) .. replace_char .. line:sub(left+1, right-1) .. replace_char .. line:sub(right+1)
     vim.api.nvim_set_current_line(new_line)
-    vim.api.nvim_win_set_cursor(0, { row, math.min(col + 1, #new_line) })
+    vim.api.nvim_win_set_cursor(0, { row, math.min(col+1, #new_line) })
   else
     vim.notify("Could not find both surrounding characters", vim.log.levels.WARN)
   end

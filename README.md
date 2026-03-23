@@ -3,7 +3,7 @@
 to get vim plugins to work run:<br>
 ~/cloneVimPlugins
 
-to get inconsolate font, go the the next line and type Q
+to get inconsolate font, go the the next line and type Q<br>
 sudo curl -o "/usr/share/fonts/TTF/inconsolata.bold.ttf" "https://st.1001fonts.net/download/font/inconsolata.bold.ttf"
 
 put this in ~/.gitconfig:<br>
