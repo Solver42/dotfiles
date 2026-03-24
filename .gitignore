@@ -18,6 +18,12 @@
 !.config/i3
 !.config/i3/*
 
+!.config/hypr
+!.config/hypr/hyprland.conf
+
+!.config/foot
+!.config/foot/foot.ini
+
 !.config/wezterm
 !.config/wezterm/wezterm.lua
 

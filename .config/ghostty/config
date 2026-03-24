@@ -1,11 +1,11 @@
-theme = Gruvbox Dark
+#theme = Gruvbox Dark
 #keybind = alt+enter=toggle_fullscreen
 background = 000000
 foreground = 00ff00
 #font-family = Fira Code Nerd Font
 font-family = Inconsolata
 font-style = Bold
-font-size = 20
+font-size = 18
 font-feature = -calt
 #fullscreen = true
 window-decoration = none

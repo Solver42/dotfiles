@@ -14,6 +14,7 @@ alias g='grep --color=auto'
 alias gd='git diff'
 alias gs='git status'
 alias lg='lazygit'
+alias bat='cat /sys/class/power_supply/BAT1/capacity'
 
 alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
 alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
@@ -30,7 +31,7 @@ __prompt_git() {
     grep -qm1 "^[D ]D"   <<< "$status" && flags+=" [x]"
     grep -qm1 "^??"      <<< "$status" && flags+=" [?]"
     grep -qm1 "^[UA][UA]\|^AA\|^DD" <<< "$status" && flags+=" [=]"
-    echo -n "  $branch$flags"
+    echo -n " ⮐ $branch$flags"
 }
 PROMPT_COMMAND='PS1="${PWD/#$HOME/\~}$(__prompt_git)\n\$ "'
 
