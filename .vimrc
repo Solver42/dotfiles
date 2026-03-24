@@ -72,28 +72,28 @@ if exists('&t_SI')
     let &t_EI = "\<esc>[2 q"
 endif
 
-" COLOR SCHEME
-highlight Normal ctermfg=46
-highlight SignColumn ctermbg=NONE
-highlight LineNr ctermfg=46
-highlight CursorLineNr ctermfg=16 ctermbg=46 cterm=NONE
-highlight TabLine ctermbg=NONE ctermfg=46 cterm=NONE
-highlight TabLineFill ctermfg=16 cterm=NONE
-highlight TabLineSel ctermfg=16 ctermbg=46 cterm=NONE
-highlight IncSearch ctermbg=16 ctermfg=46
-highlight Search ctermbg=28 ctermfg=16
-highlight CurSearch ctermbg=28 ctermfg=16
-highlight WildMenu ctermfg=16 ctermbg=46
-highlight Visual ctermfg=16 ctermbg=28
-highlight StatusLine ctermfg=16 ctermbg=46
-highlight StatusLineNC ctermfg=46 ctermbg=16
-highlight VertSplit ctermbg=NONE ctermfg=46 cterm=NONE
-highlight CursorLine ctermbg=46 ctermfg=16 cterm=NONE
-highlight Pmenu ctermfg=28 ctermbg=NONE
-highlight PmenuSel ctermfg=16 ctermbg=46
-highlight PmenuSbar ctermfg=46 ctermbg=NONE
-highlight PmenuThumb ctermfg=16 ctermbg=46
-highlight HLCurrentWord ctermfg=16 ctermbg=28
+"COLORSCHEME
+highlight   Normal          ctermfg = 46
+highlight   SignColumn      ctermbg = NONE
+highlight   LineNr          ctermfg = 46
+highlight   CursorLineNr    ctermfg = 16     ctermbg = 46     cterm = NONE
+highlight   TabLine         ctermbg = NONE   ctermfg = 46     cterm = NONE
+highlight   TabLineFill     ctermfg = 16     cterm   = NONE
+highlight   TabLineSel      ctermfg = 16     ctermbg = 46     cterm = NONE
+highlight   IncSearch       ctermbg = 16     ctermfg = 46
+highlight   Search          ctermbg = 28     ctermfg = 16
+highlight   CurSearch       ctermbg = 28     ctermfg = 16
+highlight   WildMenu        ctermfg = 16     ctermbg = 46
+highlight   Visual          ctermfg = 16     ctermbg = 28
+highlight   StatusLine      ctermfg = 16     ctermbg = 46
+highlight   StatusLineNC    ctermfg = 46     ctermbg = 16
+highlight   VertSplit       ctermbg = NONE   ctermfg = 46     cterm = NONE
+highlight   CursorLine      ctermbg = 46     ctermfg = 16     cterm = NONE
+highlight   Pmenu           ctermfg = 28     ctermbg = NONE
+highlight   PmenuSel        ctermfg = 16     ctermbg = 46
+highlight   PmenuSbar       ctermfg = 46     ctermbg = NONE
+highlight   PmenuThumb      ctermfg = 16     ctermbg = 46
+highlight   HLCurrentWord   ctermfg = 16     ctermbg = 28
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>

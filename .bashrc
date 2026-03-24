@@ -33,8 +33,10 @@ __prompt_git() {
     grep -qm1 "^[UA][UA]\|^AA\|^DD" <<< "$status" && flags+=" [=]"
     echo -n " ⮐ $branch$flags"
 }
+
 PROMPT_COMMAND='PS1="${PWD/#$HOME/\~}$(__prompt_git)\n\$ "'
 
+# van is like man but in vim
 van() { man "$@" 2>/dev/null | col -b | vim -; }
 
 eval "$(mcfly init bash)"
