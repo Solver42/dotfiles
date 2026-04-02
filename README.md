@@ -1,5 +1,81 @@
 # solvers dotfiles
 
+## vim
+
+mkdir -p ~/dev/tools
+wget https://github.com/vim/vim/archive/refs/heads/master.tar.gz -O ~/dev/tools/repo-master.tar.gz
+cd ~/dev/tools/vim-master
+
+remove the sound and spell blocks from src/feature.h
+
+make distclean
+
+CFLAGS="-Os -fdata-sections -ffunction-sections" \
+LDFLAGS="-Wl,--gc-sections -s" \
+./configure \
+  --prefix=$HOME/.local/vim-min \
+  --with-features=normal \
+  --with-x \
+  --enable-multibyte \
+  --disable-gui \
+  --disable-darwin \
+  --disable-terminal \
+  --disable-channel \
+  --disable-netbeans \
+  --disable-nls \
+  --disable-luainterp \
+  --disable-pythoninterp \
+  --disable-python3interp \
+  --disable-perlinterp \
+  --disable-rubyinterp \
+  --disable-tclinterp \
+  --disable-mzschemeinterp \
+  --disable-xsmp \
+  --disable-xsmp-interact \
+  --disable-gpm \
+  --disable-selinux
+
+make -j$(nproc)
+
+make install
+
+strip ~/.local/vim-min/bin/vim
+
+cd ~/.local/vim-min/share/vim/vim92/
+rm -rf
+  tutor \
+  colors \
+  pack \
+  tools \
+  import \
+  ftplugin \
+  print \
+  compiler \
+  keymap \
+  lang \
+  macros \
+  spell \
+  plugin \
+  syntax \
+  autoload/cargo
+  autoload/rust
+  autoload/xml
+
+rm -f \
+  menu.vim \
+  synmenu.vim \
+  delmenu.vim \
+  evim.vim \
+  mswin.vim \
+  bugreport.vim \
+  vimrc_example.vim \
+  gvimrc_example.vim \
+  README.txt \
+  LICENSE \
+  optwin.vim \
+  xdg.vim \
+  autoload/*.vim
+
 to get vim plugins to work run:<br>
 ~/cloneVimPlugins
 
