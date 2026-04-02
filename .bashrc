@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+export PATH="$HOME/.local/vim-min/bin:$PATH"
+export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
+
 alias ..='cd ..'
-alias cdn='cd ~/.config/nvim'
 alias dev='cd ~/dev'
 alias cdo='cd /usr/lib/odin'
 alias pix='nohup /home/solver/dev/tools/Pixelorama-Linux-64bit/Pixelorama.x86_64 >/dev/null 2>&1&'
@@ -40,9 +42,30 @@ __prompt_git() {
 
 PROMPT_COMMAND='PS1="${PWD/#$HOME/\~}$(__prompt_git)\n\$ "'
 
+
+b1() { sudo systemctl start bluetooth.service; }
+b0() { sudo systemctl stop bluetooth.service; }
+w1() { nmcli radio wifi on; }
+w0() { nmcli radio wifi off; }
+
 # van is like man but in vim
 van() { man "$@" 2>/dev/null | col -b | vim -; }
 
+# history (cheap)
+HISTFILE=~/.bash_history
+HISTSIZE=10000
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+
+[ -f /usr/share/bash-completion/bash_completion ] && \
+    source /usr/share/bash-completion/bash_completion
+
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
-eval "$(zoxide init bash)"
+# eval "$(zoxide init bash)"
+z() {
+    unset -f z
+    eval "$(zoxide init bash)"
+    z "$@"
+}
+export "EDITOR=nvim"

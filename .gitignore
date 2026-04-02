@@ -6,10 +6,12 @@
 !README.md
 !.gitattributes
 !.bashrc
+!.xinitrc
 !.vimrc
 !.bash_profile
 !.tmux.conf
 !cloneVimPlugins
+!status.sh
 !.config
 
 !.config/ghostty

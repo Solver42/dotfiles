@@ -1,5 +1,4 @@
 " PERFORMANCE SETTINGS
-syntax off
 set ttyfast
 set lazyredraw
 
@@ -22,7 +21,7 @@ set undodir=~/.vim/undodir
 filetype plugin indent on
 
 " UI SETTINGS
-set fillchars=vert:\ ,eob:\ 
+set fillchars=vert:\|,eob:\ 
 set guitablabel=%t
 set mouse=a
 set showcmd
