@@ -10,6 +10,7 @@ alias o='odin run .'
 alias l='ls -ltrahF'
 alias n='nvim'
 alias v='vim'
+alias s='~/status.sh'
 alias g='grep --color=auto'
 alias gd='git diff'
 alias gs='git status'
@@ -18,6 +19,9 @@ alias bat='cat /sys/class/power_supply/BAT1/capacity'
 
 alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
 alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
+
+export EDITOR=vim
+export VISUAL=vim
 
 __prompt_git() {
     git rev-parse --is-inside-work-tree &>/dev/null || return
@@ -42,4 +46,3 @@ van() { man "$@" 2>/dev/null | col -b | vim -; }
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
 eval "$(zoxide init bash)"
-export "EDITOR=nvim"
