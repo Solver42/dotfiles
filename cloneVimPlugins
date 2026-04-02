@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 mkdir -p ~/.vim/pack/plugins/start
+
 git clone https://github.com/justinmk/vim-dirvish ~/.vim/pack/plugins/start/vim-dirvish
 git clone https://github.com/junegunn/fzf.vim ~/.vim/pack/plugins/start/fzf.vim
 git clone https://github.com/junegunn/fzf ~/.vim/pack/plugins/start/fzf

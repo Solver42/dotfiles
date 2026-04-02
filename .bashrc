@@ -22,6 +22,9 @@ alias bat='cat /sys/class/power_supply/BAT1/capacity'
 alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
 alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
 
+export EDITOR=vim
+export VISUAL=vim
+
 __prompt_git() {
     git rev-parse --is-inside-work-tree &>/dev/null || return
     local branch flags status
@@ -59,13 +62,10 @@ shopt -s histappend
 
 eval "$(mcfly init bash)"
 eval "$(thefuck --alias)"
-
 # eval "$(zoxide init bash)"
-
 z() {
     unset -f z
     eval "$(zoxide init bash)"
     z "$@"
 }
-
 export "EDITOR=nvim"
