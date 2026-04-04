@@ -45,7 +45,9 @@ total_dec=$(((mem_total / 1024 / 102) % 10))
 used_gb=$((used / 1024 / 1024))
 used_dec=$(((used / 1024 / 102) % 10))
 
-printf "  ⚂   %s.%sG/%s.%sG\n" "$used_gb" "$used_dec" "$total_gb" "$total_dec"
+# printf "  ⚂   %s.%sG/%s.%sG\n" "$used_gb" "$used_dec" "$total_gb" "$total_dec"
+printf "  ⚁   %s.%sG/%s.%sG\n" "$used_gb" "$used_dec" "$total_gb" "$total_dec"
+
 
 # ---- DISK (minimal, still needs df fallback avoided) ----
 disk_line=$(df -h / 2>/dev/null | sed -n '2p')
@@ -88,9 +90,9 @@ temp_file="/sys/class/thermal/thermal_zone0/temp"
 if [ -f "$temp_file" ]; then
     read -r t < "$temp_file"
     t=$((t / 1000))
-    printf "  🌡   %s°C\n" "$t"
+    printf "  ⧧   %s°C\n" "$t"
 else
-    printf "  🌡   N/A\n"
+    printf "  ⧧   N/A\n"
 fi
 
 # ---- VOLUME (pamixer) ----
@@ -98,7 +100,7 @@ if command -v pamixer >/dev/null 2>&1; then
     vol=$(pamixer --get-volume 2>/dev/null)
     mute=$(pamixer --get-mute 2>/dev/null)
     [ "$mute" = "true" ] && mute=" (muted)" || mute=""
-    printf "  🕨   %s%%%s\n" "${vol:-N/A}" "$mute"
+    printf "  🎚   %s%%%s\n" "${vol:-N/A}" "$mute"
 else
     printf "  🕨   N/A\n"
 fi

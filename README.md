@@ -4,7 +4,9 @@
 
 mkdir -p ~/dev/tools
 wget https://github.com/vim/vim/archive/refs/heads/master.tar.gz -O ~/dev/tools/repo-master.tar.gz
-cd ~/dev/tools/vim-master
+cd ~/dev/tools/
+tar -xvf repo-master.tar.gz
+cd vim-master
 
 remove the sound and spell blocks from src/feature.h
 
