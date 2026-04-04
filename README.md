@@ -41,10 +41,11 @@ make -j$(nproc)
 
 make install
 
-strip ~/.local/vim-min/bin/vim
+rm ~/.local/vim-min/bin/vimtutor
 
 cd ~/.local/vim-min/share/vim/vim92/
-rm -rf
+
+rm -rf \
   tutor \
   colors \
   pack \
@@ -59,8 +60,8 @@ rm -rf
   spell \
   plugin \
   syntax \
-  autoload/cargo
-  autoload/rust
+  autoload/cargo \
+  autoload/rust \
   autoload/xml
 
 rm -f \
