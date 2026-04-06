@@ -14,6 +14,9 @@
 !status.sh
 !.config
 
+!.config/mpv
+!.config/mpv/*
+
 !.config/ghostty
 !.config/ghostty/*
 
