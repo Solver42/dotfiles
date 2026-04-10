@@ -31,6 +31,22 @@
 !dev/tools/dwm/dwm.o
 !dev/tools/dwm/util.o
 
+!dev/tools/st/
+!dev/tools/st/win.h
+!dev/tools/st/st.info
+!dev/tools/st/st.1
+!dev/tools/st/Makefile
+!dev/tools/st/config.mk
+!dev/tools/st/arg.h
+!dev/tools/st/st.c.orig
+!dev/tools/st/config.def.h
+!dev/tools/st/st.c
+!dev/tools/st/st.h
+!dev/tools/st/x.c
+!dev/tools/st/config.h
+!dev/tools/st/st.o
+!dev/tools/st/x.o
+
 !.config
 
 !.config/mpv
