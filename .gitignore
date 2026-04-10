@@ -12,6 +12,25 @@
 !.tmux.conf
 !cloneVimPlugins
 !status.sh
+
+!dev/
+!dev/tools/
+!dev/tools/dwm/
+!dev/tools/dwm/Makefile
+!dev/tools/dwm/config.def.h
+!dev/tools/dwm/config.h
+!dev/tools/dwm/config.mk
+!dev/tools/dwm/dwm.1
+!dev/tools/dwm/drw.c
+!dev/tools/dwm/drw.h
+!dev/tools/dwm/dwm.c
+!dev/tools/dwm/transient.c
+!dev/tools/dwm/util.c
+!dev/tools/dwm/util.h
+!dev/tools/dwm/drw.o
+!dev/tools/dwm/dwm.o
+!dev/tools/dwm/util.o
+
 !.config
 
 !.config/mpv
