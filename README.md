@@ -85,6 +85,13 @@ to get vim plugins to work run:<br>
 to get inconsolate font, go the the next line and type Q<br>
 sudo curl -o "/usr/share/fonts/TTF/inconsolata.bold.ttf" "https://st.1001fonts.net/download/font/inconsolata.bold.ttf"
 
+## auto-cpufreq
+git clone https://aur.archlinux.org/auto-cpufreq.git
+cd auto-cpufreq
+makepkg -si
+sudo auto-cpufreq --install
+
+## diff-so-fancy
 put this in ~/.gitconfig:<br>
 ```
 [core]

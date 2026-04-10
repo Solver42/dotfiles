@@ -1,4 +1,5 @@
 " PERFORMANCE SETTINGS
+let g:did_load_syntax = 1
 set ttyfast
 set lazyredraw
 
