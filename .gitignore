@@ -27,9 +27,6 @@
 !dev/tools/dwm/transient.c
 !dev/tools/dwm/util.c
 !dev/tools/dwm/util.h
-!dev/tools/dwm/drw.o
-!dev/tools/dwm/dwm.o
-!dev/tools/dwm/util.o
 
 !dev/tools/st/
 !dev/tools/st/win.h
@@ -44,8 +41,6 @@
 !dev/tools/st/st.h
 !dev/tools/st/x.c
 !dev/tools/st/config.h
-!dev/tools/st/st.o
-!dev/tools/st/x.o
 
 !.config
 
