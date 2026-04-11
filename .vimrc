@@ -130,6 +130,8 @@ nnoremap sh <C-w>h
 nnoremap s= <C-w>=
 nnoremap sa <cmd>silent! vert ball<cr>
 nnoremap so <cmd>only<cr>
+nnoremap <C-up> <cmd>vertical resize +3<cr>
+nnoremap <C-down> <cmd>vertical resize -3<cr>
 
 " SEARCH & REPLACE
 nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
