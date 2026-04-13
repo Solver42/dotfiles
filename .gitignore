@@ -12,6 +12,8 @@
 !.tmux.conf
 !cloneVimPlugins
 !status.sh
+!.mkshrc
+!.profile
 
 !dev/
 !dev/tools/
