@@ -1,5 +1,3 @@
-eval "$(zoxide init posix --hook prompt)"
-
 #export PATH="$HOME/.local/vim-min/bin:$PATH"
 export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
 
@@ -27,6 +25,7 @@ alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
 
 export EDITOR=vim
 export VISUAL=vim
+export TERM=st-256color
 
 PS1='$(pwd | sed "s|^$HOME|~|")$(git branch 2>/dev/null | sed -n "s/* / ⮐ /p")
 $ '
@@ -54,3 +53,5 @@ w1() {
 
 # van is like man but in vim
 van() { man "$@" 2>/dev/null | col -b | vim -; }
+
+eval "$(zoxide init posix --hook prompt)"
