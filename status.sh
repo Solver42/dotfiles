@@ -117,9 +117,10 @@ while :; do
         vol=$(pamixer --get-volume 2>/dev/null)
         mute=$(pamixer --get-mute 2>/dev/null)
         [ "$mute" = "true" ] && mute=" (muted)" || mute=""
-        out="$out  ᚨ   ${vol:--}$mute\n"
+        # \033[K clears the rest of the line to prevent "ghost" characters
+        out="$out  ᚨ   ${vol:--}$mute\033[K\n"
     else
-        out="$out  ᚨ   -\n"
+        out="$out  ᚨ   -\033[K\n"
     fi
 
     # draw frame (atomic)
