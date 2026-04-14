@@ -7,7 +7,7 @@ cd ~/dev/tools/
 tar -xvf repo-master.tar.gz
 cd vim-master
 
-remove the sound and spell blocks from src/feature.h
+remove the arabic, sound and spell blocks from src/feature.h
 
 make distclean
 
@@ -17,14 +17,7 @@ LDFLAGS="-Wl,--gc-sections -s" \
   --prefix=$HOME/.local/vim-min \
   --with-features=normal \
   --with-x \
-  --enable-multibyte \
-  --enable-clipboard \
-  --disable-gui \
-  --disable-darwin \
-  --disable-terminal \
-  --disable-channel \
-  --disable-netbeans \
-  --disable-nls \
+  --without-wayland
   --disable-luainterp \
   --disable-pythoninterp \
   --disable-python3interp \
@@ -32,6 +25,7 @@ LDFLAGS="-Wl,--gc-sections -s" \
   --disable-rubyinterp \
   --disable-tclinterp \
   --disable-mzschemeinterp \
+  --disable-netbeans \
   --disable-xsmp \
   --disable-xsmp-interact \
   --disable-gpm \

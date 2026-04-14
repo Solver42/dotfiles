@@ -1,4 +1,4 @@
-#export PATH="$HOME/.local/vim-min/bin:$PATH"
+export PATH="$HOME/.local/vim-min/bin:$PATH"
 export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
 
 alias dev='cd ~/dev'

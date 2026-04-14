@@ -65,6 +65,15 @@ set complete-=t
 set wildmenu
 set wildmode=longest:full,full
 
+" Copies the entire line including indentation, but no newline
+nnoremap Y 0y$
+" Copies from the first non-blank character, excluding indentation and newline
+nnoremap Y ^y$
+" Copy full line (including indentation), exclude newline
+nnoremap yy :silent call setreg(v:register, getline('.'), 'v')<CR>:redraw!<CR>
+" Copy from first non-blank character, no prompt
+nnoremap yy :silent call setreg(v:register, substitute(getline('.'), '^\\s*', '', ''), 'v')<CR>:redraw!<CR>
+
 " CURSOR SHAPE
 if exists('&t_SI')
     let &t_SI = "\<esc>[6 q"
