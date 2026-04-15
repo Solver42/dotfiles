@@ -1,105 +1,132 @@
 #!/bin/sh
 
-# move cursor to top (no flicker)
-reset
+# save terminal state
+oldstty=$(stty -g)
 
-# ---- TIME ----
-printf "\n  t   %s\n" "$(date '+%H:%M:%S')"
+# raw mode: no echo, instant keypress
+stty -echo -icanon time 0 min 0
 
-# ---- DATE ----
-printf "  d   %s\n" "$(date '+%Y-%m-%d (%a)')"
+# hide cursor + clear screen ONCE
+printf "\033[?25l\033[2J"
 
-# ---- BATTERY ----
-bat_path="/sys/class/power_supply/BAT1"
+# restore on exit
+cleanup() {
+    stty "$oldstty"
+    printf "\033[?25h\n"
+    exit
+}
+trap cleanup INT TERM EXIT
 
-if [ -f "$bat_path/capacity" ]; then
-    read -r bat < "$bat_path/capacity"
-    read -r stat < "$bat_path/status"
-    printf "  E   %s%% (%s)\n" "$bat" "$stat"
-else
-    printf "  E   N/A\n"
-fi
+while :; do
+    out=""
 
-# ---- CPU LOAD (no uptime) ----
-read one five fifteen rest < /proc/loadavg
-printf "  λ   %s %s %s\n" "$one" "$five" "$fifteen"
+    # move cursor to top (no clear)
+    out="$out\033[H"
 
-# ---- MEMORY (no free) ----
-mem_total=0
-mem_avail=0
+    # ---- TIME ----
+    out="$out\n  ᛏ   $(date '+%H:%M:%S')\n"
 
-while read -r key val unit; do
-    case "$key" in
-        MemTotal:) mem_total=$val ;;
-        MemAvailable:) mem_avail=$val ;;
-    esac
-    [ "$mem_total" -ne 0 ] && [ "$mem_avail" -ne 0 ] && break
-done < /proc/meminfo
+    # ---- DATE ----
+    out="$out  ᛞ   $(date '+%Y-%m-%d %a')\n"
 
-used=$((mem_total - mem_avail))
+    # ---- BATTERY ----
+    bat_path="/sys/class/power_supply/BAT1"
+    if [ -f "$bat_path/capacity" ]; then
+        read -r bat < "$bat_path/capacity"
+        read -r stat < "$bat_path/status"
+        case "$stat" in
+            Charging) s="+" ;;
+            Discharging) s="-" ;;
+            Full) s="~" ;;
+            *) s="~" ;;
+        esac
+        out="$out  ᛖ   $bat $s\n"
+    else
+        out="$out  ᛖ   -\n"
+    fi
 
-# GB with 1 decimal
-total_gb=$((mem_total / 1024 / 1024))
-total_dec=$(((mem_total / 1024 / 102) % 10))
+    # ---- LOAD ----
+    read one five fifteen _ < /proc/loadavg
+    out="$out  ᛚ   $one $five $fifteen\n"
 
-used_gb=$((used / 1024 / 1024))
-used_dec=$(((used / 1024 / 102) % 10))
+    # ---- MEMORY ----
+    mem_total=0 mem_avail=0
+    while read -r key val _; do
+        case "$key" in
+            MemTotal:) mem_total=$val ;;
+            MemAvailable:) mem_avail=$val ;;
+        esac
+        [ "$mem_total" -ne 0 ] && [ "$mem_avail" -ne 0 ] && break
+    done < /proc/meminfo
 
-printf "  Σ   %s.%sG/%s.%sG\n" "$used_gb" "$used_dec" "$total_gb" "$total_dec"
+    used=$((mem_total - mem_avail))
+    out="$out  ᛗ   $((used/1024/1024)).$(((used/1024/102)%10))G/$((mem_total/1024/1024)).$(((mem_total/1024/102)%10))G\n"
 
-# ---- DISK (minimal, still needs df fallback avoided) ----
-disk_line=$(df -h / 2>/dev/null | sed -n '2p')
-set -- $disk_line
-used=$3
-total=$2
+    # ---- DISK ----
+    set -- $(df -h / 2>/dev/null | awk 'NR==2 {print $2, $3}')
+    out="$out  ᛟ   $2/$1\n"
 
-printf "  □   %s/%s\n" "$used" "$total"
+    # ---- NETWORK ----
+    iface=""
+    i=0
+    while IFS=: read -r name _; do
+        i=$((i + 1))
+        [ "$i" -le 2 ] && continue
+        name=${name#"${name%%[! ]*}"}
+        [ "$name" = "lo" ] && continue
+        iface=$name
+        break
+    done < /proc/net/dev
 
-# ---- NETWORK ----
-# get first UP interface
-iface=""
+    ip=$(ip -4 addr show "$iface" 2>/dev/null)
+    ip=${ip#*inet }
+    ip=${ip%%/*}
+    out="$out  ᚾ   ${ip:--}\n"
 
-# skip first 2 header lines explicitly
-i=0
-while IFS=: read -r name rest; do
-    i=$((i + 1))
-    [ "$i" -le 2 ] && continue
+    # ---- WIFI ----
+    rf=$(rfkill list wifi 2>/dev/null | awk '/Soft blocked:/ {print $3}')
+    state=$(nmcli radio wifi 2>/dev/null)
 
-    # remove leading spaces
-    name=${name#"${name%%[! ]*}"}
+    if [ "$rf" = "yes" ]; then wifi="-"
+    elif [ "$state" != "enabled" ]; then wifi="~"
+    else wifi="+"; fi
 
-    case "$name" in
-        lo) continue ;;
-        *)
-            iface=$name
-            break
-            ;;
-    esac
-done < /proc/net/dev
+    out="$out  ᚹ   $wifi\n"
 
-ip=$(ip -4 addr show "$iface" 2>/dev/null)
-ip=${ip#*inet }
-ip=${ip%%/*}
+    # ---- BLUETOOTH ----
+    rf=$(rfkill list bluetooth 2>/dev/null | awk '/Soft blocked:/ {print $3}')
+    svc=$(systemctl is-active bluetooth.service 2>/dev/null)
 
-printf "  ⇄   %s %s\n" "${iface:-?}" "${ip:-N/A}"
+    if [ "$rf" = "yes" ]; then bt="-"
+    elif [ "$svc" != "active" ]; then bt="~"
+    else bt="+"; fi
 
-# ---- TEMPERATURE ----
-temp_file="/sys/class/thermal/thermal_zone0/temp"
-if [ -f "$temp_file" ]; then
-    read -r t < "$temp_file"
-    t=$((t / 1000))
-    printf "  T   %s°C\n" "$t"
-else
-    printf "  θ   N/A\n"
-fi
+    out="$out  ᛒ   $bt\n"
 
-# ---- VOLUME (pamixer) ----
-if command -v pamixer >/dev/null 2>&1; then
-    vol=$(pamixer --get-volume 2>/dev/null)
-    mute=$(pamixer --get-mute 2>/dev/null)
-    [ "$mute" = "true" ] && mute=" (muted)" || mute=""
-    printf "  ∿   %s%%%s\n" "${vol:-N/A}" "$mute"
-else
-    printf "  ∿   N/A\n"
-fi
-printf "\n"
+    # ---- TEMP ----
+    temp_file="/sys/class/thermal/thermal_zone0/temp"
+    if [ -f "$temp_file" ]; then
+        read -r t < "$temp_file"
+        out="$out  ᚦ   $((t/1000))\n"
+    else
+        out="$out  ᚦ   -\n"
+    fi
+
+    # ---- VOLUME ----
+    if command -v pamixer >/dev/null 2>&1; then
+        vol=$(pamixer --get-volume 2>/dev/null)
+        mute=$(pamixer --get-mute 2>/dev/null)
+        [ "$mute" = "true" ] && mute=" (muted)" || mute=""
+        # \033[K clears the rest of the line to prevent "ghost" characters
+        out="$out  ᚨ   ${vol:--}$mute\033[K\n"
+    else
+        out="$out  ᚨ   -\033[K\n"
+    fi
+
+    # draw frame (atomic)
+    printf "%b" "$out"
+
+    # input at end (non-blocking)
+    read -r -t 1 -n 1 key
+    [ "$key" = "q" ] && break
+done

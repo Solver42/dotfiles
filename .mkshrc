@@ -1,0 +1,57 @@
+export PATH="$HOME/.local/vim-min/bin:$PATH"
+export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
+
+alias dev='cd ~/dev'
+alias ..='cd ..'
+alias cdo='cd /usr/lib/odin'
+alias pix='nohup /home/solver/dev/tools/Pixelorama-Linux-64bit/Pixelorama.x86_64 >/dev/null 2>&1&'
+alias y='yazi'
+alias o='odin run .'
+alias l='ls -ltrahF'
+alias n='nvim'
+alias v='vim'
+alias s='~/status.sh'
+alias g='grep --color=auto'
+alias m='mpv'
+alias lx='lynx --display_charset=utf-8 --assume_charset=utf-8'
+alias gd='git diff'
+alias gs='git status'
+alias lg='lazygit'
+alias bt='bluetui'
+alias bat='cat /sys/class/power_supply/BAT1/capacity'
+
+alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
+alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
+
+export EDITOR=vim
+export VISUAL=vim
+export TERM=st-256color
+
+PS1='$(pwd | sed "s|^$HOME|~|")$(git branch 2>/dev/null | sed -n "s/* / ⮐ /p")
+$ '
+
+b0() {
+    rfkill block bluetooth
+    sudo systemctl stop bluetooth.service
+}
+
+b1() {
+    sudo systemctl unmask bluetooth.service
+    rfkill unblock bluetooth
+    sudo systemctl start bluetooth.service
+}
+
+w0() {
+    rfkill block wifi
+    nmcli radio wifi off
+}
+
+w1() {
+    rfkill unblock wifi
+    nmcli radio wifi on
+}
+
+# van is like man but in vim
+van() { man "$@" 2>/dev/null | col -b | vim -; }
+
+eval "$(zoxide init posix --hook prompt)"
