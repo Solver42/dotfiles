@@ -4,7 +4,7 @@
 oldstty=$(stty -g)
 
 # raw mode: no echo, instant keypress
-stty -echo -icanon time 0 min 0
+stty -echo -icanon time 1 min 0
 
 # hide cursor + clear screen ONCE
 printf "\033[?25l\033[2J"
@@ -63,8 +63,8 @@ while :; do
     out="$out  ᛗ   $((used/1024/1024)).$(((used/1024/102)%10))G/$((mem_total/1024/1024)).$(((mem_total/1024/102)%10))G\n"
 
     # ---- DISK ----
-    set -- $(df -h / 2>/dev/null | awk 'NR==2 {print $2, $3}')
-    out="$out  ᛟ   $2/$1\n"
+    _df=$(df -h / 2>/dev/null | { read -r _; read -r _ _dsz _dus _; printf '%s/%s' "$_dus" "$_dsz"; })
+    out="$out  ᛟ   $_df\n"
 
     # ---- NETWORK ----
     iface=""
@@ -127,6 +127,6 @@ while :; do
     printf "%b" "$out"
 
     # input at end (non-blocking)
-    read -r -t 1 -n 1 key
+    read -r key
     [ "$key" = "q" ] && break
 done

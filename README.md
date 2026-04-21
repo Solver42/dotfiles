@@ -1,5 +1,21 @@
 # solvers dotfiles
 
+## disable bluetooth and wifi by default
+sudo pacman -S bluez-utils
+sudo systemctl disable bluetooth.service
+sudo rfkill block bluetooth
+sudo rfkill block wifi
+sudo systemctl enable systemd-rfkill.service
+sudo systemctl enable systemd-rfkill.socket
+
+run
+sudo visudo
+and add
+yourusername ALL=(ALL) NOPASSWD: /usr/bin/systemctl start bluetooth.service, /usr/bin/systemctl stop bluetooth.service
+
+sudo systemctl daemon-reexec
+sudo systemctl restart NetworkManager
+
 ## vim
 
 wget https://github.com/vim/vim/archive/refs/heads/master.tar.gz -O ~/dev/tools/repo-master.tar.gz
