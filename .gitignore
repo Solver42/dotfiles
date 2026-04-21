@@ -16,6 +16,7 @@
 !.profile
 !.w3m
 !.w3m/config
+!.Xresources
 
 !dev/
 !dev/tools/
