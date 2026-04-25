@@ -5,8 +5,13 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Inconsolata:pixelsize=26:antialias=true:autohint=true";
-static int borderpx = 2;
+static char *font = "Inconsolata:pixelsize=36:antialias=true:autohint=true";
+static char *font2[] = {
+    "DejaVu Sans Mono:pixelsize=36:antialias=true:autohint=true",
+    "Symbols Nerd Font:pixelsize=36:antialias=true:autohint=true",
+};
+
+static int borderpx = 5;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -100,7 +105,7 @@ static const char *colorname[] = {
 	"red3",
 	"green3",
 	"yellow3",
-	"#6666ff",
+	"#0066ff",
 	"magenta3",
 	"cyan3",
 	"green",
@@ -110,7 +115,7 @@ static const char *colorname[] = {
 	"red",
 	"green",
 	"yellow",
-	"#6666ff",
+	"#6699ff",
 	"magenta",
 	"cyan",
 	"white",
@@ -197,8 +202,8 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Home,        kscrollup,      {.i = 1000000} },
 	{ ShiftMask,            XK_End,         kscrolldown,    {.i = 1000000} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ Mod1Mask,             XK_k,           zoom,           {.f = +1} },
-	{ Mod1Mask,             XK_j,           zoom,           {.f = -1} },
+	{ Mod1Mask,             XK_k,           zoom,           {.f = +10} },
+	{ Mod1Mask,             XK_j,           zoom,           {.f = -10} },
 	{ Mod1Mask,             XK_r,           zoomreset,      {.f =  0} },
 	{ Mod1Mask,             XK_c,           clipcopy,       {.i =  0} },
 	{ Mod1Mask,             XK_v,           clippaste,      {.i =  0} },
