@@ -1,5 +1,11 @@
 # solvers dotfiles
 
+sudo pacman -S dash
+sudo ln -sf /bin/dash /bin/sh
+
+sudo pacman -S mksh
+chsh -s /usr/bin/mksh
+
 ## disable bluetooth and wifi by default
 sudo pacman -S bluez-utils
 sudo systemctl disable bluetooth.service
