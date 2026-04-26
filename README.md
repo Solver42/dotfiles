@@ -38,19 +38,9 @@ LDFLAGS="-Wl,--gc-sections -s" \
 ./configure \
   --prefix=$HOME/.local/vim-min \
   --with-features=normal \
-  --with-x \
-  --without-wayland
-  --disable-luainterp \
-  --disable-pythoninterp \
-  --disable-python3interp \
-  --disable-perlinterp \
-  --disable-rubyinterp \
-  --disable-tclinterp \
-  --disable-mzschemeinterp \
-  --disable-netbeans \
-  --disable-xsmp \
-  --disable-xsmp-interact \
-  --disable-gpm \
+  --without-x \
+  --without-wayland \
+  --disable-gui \
   --disable-selinux
 
 make -j$(nproc)
