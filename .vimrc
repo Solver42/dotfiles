@@ -211,7 +211,8 @@ function! s:CopyQfError()
         echo "Nothing to do"
         return
     endif
-    let @+ = getqflist()[0].text
+    let l:text = getqflist()[0].text
+    call system('xsel --input --clipboard', l:text)
     echo "Quickfix copied to clipboard"
 endfunction
 

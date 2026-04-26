@@ -14,6 +14,8 @@ sudo rfkill block wifi
 sudo systemctl enable systemd-rfkill.service
 sudo systemctl enable systemd-rfkill.socket
 
+see ~/.mkshrc for activating bluetooth and wifi
+
 run
 sudo visudo
 and add
@@ -101,6 +103,20 @@ git clone https://aur.archlinux.org/auto-cpufreq.git
 cd auto-cpufreq
 makepkg -si
 sudo auto-cpufreq --install
+
+## make root use lightweight vim
+create the file /usr/local/bin/vim-sudo and add the text:
+#!/bin/sh
+exec /home/solver/.local/vim-min/bin/vim -u NONE "$@"
+
+run the command:
+sudo chmod +x /usr/local/bin/vim-sudo
+
+run this command to open nano:
+sudo EDITOR=nano visudo
+
+and add this at the bottom:
+Defaults    editor=/usr/local/bin/vim-sudo
 
 ## diff-so-fancy
 put this in ~/.gitconfig:<br>
