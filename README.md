@@ -1,9 +1,23 @@
 # solvers dotfiles
 
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+sudo vim /etc/systemd/system/getty@tty1.service.d/override.conf
+
+add:
+
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin username --noclear %I $TERM
+
+run:
+sudo systemctl daemon-reload
+sudo systemctl restart getty@tty1.serivce
+
+
 sudo pacman -S dash
 sudo ln -sf /bin/dash /bin/sh
 
-sudo pacman -S mksh
+yay -S mksh
 chsh -s /usr/bin/mksh
 
 ## disable bluetooth and wifi by default
