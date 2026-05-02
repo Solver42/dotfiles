@@ -43,6 +43,7 @@ set timeoutlen=5000
 set ttimeoutlen=10
 set listchars=tab:\ \ 
 set list
+set cursorline
 
 " SEARCH SETTINGS
 set incsearch
@@ -92,13 +93,13 @@ highlight   Visual          ctermfg = 16    ctermbg = 28
 highlight   StatusLine      ctermfg = 16    ctermbg = 46
 highlight   StatusLineNC    ctermfg = 46    ctermbg = 16
 highlight   VertSplit       ctermbg = NONE  ctermfg = 46    cterm = NONE
-highlight   CursorLine      ctermbg = 46    ctermfg = 16    cterm = NONE
+highlight   CursorLine      ctermbg = 16    ctermfg = 46    cterm = underline
 highlight   Pmenu           ctermfg = 28    ctermbg = NONE
 highlight   PmenuSel        ctermfg = 16    ctermbg = 46
 highlight   PmenuSbar       ctermfg = 46    ctermbg = NONE
 highlight   PmenuThumb      ctermfg = 16    ctermbg = 46
 highlight   HLCurrentWord   ctermfg = 16    ctermbg = 28
-highlight   MatchParen      ctermfg = 16    ctermbg = 28
+highlight   MatchParen      ctermfg = 16    ctermbg = 46
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>
