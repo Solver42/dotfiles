@@ -13,7 +13,6 @@ run:
 sudo systemctl daemon-reload
 sudo systemctl restart getty@tty1.serivce
 
-
 sudo pacman -S dash
 sudo ln -sf /bin/dash /bin/sh
 
@@ -73,14 +72,12 @@ rm -rf \
   pack \
   tools \
   import \
-  ftplugin \
   print \
   compiler \
   keymap \
   lang \
   macros \
   spell \
-  plugin \
   autoload/cargo \
   autoload/rust \
   autoload/xml
@@ -105,6 +102,10 @@ rm -f \
   optwin.vim \
   xdg.vim \
   autoload/*.vim
+
+cd plugin
+
+rm getscriptPlugin.vim gzip.vim logiPat.vim manpager.vim netrwPlugin.vim openPlugin.vim rrhelper.vim spellfile.vim tarPlugin.vim tohtml.vim tutor.vim vimballPlugin.vim zipPlugin.vim README.txt
 
 to get vim plugins to work run:<br>
 ~/cloneVimPlugins
