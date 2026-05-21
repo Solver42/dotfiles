@@ -32,7 +32,7 @@ export VISUAL=vim
 export TERM=st-256color
 
 PS1='[30m[42m$(pwd | sed "s|^$HOME|~|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")[0m
-$ '
+ᚱ '
 
 b0() {
     rfkill block bluetooth

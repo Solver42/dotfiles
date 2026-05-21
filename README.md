@@ -56,7 +56,9 @@ LDFLAGS="-Wl,--gc-sections -s" \
   --without-x \
   --without-wayland \
   --disable-gui \
-  --disable-selinux
+  --disable-selinux \
+  --disable-nls \
+  --disable-acl
 
 make -j$(nproc)
 
@@ -80,7 +82,9 @@ rm -rf \
   spell \
   autoload/cargo \
   autoload/rust \
-  autoload/xml
+  autoload/xml \
+  ftplugin \
+  indent
 
 cd syntax
 
@@ -163,3 +167,9 @@ put this in ~/.gitconfig:<br>
     old = "#ff0000"
     new = "#00ff00"
 ```
+
+## auto mount
+sudo pacman -S udisks2 udiskie
+sudo systemctl enable --now udisks2.service
+udiskie &
+

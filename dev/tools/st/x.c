@@ -59,6 +59,8 @@ static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
+void kscrollup(const Arg *);
+void kscrolldown(const Arg *);
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -472,23 +474,6 @@ bpress(XEvent *e)
 	struct timespec now;
 	int snap;
 
-	if (btn == Button4 || btn == Button5) {
-		Arg a;
-		if (IS_SET(MODE_MOUSE) && !(e->xbutton.state & forcemousemod)) {
-			mousereport(e);
-			return;
-		}
-		if (!tisaltscreen()) {
-			a.i = 1;
-			if (btn == Button4) {
-				kscrollup(&a);
-			} else {
-				kscrolldown(&a);
-			}
-		}
-		return;
-	}
-
 	if (1 <= btn && btn <= 11)
 		buttons |= 1 << (btn-1);
 
@@ -886,8 +871,8 @@ xhints(void)
 	sizeh->flags = PSize | PResizeInc | PBaseSize | PMinSize;
 	sizeh->height = win.h;
 	sizeh->width = win.w;
-	sizeh->height_inc = win.ch;
-	sizeh->width_inc = win.cw;
+    sizeh->height_inc = 1;
+    sizeh->width_inc = 1;
 	sizeh->base_height = 2 * borderpx;
 	sizeh->base_width = 2 * borderpx;
 	sizeh->min_height = win.ch + 2 * borderpx;
