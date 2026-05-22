@@ -84,7 +84,6 @@ static const Key keys[] = {
     { MODKEY, XK_Up,                setmfact,  { .f = +0.05 } },
     { MODKEY, XK_Down,              setmfact,  { .f = -0.05 } },
 
-
     { MODKEY, XK_j, view, {.ui = 1 << 0} },
     { MODKEY|ShiftMask, XK_j, tagandview, {.ui = 1 << 0} },
 
@@ -108,6 +107,9 @@ static const Key keys[] = {
 
     { MODKEY, XK_minus, view, {.ui = 1 << 7} },
     { MODKEY|ShiftMask, XK_minus, tagandview, {.ui = 1 << 7} },
+
+    { MODKEY, XK_s, spawn, SHCMD("$HOME/.local/bin/screenshot") },
+
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 

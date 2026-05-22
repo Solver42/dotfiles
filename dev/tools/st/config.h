@@ -5,12 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
+// static char *font = "Liberation Mono:pixelsize=32:antialias=true:autohint=true";
 static char *font = "Inconsolata:pixelsize=36:antialias=true:autohint=true";
-static char *font2[] = {
-    "DejaVu Sans Mono:pixelsize=36:antialias=true:autohint=true",
-    "Symbols Nerd Font:pixelsize=36:antialias=true:autohint=true",
-};
-
 static int borderpx = 5;
 
 /*
@@ -21,7 +17,7 @@ static int borderpx = 5;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/usr/bin/mksh";
+static char *shell = "/bin/sh";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -182,10 +178,6 @@ static uint forcemousemod = ShiftMask;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
 };
 
 /* Internal keyboard shortcuts. */
@@ -197,23 +189,18 @@ static Shortcut shortcuts[] = {
 	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
-	{ ShiftMask,            XK_Home,        kscrollup,      {.i = 1000000} },
-	{ ShiftMask,            XK_End,         kscrolldown,    {.i = 1000000} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ Mod1Mask,             XK_k,           zoom,           {.f = +10} },
-	{ Mod1Mask,             XK_j,           zoom,           {.f = -10} },
+	{ MODKEY,               XK_k,           zoom,           {.f = +10} },
+	{ MODKEY,               XK_j,           zoom,           {.f = -10} },
 	{ Mod1Mask,             XK_r,           zoomreset,      {.f =  0} },
 	{ Mod1Mask,             XK_c,           clipcopy,       {.i =  0} },
 	{ Mod1Mask,             XK_v,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-    { Mod1Mask,             XK_u,           kscrollup,      {.i = -15} },
-    { Mod1Mask,             XK_d,           kscrolldown,    {.i = -15} },
+    { Mod1Mask,             XK_u,           kscrollup,      {.i = -1} },
+    { Mod1Mask,             XK_d,           kscrolldown,    {.i = -1} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 };
@@ -487,8 +474,3 @@ static char ascii_printable[] =
 	" !\"#$%&'()*+,-./0123456789:;<=>?"
 	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
 	"`abcdefghijklmnopqrstuvwxyz{|}~";
-
-/*
- * The amount of lines scrollback can hold before it wraps around.
- */
-unsigned int scrollback_lines = 5000;

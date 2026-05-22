@@ -1,4 +1,5 @@
 export PATH="$HOME/.local/vim-min/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
 
 alias dev='cd ~/dev'
@@ -14,6 +15,7 @@ alias g='grep --color=auto'
 alias m='mpv'
 alias d='w3m https://lite.duckduckgo.com/lite'
 alias n='nsxiv'
+alias t='z ~/Music&&m terminator.mp3 --start=0 --loop-file'
 alias lx='lynx --display_charset=utf-8 --assume_charset=utf-8'
 alias gd='git diff'
 alias gs='git status'
@@ -30,7 +32,7 @@ export VISUAL=vim
 export TERM=st-256color
 
 PS1='[30m[42m$(pwd | sed "s|^$HOME|~|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")[0m
-$ '
+ᚱ '
 
 b0() {
     rfkill block bluetooth

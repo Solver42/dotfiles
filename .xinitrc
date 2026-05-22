@@ -20,7 +20,6 @@ export GDK_DPI_SCALE=1.0
 export QT_SCALE_FACTOR=1.0
 export XCURSOR_SIZE=50
 
-
 xrdb -merge ~/.Xresources &
 
 picom &

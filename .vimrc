@@ -77,7 +77,6 @@ if exists('&t_SI')
     let &t_EI = "\<esc>[2 q"
 endif
 
-"COLORSCHEME
 highlight   Normal          ctermfg = 46
 highlight   SignColumn      ctermbg = NONE
 highlight   LineNr          ctermfg = 46
@@ -93,7 +92,6 @@ highlight   Visual          ctermfg = 16    ctermbg = 28
 highlight   StatusLine      ctermfg = 16    ctermbg = 46
 highlight   StatusLineNC    ctermfg = 46    ctermbg = 16
 highlight   VertSplit       ctermbg = NONE  ctermfg = 46    cterm = NONE
-" highlight   CursorLine      ctermbg = 16    ctermfg = 46    cterm = underline
 highlight   CursorLine      ctermbg = 22    ctermfg=NONE    cterm=NONE
 highlight   Pmenu           ctermfg = 28    ctermbg = NONE
 highlight   PmenuSel        ctermfg = 16    ctermbg = 46
