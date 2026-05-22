@@ -1088,6 +1088,8 @@ void
 kscrollup(const Arg *a)
 {
 	int n = a->i;
+    if (n < 0)
+        n = term.row / 2;
 
 	if (IS_SET(MODE_ALTSCREEN))
 		return;
@@ -1105,6 +1107,8 @@ kscrolldown(const Arg *a)
 {
 
 	int n = a->i;
+    if (n < 0)
+        n = term.row / 2;
 
 	if (IS_SET(MODE_ALTSCREEN))
 		return;
