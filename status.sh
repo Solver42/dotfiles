@@ -64,7 +64,7 @@ while :; do
 
     # ---- DISK ----
     _df=$(df -h / 2>/dev/null | { read -r _; read -r _ _dsz _dus _; printf '%s/%s' "$_dus" "$_dsz"; })
-    out="$out  ᛟ   $_df\n"
+    out="$out  ᚠ   $_df\n"
 
     # ---- NETWORK ----
     iface=""
