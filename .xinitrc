@@ -22,5 +22,4 @@ export XCURSOR_SIZE=50
 
 xrdb -merge ~/.Xresources &
 
-picom &
 exec dwm

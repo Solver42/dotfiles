@@ -49,6 +49,9 @@
 
 !.config
 
+!.config/picom
+!.config/picom/picom.conf
+
 !.config/mpv
 !.config/mpv/*
 

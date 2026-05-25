@@ -44,6 +44,7 @@ set ttimeoutlen=10
 set listchars=tab:\ \ 
 set list
 set cursorline
+let g:gitgutter_sign_removed = '-'
 
 " SEARCH SETTINGS
 set incsearch
@@ -99,6 +100,9 @@ highlight   PmenuSbar       ctermfg = 46    ctermbg = NONE
 highlight   PmenuThumb      ctermfg = 16    ctermbg = 46
 highlight   HLCurrentWord   ctermfg = 16    ctermbg = 28
 highlight   MatchParen      ctermfg = 16    ctermbg = 46
+highlight   GitGutterAdd    ctermfg = 46    ctermbg = NONE
+highlight   GitGutterChange ctermfg = 226   ctermbg = NONE
+highlight   GitGutterDelete ctermfg = 9     ctermbg = NONE
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>
