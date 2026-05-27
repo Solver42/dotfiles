@@ -242,10 +242,10 @@ static int iofd = 1;
 static int cmdfd;
 static pid_t pid;
 
-static const uchar utfbyte[UTF_SIZ + 1] = {0x80,    0, 0xC0, 0xE0, 0xF0};
-static const uchar utfmask[UTF_SIZ + 1] = {0xC0, 0x80, 0xE0, 0xF0, 0xF8};
-static const Rune utfmin[UTF_SIZ + 1] = {       0,    0,  0x80,  0x800,  0x10000};
-static const Rune utfmax[UTF_SIZ + 1] = {0x10FFFF, 0x7F, 0x7FF, 0xFFFF, 0x10FFFF};
+static const uchar utfbyte [ UTF_SIZ + 1] = {0x80     , 0    , 0xC0  , 0xE0   , 0xF0};
+static const uchar utfmask [ UTF_SIZ + 1] = {0xC0     , 0x80 , 0xE0  , 0xF0   , 0xF8};
+static const Rune  utfmin  [ UTF_SIZ + 1] = {0        , 0    , 0x80  , 0x800  , 0x10000};
+static const Rune  utfmax  [ UTF_SIZ + 1] = {0x10FFFF , 0x7F , 0x7FF , 0xFFFF , 0x10FFFF};
 
 ssize_t
 xwrite(int fd, const char *s, size_t len)
@@ -1105,7 +1105,6 @@ kscrollup(const Arg *a)
 void
 kscrolldown(const Arg *a)
 {
-
 	int n = a->i;
     if (n < 0)
         n = term.row / 2;
