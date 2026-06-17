@@ -25,7 +25,6 @@ alias bt='bluetui'
 alias lm='lmms & 2>/dev/null'
 alias bat='cat /sys/class/power_supply/BAT1/capacity'
 alias tmp='vim ~/dev/tmp'
-
 alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
 alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
 
@@ -58,22 +57,23 @@ __git_status_symbols() {
 $s
 EOF
     local sym=""
-    [ "$con" -eq 1 ] && sym="${sym}="
-    [ "$sta" -eq 1 ] && sym="${sym}+"
-    [ "$mod" -eq 1 ] && sym="${sym}!"
-    [ "$del" -eq 1 ] && sym="${sym}X"
-    [ "$unt" -eq 1 ] && sym="${sym}?"
+    local sep=""
+    [ "$con" -eq 1 ] && sym="${sym}${sep}=" && sep=" "
+    [ "$sta" -eq 1 ] && sym="${sym}${sep}+" && sep=" "
+    [ "$mod" -eq 1 ] && sym="${sym}${sep}!" && sep=" "
+    [ "$del" -eq 1 ] && sym="${sym}${sep}X" && sep=" "
+    [ "$unt" -eq 1 ] && sym="${sym}${sep}?" && sep=" "
     if [ "$ahead" -gt 0 ] && [ "$behind" -gt 0 ]; then
-        sym="${sym} ⇕"
+        sym="${sym}${sep}⇕"
     elif [ "$ahead" -gt 0 ]; then
-        sym="${sym} ⇡"
+        sym="${sym}${sep}⇡"
     elif [ "$behind" -gt 0 ]; then
-        sym="${sym} ⇣"
+        sym="${sym}${sep}⇣"
     fi
     [ -n "$sym" ] && printf " %s" "$sym"
 }
 
-PS1='[30m[42m$(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")$(__git_status_symbols)[0m
+PS1='[30m[42m $(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")$(__git_status_symbols) [0m
 ᚱ '
 
 b0() {
