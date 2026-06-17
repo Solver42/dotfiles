@@ -73,7 +73,7 @@ EOF
     [ -n "$sym" ] && printf " %s" "$sym"
 }
 
-PS1='[30m[42m$(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")$(__git_status_symbols)[0m
+PS1='[30m[42m $(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")$(__git_status_symbols) [0m
 ᚱ '
 
 b0() {
