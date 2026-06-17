@@ -45,6 +45,7 @@ set listchars=tab:\ \
 set list
 set cursorline
 let g:gitgutter_sign_removed = '-'
+set keywordprg=
 
 " SEARCH SETTINGS
 set incsearch

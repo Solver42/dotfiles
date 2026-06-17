@@ -1,5 +1,6 @@
 export PATH="$HOME/.local/vim-min/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+
 export NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=green,black;title=green,black;button=white,green;entry=lightgray,black;textbox=blue,black'
 
 alias dev='cd ~/dev'
@@ -23,6 +24,7 @@ alias lg='lazygit'
 alias bt='bluetui'
 alias lm='lmms & 2>/dev/null'
 alias bat='cat /sys/class/power_supply/BAT1/capacity'
+alias tmp='vim ~/dev/tmp'
 
 alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
 alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'

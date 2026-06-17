@@ -55,8 +55,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
-static const char *browsercmd[]  = { "brave", NULL };
+// static const char *browsercmd[]  = { "brave", NULL };
+static const char *firefoxcmd[]  = { "firefox", NULL };
 static const char *thunarcmd[] = { "thunar", NULL };
+static const char *pavucontrol[] = { "pavucontrol", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -72,7 +74,8 @@ static const Key keys[] = {
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
     { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_w,      spawn,          {.v = browsercmd } },
+    { MODKEY,                       XK_q,      spawn,          {.v = pavucontrol } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = firefoxcmd } },
     { MODKEY,                       XK_e,      spawn,          {.v = thunarcmd } },
     { MODKEY,                       XK_u,      focusstack,     { .i = -1 } },
     { MODKEY,                       XK_o,      focusstack,     { .i = +1 } },
