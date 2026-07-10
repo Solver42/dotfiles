@@ -14,7 +14,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart getty@tty1.serivce
 
 sudo pacman -S dash
-sudo ln -sf /bin/dash /bin/sh
+sudo ln -sfT dash /usr/bin/sh
 
 yay -S mksh
 chsh -s /usr/bin/mksh
@@ -173,3 +173,10 @@ sudo pacman -S udisks2 udiskie
 sudo systemctl enable --now udisks2.service
 udiskie &
 
+## run virtual machine
+
+qemu-system-x86_64 \
+    -enable-kvm \
+    -cpu host \
+    -m 2G \
+    -drive file=~/Downloads/freebsd.img,format=qcow2

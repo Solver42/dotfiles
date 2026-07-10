@@ -95,15 +95,17 @@ highlight   StatusLine      ctermfg = 16    ctermbg = 46
 highlight   StatusLineNC    ctermfg = 46    ctermbg = 16
 highlight   VertSplit       ctermbg = NONE  ctermfg = 46    cterm = NONE
 highlight   CursorLine      ctermbg = 22    ctermfg=NONE    cterm=NONE
-highlight   Pmenu           ctermfg = 28    ctermbg = NONE
+highlight   Pmenu           ctermfg = 46    ctermbg = NONE
 highlight   PmenuSel        ctermfg = 16    ctermbg = 46
 highlight   PmenuSbar       ctermfg = 46    ctermbg = NONE
 highlight   PmenuThumb      ctermfg = 16    ctermbg = 46
-highlight   HLCurrentWord   ctermfg = 16    ctermbg = 28
+highlight   HLCurrentWord   ctermfg = 16    ctermbg = 46
 highlight   MatchParen      ctermfg = 16    ctermbg = 46
 highlight   GitGutterAdd    ctermfg = 46    ctermbg = NONE
 highlight   GitGutterChange ctermfg = 226   ctermbg = NONE
 highlight   GitGutterDelete ctermfg = 9     ctermbg = NONE
+
+set pumborder=custom:─;│;─;│;┌;┐;┘;└
 
 " INSERT MODE MAPPINGS
 inoremap jkj <esc>
@@ -148,7 +150,7 @@ nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
 nnoremap * *N
 nnoremap <leader>R viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
-nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
+nnoremap <leader>r <cmd>call <SID>ToggleHighlightWord()<cr>viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
 
 " QUICK SHELL COMMAND
 nnoremap Q :!<C-r><C-l><CR>
@@ -233,6 +235,12 @@ function! s:ToggleDirvish()
         Dirvish
     endif
 endfunction
+
+augroup DirvishHighlights
+    autocmd!
+    autocmd FileType dirvish syntax match DirvishDirectory '[^/]\+/$'
+    autocmd FileType dirvish highlight default DirvishDirectory ctermbg=46 ctermfg=16
+augroup ENDet g:dirvish_mode = ':sort ,^.*[\/],'  " Sort directories first
 
 augroup DirvishMappings
     autocmd!
