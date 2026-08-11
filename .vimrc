@@ -232,7 +232,11 @@ function! s:ToggleDirvish()
         bdelete
     else
         " Open Dirvish
-        Dirvish
+        let l:path = expand('%:p')
+        if !isdirectory(l:path)
+            let l:path = fnamemodify(l:path, ':h')
+        endif
+        execute 'Dirvish' fnameescape(l:path)
     endif
 endfunction
 
