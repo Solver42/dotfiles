@@ -25,7 +25,6 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -56,7 +55,7 @@ static const Layout layouts[] = {
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
 // static const char *browsercmd[]  = { "brave", NULL };
-static const char *firefoxcmd[]  = { "firefox", NULL };
+static const char *bravecmd[]  = { "brave", NULL };
 static const char *thunarcmd[] = { "thunar", NULL };
 static const char *pavucontrol[] = { "pavucontrol", NULL };
 
@@ -67,15 +66,15 @@ static const Key keys[] = {
     { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer -d 5") },
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
 
-    { MODKEY, XK_a,               spawn, SHCMD("xinput disable 'PIXA3848:01 093A:3848 Touchpad'") },
-    { MODKEY, XK_f,               spawn, SHCMD("xinput enable 'PIXA3848:01 093A:3848 Touchpad'") },
+    { MODKEY, XK_a,               spawn, SHCMD("xinput enable 'PIXA3848:01 093A:3848 Touchpad'") },
+    { MODKEY, XK_f,               spawn, SHCMD("xinput disable 'PIXA3848:01 093A:3848 Touchpad'") },
 
     /* brightness */
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
     { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                       XK_q,      spawn,          {.v = pavucontrol } },
-	{ MODKEY,                       XK_w,      spawn,          {.v = firefoxcmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = bravecmd } },
     { MODKEY,                       XK_e,      spawn,          {.v = thunarcmd } },
     { MODKEY,                       XK_u,      focusstack,     { .i = -1 } },
     { MODKEY,                       XK_o,      focusstack,     { .i = +1 } },
@@ -117,6 +116,11 @@ static const Key keys[] = {
     { MODKEY, XK_s, spawn, SHCMD("$HOME/.local/bin/screenshot") },
 
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+    { MODKEY, XK_1, spawn, SHCMD("rfkill unblock wifi && nmcli radio wifi on") },
+    { MODKEY, XK_2, spawn, SHCMD("rfkill block wifi && nmcli radio wifi off") },
+    { MODKEY, XK_3, spawn, SHCMD("rfkill unblock bluetooth && sudo systemctl start bluetooth.service") },
+    { MODKEY, XK_4, spawn, SHCMD("rfkill block bluetooth && sudo systemctl stop bluetooth.service") },
 };
 
 /* button definitions */

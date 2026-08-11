@@ -150,7 +150,7 @@ nnoremap <C-L> <cmd>nohlsearch<CR><C-L>
 nnoremap / /\c\v
 nnoremap * *N
 nnoremap <leader>R viwy:%s/\V<C-r>=escape(@", '/\')<CR>//gIc<Left><Left><Left><Left>
-nnoremap <leader>r <cmd>call <SID>ToggleHighlightWord()<cr>viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
+nnoremap <leader>r viwy:%s/\V\<<C-r>=escape(@", '/\')<CR>\>//gIc<Left><Left><Left><Left>
 
 " QUICK SHELL COMMAND
 nnoremap Q :!<C-r><C-l><CR>
@@ -212,8 +212,8 @@ nnoremap <leader>aö :call AlignBlock(':=', '/:=/l1r1')<CR>
 nnoremap <leader>a, :call AlignBlock(',', '/,/l0r1')<CR>
 nnoremap <leader>a; :call AlignBlock(';', '/;/l0r1')<CR>
 
-nnoremap ms :call <SID>CopyQfError()<CR>
-function! s:CopyQfError()
+nnoremap ms :call <SID>CopyQuickfixError()<CR>
+function! s:CopyQuickfixError()
     if empty(getqflist())
         echo "Nothing to do"
         return
@@ -713,3 +713,5 @@ function! ToggleGitGutterPreview()
 endfunction
 noremap <leader>dk :call ToggleGitGutterPreview()<CR>
 let g:gitgutter_map_keys = 0
+let g:gjallarhorn_root_markers = ['.git', 'main.odin', 'gjallar.horn']
+inoremap <silent> <NUL> <C-x><C-o>
