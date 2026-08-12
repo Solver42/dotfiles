@@ -48,7 +48,7 @@ remove the arabic, sound and spell blocks from src/feature.h
 
 make distclean
 
-CFLAGS="-Os -fdata-sections -ffunction-sections" \
+CFLAGS="-O2 -fdata-sections -ffunction-sections" \
 LDFLAGS="-Wl,--gc-sections -s" \
 ./configure \
   --prefix=$HOME/.local/vim-min \

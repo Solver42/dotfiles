@@ -76,26 +76,6 @@ EOF
 PS1='[30m[42m $(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s/* / ᛇ /p")$(__git_status_symbols) [0m
 ᚱ '
 
-b0() {
-    rfkill block bluetooth
-    sudo systemctl stop bluetooth.service
-}
-
-b1() {
-    rfkill unblock bluetooth
-    sudo systemctl start bluetooth.service
-}
-
-w0() {
-    rfkill block wifi
-    nmcli radio wifi off
-}
-
-w1() {
-    rfkill unblock wifi
-    nmcli radio wifi on
-}
-
 # van is like man but in vim
 van() { man "$@" 2>/dev/null | col -b | vim -; }
 
