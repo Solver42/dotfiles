@@ -7,7 +7,6 @@ alias dev='cd ~/dev'
 alias ..='cd ..'
 alias cdo='cd /usr/lib/odin'
 alias pix='nohup /home/solver/dev/tools/Pixelorama-Linux-64bit/Pixelorama.x86_64 >/dev/null 2>&1&'
-alias y='yazi'
 alias o='odin run .'
 alias l='ls -ltrahF'
 alias v='vim'
@@ -25,8 +24,11 @@ alias bt='bluetui'
 alias lm='lmms & 2>/dev/null'
 alias bat='cat /sys/class/power_supply/BAT1/capacity'
 alias tmp='vim ~/dev/tmp'
-alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
-alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
+#alias this='xrandr --output HDMI-A-0 --off --output eDP --auto'
+#alias that='xrandr --output eDP --off --output HDMI-A-0 --auto'
+
+alias this='xrandr --output HDMI-1 --off --output eDP-1 --auto'
+alias that='xrandr --output eDP-1 --off --output HDMI-1 --auto'
 
 export EDITOR=vim
 export VISUAL=vim
