@@ -118,7 +118,7 @@ local function apply_cursorline_styles()
     local typing = vis.mode == vis.modes.INSERT or vis.mode == vis.modes.REPLACE
     vis.ui:style_define(ids.CURSOR_LINE, 'fore:7,back:22')
     if typing then
-        vis.ui:style_define(ids.CURSOR_PRIMARY, 'back:15')
+        vis.ui:style_define(ids.CURSOR_PRIMARY, 'back:252')
     else
         vis.ui:style_define(ids.CURSOR_PRIMARY, vis.lexers.STYLE_CURSOR_PRIMARY or 'reverse')
     end
