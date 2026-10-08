@@ -22,4 +22,6 @@ export XCURSOR_SIZE=50
 
 xrdb -merge ~/.Xresources &
 
+~/.local/bin/keymouse >/dev/null 2>&1 &
+
 exec dwm

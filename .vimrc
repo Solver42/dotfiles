@@ -36,8 +36,8 @@ set t_vb=
 set nowrap
 set scrolloff=2
 set sidescrolloff=5
-set signcolumn=no
-set laststatus=0
+set signcolumn=yes
+set laststatus=2
 set updatetime=100
 set timeoutlen=5000
 set ttimeoutlen=10
@@ -80,6 +80,7 @@ if exists('&t_SI')
 endif
 
 highlight   Normal          ctermfg = 46
+highlight   Title           ctermfg = 46
 highlight   SignColumn      ctermbg = NONE
 highlight   LineNr          ctermfg = 46
 highlight   CursorLineNr    ctermfg = 16    ctermbg = 46    cterm = NONE
@@ -99,7 +100,7 @@ highlight   Pmenu           ctermfg = 46    ctermbg = NONE
 highlight   PmenuSel        ctermfg = 16    ctermbg = 46
 highlight   PmenuSbar       ctermfg = 46    ctermbg = NONE
 highlight   PmenuThumb      ctermfg = 16    ctermbg = 46
-highlight   HLCurrentWord   ctermfg = 16    ctermbg = 46
+highlight   HLCurrentWord   ctermfg = 16    ctermbg = 28
 highlight   MatchParen      ctermfg = 16    ctermbg = 46
 highlight   GitGutterAdd    ctermfg = 46    ctermbg = NONE
 highlight   GitGutterChange ctermfg = 226   ctermbg = NONE
@@ -622,48 +623,6 @@ augroup RestoreCursor
                 \ | endif
 augroup END
 
-" FZF CONFIGURATION
-if executable('fzf')
-    let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
-    let g:fzf_layout = { 'window': { 'width': 1, 'height': 1 } }
-    let g:fzf_preview_window = ['right:50%', 'ctrl-/']
-
-    command! -bang -nargs=? -complete=dir Files
-                \ call fzf#vim#files(<q-args>, {
-                \   'options': ['--preview', 'cat {}'],
-                \   'source': 'rg --files --no-ignore'
-                \ }, <bang>0)
-
-    command! -bang -nargs=? -complete=dir FilesHidden
-                \ call fzf#vim#files(<q-args>, {
-                \   'options': ['--preview', 'cat {}'],
-                \   'source': 'rg --files --no-ignore --hidden'
-                \ }, <bang>0)
-
-    command! -bang -nargs=* Rg
-                \ call fzf#vim#grep(
-                \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore -- '.shellescape(<q-args>), 1,
-                \   {'options': ['--delimiter', ':', '--preview', 'cat {1}', '--preview-window', '+{2}-/2']}, <bang>0)
-
-    command! -bang -nargs=* RgHidden
-                \ call fzf#vim#grep(
-                \   'rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -- '.shellescape(<q-args>), 1,
-                \   {'options': ['--delimiter', ':', '--preview', 'cat {1}', '--preview-window', '+{2}-/2']}, <bang>0)
-
-    command! -bang Buffers
-                \ call fzf#vim#buffers({
-                \   'options': ['--preview', 'echo {} | awk "{print \$NF}" | xargs cat']
-                \ }, <bang>0)
-
-    nnoremap <leader>g <cmd>GFiles<CR>
-    nnoremap <leader>j <cmd>Files<CR>
-    nnoremap <leader>J <cmd>FilesHidden<CR>
-    nnoremap <leader>k <cmd>Rg<CR>
-    nnoremap <leader>K <cmd>RgHidden<CR>
-    nnoremap <leader>b <cmd>Buffers<CR>
-    nnoremap <leader>B <cmd>Buffers<CR>
-endif
-
 " FORMAT WHOLE BUFFER
 function! FixIndent()
     let l:save_view = winsaveview()
@@ -719,3 +678,9 @@ noremap <leader>dk :call ToggleGitGutterPreview()<CR>
 let g:gitgutter_map_keys = 0
 let g:gjallarhorn_root_markers = ['.git', 'main.odin', 'gjallar.horn']
 inoremap <silent> <NUL> <C-x><C-o>
+
+nnoremap <leader>j <cmd>Fd<CR>
+nnoremap <leader>k <cmd>Rg<CR>
+let g:fd_args = ['--hidden', '--exclude', '.git']
+let g:fd_max_files = 10000
+let g:fd_preview_lines = 500
