@@ -49,6 +49,9 @@
 
 !.config
 
+!.config/vis/
+!.config/vis/visrc.lua
+
 !.config/picom
 !.config/picom/picom.conf
 
