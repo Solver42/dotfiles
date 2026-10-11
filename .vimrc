@@ -679,6 +679,9 @@ let g:gitgutter_map_keys = 0
 let g:gjallarhorn_root_markers = ['.git', 'main.odin', 'gjallar.horn']
 inoremap <silent> <NUL> <C-x><C-o>
 
+nnoremap <leader>gd <cmd>!clear&&git diff<CR>
+nnoremap <leader>gj <cmd>!clear&&git diff -- %<CR>
+
 nnoremap <leader>j <cmd>Fd<CR>
 nnoremap <leader>k <cmd>Rg<CR>
 let g:fd_args = ['--hidden', '--exclude', '.git']
