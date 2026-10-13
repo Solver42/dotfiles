@@ -216,19 +216,28 @@ end)
 
 vis:map(vis.modes.NORMAL, ' w', ':w<Enter>')
 
+-- Run a diff pipeline in a pager, then put the terminal back into the state
+-- vis expects (alternate screen) and repaint everything.
+local function paged_diff(args)
+    local cmd = ':!git --no-pager diff --color=always ' .. args
+        .. ' | diff-so-fancy | LESS= less --tabs=4 -R; tput smcup<Enter>\x0c'
+    vis:feedkeys(cmd)
+end
+
 vis:map(vis.modes.NORMAL, ' gj', function()
     local name = vis.win and vis.win.file and vis.win.file.name
     if not name then
         vis:info('no file name')
         return
     end
-    -- single-quote the name for the shell
     local quoted = "'" .. name:gsub("'", "'\\''") .. "'"
-    vis:feedkeys(':!git --no-pager diff --color=always -- ' .. quoted
-        .. ' | diff-so-fancy | LESS= less --tabs=4 -R<Enter>')
+    paged_diff('-- ' .. quoted)
 end)
 
-vis:map(vis.modes.NORMAL, ' gd', ':!git --no-pager diff --color=always | diff-so-fancy | LESS= less --tabs=4 -R<Enter>')
+vis:map(vis.modes.NORMAL, ' gd', function()
+    paged_diff('')
+end)
+
 
 vis:map(vis.modes.NORMAL, ' dh', function()
     hi_word = not hi_word
