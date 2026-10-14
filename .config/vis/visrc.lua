@@ -24,6 +24,82 @@ local home = os.getenv('HOME')
 if home then cursors.path = home .. '/.cache/vis_cursors' end
 
 --------------------------------------------------------------------------------
+-- System clipboard
+--   yank/delete -> xsel (checked after every redraw)
+--   p / P       -> insert the xsel clipboard directly (function mapping,
+--                  so no keys are fed back and nothing can loop)
+--------------------------------------------------------------------------------
+
+local last_reg
+
+local function sync_clipboard()
+    local ok, vals = pcall(function() return vis.registers['"'] end)
+    local text = (ok and type(vals) == 'table') and table.concat(vals, '\n') or ''
+    if last_reg == nil then last_reg = text; return end -- state at startup, even if empty
+    if text == '' or text == last_reg then return end
+    last_reg = text
+    local p = io.popen('xsel --input --clipboard', 'w')
+    if p then p:write(text); p:close() end
+end
+
+vis.events.subscribe(vis.events.UI_DRAW, sync_clipboard)
+
+local function paste_clipboard(before)
+    local win = vis.win
+    local file, sel = win and win.file, win and win.selection
+    if not file or not sel then return end
+
+    local h = io.popen('xsel --output --clipboard 2>/dev/null', 'r')
+    if not h then vis:info('xsel failed'); return end
+    local text = h:read('*a')
+    h:close()
+    if not text or text == '' then vis:info('clipboard empty'); return end
+
+    local pos = sel.pos
+    if text:sub(-1) == '\n' then
+        -- linewise: below (p) or above (P) the current line
+        local lstart = file:offset_from_line_column(sel.line) or 0
+        if before then
+            file:insert(lstart, text)
+            sel.pos = lstart
+        else
+            local nxt = file:offset_from_line_column(sel.line + 1) or file.size
+            if nxt >= file.size and file.size > 0
+                and file:content(file.size - 1, 1) ~= '\n' then
+                file:insert(file.size, '\n' .. text:sub(1, -2))
+                sel.pos = file.size - #text + 1
+            else
+                file:insert(nxt, text)
+                sel.pos = nxt
+            end
+        end
+    else
+        -- characterwise: after (p) or before (P) the cursor character
+        local at = pos
+        if not before and file.size > 0 then
+            local c = file:content(pos, 1)
+            local b = c and c:byte(1)
+            if b and b ~= 10 then
+                at = pos + ((b >= 240 and 4) or (b >= 224 and 3) or (b >= 192 and 2) or 1)
+            end
+        end
+        file:insert(at, text)
+        local last = #text
+        while last > 1 and text:byte(last) >= 128 and text:byte(last) < 192 do
+            last = last - 1
+        end
+        sel.pos = at + last - 1
+    end
+
+    -- Close this paste as its own undo step: leaving insert mode makes vis
+    -- take a snapshot, and a<Escape> ends up on the same cursor position.
+    vis:feedkeys('a<Escape>')
+end
+
+vis:map(vis.modes.NORMAL, 'p', function() paste_clipboard(false) end)
+vis:map(vis.modes.NORMAL, 'P', function() paste_clipboard(true) end)
+
+--------------------------------------------------------------------------------
 -- Highlight every occurrence of the word under the cursor
 --------------------------------------------------------------------------------
 
@@ -34,8 +110,7 @@ local TYPING_CURSOR     = 'back:252'
 -- false: vis draws the cursor line (full width bar) and the matches on that
 --        line are re-styled afterwards in UI_DRAW, by byte offset.
 -- true:  vis' own cursorline is turned off; the cursor line is styled here in
---        WIN_HIGHLIGHT (before the matches), by byte offset. Use this if the
---        word on the cursor line is not highlighted with `false`.
+--        WIN_HIGHLIGHT (before the matches), by byte offset.
 local OWN_CURSORLINE = true
 
 local max, min = math.max, math.min
@@ -123,10 +198,8 @@ local function scan(win, paint)
              rel = rel, spans = spans, nspans = n }
 end
 
--- vis draws the cursor line after WIN_HIGHLIGHT, which covers the matches on
--- it. They are styled again here, by byte range, so vis maps them to screen
--- cells itself (wrapping, tabs, wide characters, split width, line numbers).
--- The character under the cursor is left out so it keeps the cursor style.
+-- Used only when OWN_CURSORLINE is false: re-style matches on the cursor line
+-- by byte range, leaving the character under the cursor alone.
 local function paint_cursor_line(win, st)
     local wlen = #st.word
     local cur = st.lstart + st.rel
@@ -200,6 +273,18 @@ vis.events.subscribe(vis.events.UI_DRAW, function()
 end)
 
 --------------------------------------------------------------------------------
+-- Git diff in a pager (diff-so-fancy + less without -F)
+--------------------------------------------------------------------------------
+
+-- Run a diff pipeline in a pager, then put the terminal back into the state
+-- vis expects (alternate screen) and repaint everything.
+local function paged_diff(args)
+    local cmd = ':!git --no-pager diff --color=always ' .. args
+        .. ' | diff-so-fancy | LESS= less --tabs=4 -R; tput smcup<Enter>\x0c'
+    vis:feedkeys(cmd)
+end
+
+--------------------------------------------------------------------------------
 -- Key bindings
 --------------------------------------------------------------------------------
 
@@ -216,13 +301,9 @@ end)
 
 vis:map(vis.modes.NORMAL, ' w', ':w<Enter>')
 
--- Run a diff pipeline in a pager, then put the terminal back into the state
--- vis expects (alternate screen) and repaint everything.
-local function paged_diff(args)
-    local cmd = ':!git --no-pager diff --color=always ' .. args
-        .. ' | diff-so-fancy | LESS= less --tabs=4 -R; tput smcup<Enter>\x0c'
-    vis:feedkeys(cmd)
-end
+vis:map(vis.modes.NORMAL, ' gd', function()
+    paged_diff('')
+end)
 
 vis:map(vis.modes.NORMAL, ' gj', function()
     local name = vis.win and vis.win.file and vis.win.file.name
@@ -233,11 +314,6 @@ vis:map(vis.modes.NORMAL, ' gj', function()
     local quoted = "'" .. name:gsub("'", "'\\''") .. "'"
     paged_diff('-- ' .. quoted)
 end)
-
-vis:map(vis.modes.NORMAL, ' gd', function()
-    paged_diff('')
-end)
-
 
 vis:map(vis.modes.NORMAL, ' dh', function()
     hi_word = not hi_word
