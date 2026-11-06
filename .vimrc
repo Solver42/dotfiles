@@ -2,6 +2,7 @@
 let g:did_load_syntax = 1
 set ttyfast
 set lazyredraw
+set nofoldenable
 
 let mapleader = " "
 
@@ -77,6 +78,12 @@ if exists('&t_SI')
     let &t_SI = "\<esc>[6 q"
     let &t_SR = "\<esc>[6 q"
     let &t_EI = "\<esc>[2 q"
+
+    augroup CursorShape
+        autocmd!
+        autocmd ModeChanged *:[vV\x16]* call writefile(["\<Esc>[4 q"], "/dev/tty", "ab")
+        autocmd ModeChanged [vV\x16]*:[^vV\x16]* call writefile(["\<Esc>[2 q"], "/dev/tty", "ab")
+    augroup END
 endif
 
 highlight   Normal          ctermfg = 46
@@ -95,7 +102,7 @@ highlight   Visual          ctermfg = 16    ctermbg = 28
 highlight   StatusLine      ctermfg = 16    ctermbg = 46
 highlight   StatusLineNC    ctermfg = 46    ctermbg = 16
 highlight   VertSplit       ctermbg = NONE  ctermfg = 46    cterm = NONE
-highlight   CursorLine      ctermbg = 22    ctermfg=NONE    cterm=NONE
+highlight   CursorLine      ctermbg = 22    ctermfg = NONE  cterm = NONE
 highlight   Pmenu           ctermfg = 46    ctermbg = NONE
 highlight   PmenuSel        ctermfg = 16    ctermbg = 46
 highlight   PmenuSbar       ctermfg = 46    ctermbg = NONE
@@ -126,8 +133,6 @@ nnoremap <leader>q <cmd>bd<cr>
 
 " TAB NAVIGATION
 nnoremap <C-t> <cmd>tabnew<CR>
-" nnoremap L <cmd>tabn<CR>
-" nnoremap H <cmd>tabp<CR>
 
 " ^ and $ are awkward and g_ exclude newline
 map H ^
@@ -684,6 +689,7 @@ nnoremap <leader>gj <cmd>!clear&&git diff -- %<CR>
 
 nnoremap <leader>j <cmd>Fd<CR>
 nnoremap <leader>k <cmd>Rg<CR>
+nnoremap <leader>b <cmd>Fb<CR>
 let g:fd_args = ['--hidden', '--exclude', '.git']
 let g:fd_max_files = 10000
 let g:fd_preview_lines = 500

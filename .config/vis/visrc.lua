@@ -1,5 +1,6 @@
 require('vis')
 
+vis:command('set layout v')
 -- No syntax highlighting. A lexer loader must still exist, otherwise `:set theme` returns early.
 local plain_text_lexer = {
     _name = 'none',
@@ -10,7 +11,10 @@ local plain_text_lexer = {
 if vis.lexers then vis.lexers.load = function() return plain_text_lexer end end
 
 local remembered_cursor_positions = require('plugins/vis-cursors')
+local fd = require('plugins/vis-fd')
 require('plugins/vis-rg')
+require('plugins/vis-gjallarhorn')
+
 local home_directory = os.getenv('HOME')
 if home_directory then remembered_cursor_positions.path = home_directory .. '/.cache/vis_cursors' end
 
@@ -165,6 +169,7 @@ local function show_git_diff_in_pager(git_diff_arguments)
 end
 
 vis:map(vis.modes.NORMAL, ' w', ':w<Enter>')
+vis:map(vis.modes.NORMAL, ' j', ':Fd<Enter>')
 vis:map(vis.modes.NORMAL, ' k', ':Rg<Enter>')
 
 vis:map(vis.modes.NORMAL, ' gd', function() show_git_diff_in_pager('') end)
@@ -184,3 +189,9 @@ vis:map(vis.modes.NORMAL, ' dh', function()
     word_highlighting_enabled = not word_highlighting_enabled
     vis:feedkeys('\x0c')
 end)
+
+vis:map(vis.modes.NORMAL, 'sq', 'ZQ')
+vis:map(vis.modes.NORMAL, 'sh', '<C-w>h')
+vis:map(vis.modes.NORMAL, 'sj', '<C-w>j')
+vis:map(vis.modes.NORMAL, 'sk', '<C-w>k')
+vis:map(vis.modes.NORMAL, 'sl', '<C-w>l') 

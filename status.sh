@@ -67,21 +67,11 @@ while :; do
     out="$out  ᚠ   $_df\n"
 
     # ---- NETWORK ----
-    iface=""
-    i=0
-    while IFS=: read -r name _; do
-        i=$((i + 1))
-        [ "$i" -le 2 ] && continue
-        name=${name#"${name%%[! ]*}"}
-        [ "$name" = "lo" ] && continue
-        iface=$name
-        break
-    done < /proc/net/dev
-
-    ip=$(ip -4 addr show "$iface" 2>/dev/null)
-    ip=${ip#*inet }
-    ip=${ip%%/*}
-    out="$out  ᚾ   ${ip:--}\n"
+    if ip -4 route show default 2>/dev/null | grep -q .; then
+        out="$out  ᚾ   +\n"
+    else
+        out="$out  ᚾ   -\n"
+    fi
 
     # ---- WIFI ----
     rf=$(rfkill list wifi 2>/dev/null | awk '/Soft blocked:/ {print $3}')
