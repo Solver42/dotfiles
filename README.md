@@ -180,3 +180,12 @@ qemu-system-x86_64 \
     -cpu host \
     -m 2G \
     -drive file=~/Downloads/freebsd.img,format=qcow2
+
+## Natural scrolling
+Section "InputClass"
+    Identifier "touchpad"
+    Driver "libinput"
+    MatchIsTouchpad "on"
+    Option "NaturalScrolling" "true"
+    Option "Tapping" "on"
+EndSection
