@@ -44,7 +44,6 @@ set timeoutlen=5000
 set ttimeoutlen=10
 set listchars=tab:\ \ 
 set list
-set cursorline
 let g:gitgutter_sign_removed = '-'
 set keywordprg=
 

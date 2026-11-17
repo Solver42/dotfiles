@@ -578,7 +578,7 @@ nnoremap <silent> <buffer> <leader>n : call <SID>OdinCheck()<CR>
 nnoremap <silent> <buffer> <leader>m : call <SID>OdinRun()<CR>
 nnoremap <silent> <buffer> <leader>f : call <SID>FormatToggle()<CR>
 
-nnoremap <buffer> <leader>p  A fmt.println("\n * 
+nnoremap <buffer> <leader>p Afmt.println("\n * 
 nnoremap <buffer> <leader>sp /\c\v.* :: proc<Home><Right><Right><Right><Right>
 nnoremap <buffer> <leader>ss /\c\v.* :: struct<Home><Right><Right><Right><Right>
 nnoremap <buffer> <leader>se /\c\v.* :: enum<Home><Right><Right><Right><Right>

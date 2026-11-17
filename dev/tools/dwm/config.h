@@ -67,7 +67,7 @@ static const Key keys[] = {
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
 
     { MODKEY, XK_a,               spawn, SHCMD("xinput enable 'PIXA3848:01 093A:3848 Touchpad'") },
-    { MODKEY, XK_f,               spawn, SHCMD("xinput disable 'PIXA3848:01 093A:3848 Touchpad'") },
+    { MODKEY, XK_d,               spawn, SHCMD("xinput disable 'PIXA3848:01 093A:3848 Touchpad'") },
 
     /* brightness */
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
@@ -86,6 +86,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
     { MODKEY,                       XK_space,  togglefloating, {0} },
+    { MODKEY,                       XK_1,      setlayout,      {.v = &layouts[0]} },
+    { MODKEY,                       XK_2,      setlayout,      {.v = &layouts[1]} },
+    { MODKEY,                       XK_3,      setlayout,      {.v = &layouts[2]} },
     { MODKEY, XK_Up,                setmfact,  { .f = +0.05 } },
     { MODKEY, XK_Down,              setmfact,  { .f = -0.05 } },
 

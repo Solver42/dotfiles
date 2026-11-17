@@ -85,3 +85,5 @@ PS1='[30m[42m $(pwd | sed "s|^$HOME|ᛟ|")$(git branch 2>/dev/null | sed -n "s
 van() { man "$@" 2>/dev/null | col -b | vim -; }
 
 eval "$(zoxide init posix --hook prompt)"
+
+HISTFILE=$HOME/.mksh_history
